@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-label="LifeGuard ecosystem — a wearer on the left, an operator console on the right, both linked by a live alert stream.">
+  <defs>
+    <radialGradient id="bgGrad" cx="35%" cy="40%" r="80%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="55%" stop-color="#e9eef7"/>
+      <stop offset="100%" stop-color="#ccd5e3"/>
+    </radialGradient>
+    <linearGradient id="strata" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0b1320" stop-opacity="0.0"/>
+      <stop offset="100%" stop-color="#0b1320" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="consoleBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#191c20"/>
+      <stop offset="100%" stop-color="#0a0b0d"/>
+    </linearGradient>
+    <linearGradient id="consoleScreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f1114"/>
+      <stop offset="100%" stop-color="#191c20"/>
+    </linearGradient>
+    <linearGradient id="phoneFace" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fafaf9"/>
+      <stop offset="100%" stop-color="#ecebe5"/>
+    </linearGradient>
+    <linearGradient id="skinLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f5d8b5"/>
+      <stop offset="100%" stop-color="#d6a36d"/>
+    </linearGradient>
+    <linearGradient id="fabric" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7c93b1"/>
+      <stop offset="100%" stop-color="#3c4a5f"/>
+    </linearGradient>
+    <filter id="softGlow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feFlood flood-color="#06b6a4" flood-opacity="0.85"/>
+      <feComposite in2="SourceAlpha" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+      <feOffset dx="0" dy="20"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1440" height="900" fill="url(#bgGrad)"/>
+
+  <!-- horizon strata (soft, just hints at environment) -->
+  <rect x="0" y="540" width="1440" height="360" fill="url(#strata)"/>
+  <line x1="0" y1="540" x2="1440" y2="540" stroke="#94a3b8" stroke-opacity="0.20" stroke-width="1"/>
+
+  <!-- subtle 3D-looking horizon line with a faint horizon glow -->
+  <line x1="0" y1="540" x2="1440" y2="540" stroke="#ffffff" stroke-opacity="0.65" stroke-width="0.4"/>
+
+  <!-- title -->
+  <g font-family="Inter, system-ui, -apple-system, sans-serif">
+    <text x="60" y="86" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="3.4">LIFEGUARD · ECOSYSTEM</text>
+    <text x="60" y="146" font-size="58" font-weight="300" fill="#0a1628" letter-spacing="-1.6">One wrist. One console.</text>
+    <text x="60" y="206" font-size="58" font-weight="300" fill="#0a1628" letter-spacing="-1.6">One responder rolling.</text>
+    <text x="60" y="262" font-size="20" font-weight="400" fill="#475569" letter-spacing="-0.2">A push from the band opens the call line, drops a pin on the operator's map,</text>
+    <text x="60" y="288" font-size="20" font-weight="400" fill="#475569" letter-spacing="-0.2">and routes the nearest armed-response vehicle before she finishes the sentence.</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- LEFT SIDE — the wearer -->
+  <!-- ============================================ -->
+  <g transform="translate(220,560)">
+    <!-- the shoulder -->
+    <path d="M -140 -180 Q -100 -200 -40 -210 L 30 -210 Q 90 -200 130 -180 L 175 -40 L 175 230 L -185 230 L -185 -40 Z" fill="url(#fabric)"/>
+    <!-- collar -->
+    <path d="M -45 -200 Q -10 -210 30 -198" fill="none" stroke="#152033" stroke-opacity="0.6" stroke-width="2"/>
+    <!-- the arm extends from the shoulder, bent forward -->
+    <path d="M 130 -120 Q 220 -60 270 60 L 290 230 L 90 230 Q 100 130 100 30 Q 80 -20 50 -50" fill="url(#fabric)"/>
+    <!-- the wrist coming out of the sleeve -->
+    <ellipse cx="270" cy="80" rx="32" ry="22" fill="url(#skinLight)"/>
+
+    <!-- the LifeBand G2 on the wrist -->
+    <g transform="translate(270,80) rotate(-18)" filter="url(#softShadow)">
+      <!-- case (squircle watch) -->
+      <rect x="-40" y="-44" width="80" height="80" rx="22" fill="#1f2937"/>
+      <rect x="-38" y="-42" width="76" height="76" rx="20" fill="#0b1320"/>
+      <rect x="-34" y="-32" width="68" height="56" rx="14" fill="#050a13"/>
+      <rect x="-34" y="-32" width="68" height="56" rx="14" fill="url(#sosGlare)" opacity="0.4"/>
+      <text x="0" y="-22" text-anchor="middle" font-family="Inter, sans-serif" font-size="6" font-weight="600" letter-spacing="2.4" fill="#94a3b8">LIFEBAND · G2</text>
+      <text x="0" y="0" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="300" letter-spacing="-0.4" fill="#e6e9ef">72 bpm</text>
+      <text x="0" y="14" text-anchor="middle" font-family="Inter, sans-serif" font-size="6" font-weight="600" fill="#34d399" letter-spacing="2">●&nbsp;LINK</text>
+      <!-- sides -->
+      <rect x="-32" y="-22" width="6" height="3" rx="1" fill="url(#fabric)" />
+      <rect x="26" y="-30" width="3" height="14" rx="1" fill="#475569"/>
+
+      <!-- strap going around the wrist -->
+      <path d="M -40 -10 Q -56 -2 -52 16 L -40 28 Z" fill="url(#strapA)"/>
+      <path d="M 40 -10 Q 56 -2 52 16 L 40 28 Z" fill="url(#strapB)"/>
+
+      <defs>
+        <linearGradient id="sosGlare" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#fff" stop-opacity="0.22"/>
+          <stop offset="40%" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="strapA" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1f2937"/>
+          <stop offset="100%" stop-color="#0b1320"/>
+        </linearGradient>
+        <linearGradient id="strapB" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0b1320"/>
+          <stop offset="100%" stop-color="#1f2937"/>
+        </linearGradient>
+      </defs>
+    </g>
+
+    <!-- the SOS pulse on the wrist -->
+    <g transform="translate(270,80)" filter="url(#softGlow)">
+      <circle cx="0" cy="0" r="60" fill="none" stroke="#06b6a4" stroke-width="2" opacity="0.6"/>
+      <circle cx="0" cy="0" r="80" fill="none" stroke="#06b6a4" stroke-width="1.4" opacity="0.35"/>
+      <circle cx="0" cy="0" r="100" fill="none" stroke="#06b6a4" stroke-width="1" opacity="0.18"/>
+    </g>
+
+    <!-- the wearer hint (no face) — just a partial silhouette with hair tie -->
+    <ellipse cx="0" cy="-260" rx="48" ry="58" fill="url(#skinLight)"/>
+    <!-- the hair in back -->
+    <path d="M -48 -290 Q -54 -240 -30 -210 L 30 -210 Q 54 -240 48 -290 Q 30 -310 0 -310 Q -30 -310 -48 -290 Z" fill="#1a150f"/>
+
+    <!-- a phone in the wearer's other hand (off-canvas, just to show) -->
+    <g transform="translate(-180,40) rotate(-22)">
+      <rect x="-26" y="-46" width="52" height="92" rx="8" fill="url(#phoneFace)"/>
+      <rect x="-22" y="-42" width="44" height="80" rx="3" fill="#fff" stroke="#e5e7eb" stroke-width="0.5"/>
+      <circle cx="0" cy="-38" r="1.5" fill="#94a3b8"/>
+      <circle cx="0" cy="40" r="2.6" fill="none" stroke="#cbd5e1" stroke-width="1"/>
+    </g>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- middle — the live alert stream flowing from the wearer to the console -->
+  <!-- ============================================ -->
+  <g>
+    <!-- the signal beams -->
+    <path d="M 510 700 Q 800 660 1080 540" stroke="#06b6a4" stroke-width="1.5" stroke-opacity="0.55" fill="none" stroke-dasharray="6 6"/>
+    <path d="M 510 700 Q 800 730 1080 800" stroke="#06b6a4" stroke-width="1.5" stroke-opacity="0.45" fill="none" stroke-dasharray="6 6"/>
+
+    <!-- the alert envelope flowing along the path -->
+    <g transform="translate(800,690)">
+      <rect x="-130" y="-44" width="260" height="80" rx="10" fill="#fff" stroke="#06b6a4" stroke-width="1.5"/>
+      <circle cx="-104" cy="0" r="16" fill="#dc2626"/>
+      <text x="-104" y="5" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#fff">!</text>
+      <text x="-78" y="-16" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#0a1628" letter-spacing="2.4">INCIDENT 2026-2028</text>
+      <text x="-78" y="0" font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" font-weight="500" fill="#1f2937">panic press · Mapleton · Cape Town</text>
+      <text x="-78" y="18" font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" font-weight="500" fill="#475569">AI score 0.91 · fanout 5/5 · ETA 4m12s</text>
+    </g>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- RIGHT SIDE — the operator console -->
+  <!-- ============================================ -->
+  <g transform="translate(1140,520)" filter="url(#softShadow)">
+    <!-- monitor frame -->
+    <rect x="-260" y="-200" width="520" height="320" rx="14" fill="url(#consoleBody)"/>
+    <!-- inner bezel -->
+    <rect x="-256" y="-196" width="512" height="312" rx="11" fill="#0d0f12"/>
+    <!-- screen content area -->
+    <rect x="-244" y="-184" width="488" height="288" rx="8" fill="url(#consoleScreen)"/>
+
+    <!-- console top-bar -->
+    <g>
+      <rect x="-244" y="-184" width="488" height="32" rx="0" fill="#0f1114"/>
+      <circle cx="-228" cy="-168" r="4" fill="#10b981"/>
+      <text x="-210" y="-164" font-family="Inter, sans-serif" font-size="10" font-weight="600" letter-spacing="2.4" fill="#94a3b8">Crescent Armed Response · Control</text>
+      <text x="244" y="-164" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#94a3b8" font-weight="500">2 alerts · 1 ack · 04:12 UTC</text>
+    </g>
+
+    <!-- map area (left ~60%) -->
+    <g transform="translate(-122,-78)">
+      <rect x="-120" y="-100" width="240" height="184" rx="6" fill="#191c20" stroke="rgba(255,255,255,0.06)"/>
+      <text x="-114" y="-86" font-family="Inter, sans-serif" font-size="9" font-weight="600" letter-spacing="2.4" fill="#94a3b8">MAP · CITY BOWL</text>
+      <!-- grid lines -->
+      <g stroke="rgba(255,255,255,0.04)" stroke-width="0.4">
+        <line x1="-120" y1="-40" x2="120" y2="-40"/>
+        <line x1="-120" y1="0" x2="120" y2="0"/>
+        <line x1="-120" y1="40" x2="120" y2="40"/>
+        <line x1="-40" y1="-100" x2="-40" y2="84"/>
+        <line x1="40" y1="-100" x2="40" y2="84"/>
+      </g>
+      <!-- Cape Town coastline hint -->
+      <path d="M -120 50 Q -90 30 -50 50 Q -10 70 30 50 Q 80 30 120 60" stroke="rgba(82,148,255,0.45)" stroke-width="0.8" fill="none"/>
+      <text x="-100" y="62" font-family="Inter, sans-serif" font-size="7" fill="rgba(82,148,255,0.7)">Atlantic</text>
+      <!-- Sub pin (operator centre) -->
+      <circle cx="-30" cy="-20" r="3" fill="#06b6a4"/>
+      <!-- responder pins -->
+      <circle cx="20" cy="-40" r="3" fill="#1d4ed8"/>
+      <circle cx="-60" cy="30" r="3" fill="#1d4ed8"/>
+      <circle cx="60" cy="20" r="3" fill="#1d4ed8"/>
+      <!-- the active SOS alert pin -->
+      <circle cx="-20" cy="-10" r="6" fill="#dc2626"/>
+      <circle cx="-20" cy="-10" r="10" fill="none" stroke="#dc2626" stroke-opacity="0.6" stroke-width="2"/>
+      <text x="-12" y="-12" font-family="Inter, sans-serif" font-size="8" font-weight="700" fill="#fff">!</text>
+      <!-- route line from responder to alert -->
+      <line x1="20" y1="-40" x2="-20" y2="-10" stroke="#06b6a4" stroke-width="1" stroke-opacity="0.6" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- right column: alert queue -->
+    <g transform="translate(70,-78)">
+      <text x="0" y="-86" font-family="Inter, sans-serif" font-size="9" font-weight="600" letter-spacing="2.4" fill="#94a3b8">QUEUE · 4 OPEN</text>
+
+      <!-- Alert 1 (red, big) -->
+      <g transform="translate(0,-50)">
+        <rect x="0" y="0" width="142" height="44" rx="6" fill="rgba(220,38,38,0.10)" stroke="rgba(220,38,38,0.45)"/>
+        <circle cx="14" cy="14" r="5" fill="#dc2626"/>
+        <text x="14" y="18" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="700" fill="#fff">!</text>
+        <text x="26" y="14" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="#fff">HIGH · 0.91</text>
+        <text x="26" y="26" font-family="Inter, sans-serif" font-size="7" fill="#cbd5e1">Mapleton · CTR 1m20s</text>
+        <text x="26" y="36" font-family="Inter, sans-serif" font-size="7" fill="#94a3b8">Lerato Dlamini · 71F</text>
+      </g>
+
+      <!-- Alert 2 (warn) -->
+      <g transform="translate(0,4)">
+        <rect x="0" y="0" width="142" height="36" rx="6" fill="rgba(245,158,11,0.10)" stroke="rgba(245,158,11,0.4)"/>
+        <circle cx="14" cy="12" r="4" fill="#f59e0b"/>
+        <text x="14" y="15" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" font-weight="700" fill="#fff">?</text>
+        <text x="26" y="14" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="#fff">MED · 0.62</text>
+        <text x="26" y="26" font-family="JetBrains Mono, monospace" font-size="7" fill="#cbd5e1">Camps Bay · geofence</text>
+      </g>
+
+      <!-- Alert 3 (info) -->
+      <g transform="translate(0,48)">
+        <rect x="0" y="0" width="142" height="32" rx="6" fill="rgba(96,165,250,0.10)" stroke="rgba(96,165,250,0.4)"/>
+        <circle cx="14" cy="12" r="4" fill="#60a5fa"/>
+        <text x="14" y="14" text-anchor="middle" font-family="Inter, sans-serif" font-size="6" font-weight="700" fill="#fff">i</text>
+        <text x="26" y="14" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="#fff">LOW · 0.34</text>
+        <text x="26" y="24" font-family="JetBrains Mono, monospace" font-size="7" fill="#cbd5e1">Stellenbosch · low batt</text>
+      </g>
+
+      <!-- stats footer -->
+      <g transform="translate(0,98)">
+        <text x="0" y="0" font-family="Inter, sans-serif" font-size="7" fill="#94a3b8">RESPONDERS</text>
+        <text x="142" y="0" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" font-weight="600" fill="#06b6a4">8 / 8</text>
+        <text x="0" y="14" font-family="Inter, sans-serif" font-size="7" fill="#94a3b8">ON SCENE</text>
+        <text x="142" y="14" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" font-weight="600" fill="#fff">2</text>
+      </g>
+    </g>
+
+    <!-- footer -->
+    <g>
+      <rect x="-244" y="100" width="488" height="2" fill="rgba(255,255,255,0.05)"/>
+      <text x="-228" y="116" font-family="Inter, sans-serif" font-size="8" fill="#94a3b8" font-weight="500">LifeGuard Operator · live</text>
+      <text x="240" y="116" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="8" fill="#94a3b8" font-weight="500">v2.4.3 · SLA 99.95%</text>
+    </g>
+
+    <!-- monitor stand -->
+    <rect x="-22" y="120" width="44" height="36" fill="#191c20"/>
+    <rect x="-90" y="156" width="180" height="8" rx="2" fill="#0f1114"/>
+  </g>
+
+  <!-- annotations -->
+  <g font-family="Inter, sans-serif" fill="#475569">
+    <line x1="270" y1="640" x2="270" y2="540" stroke="#94a3b8" stroke-opacity="0.5" stroke-dasharray="2 4"/>
+    <text x="270" y="535" text-anchor="middle" font-size="11" font-weight="600" letter-spacing="2.6" fill="#06b6a4">THE BAND</text>
+
+    <line x1="800" y1="730" x2="800" y2="780" stroke="#94a3b8" stroke-opacity="0.5" stroke-dasharray="2 4"/>
+    <text x="800" y="800" text-anchor="middle" font-size="11" font-weight="600" letter-spacing="2.6" fill="#06b6a4">3-SEC FANDOWN</text>
+
+    <line x1="1180" y1="500" x2="1300" y2="340" stroke="#94a3b8" stroke-opacity="0.5" stroke-dasharray="2 4"/>
+    <text x="1310" y="335" font-size="11" font-weight="600" letter-spacing="2.6" fill="#06b6a4">THE CONSOLE</text>
+  </g>
+
+  <!-- bottom CTA / footer note -->
+  <g transform="translate(60,860)">
+    <text font-family="Inter, sans-serif" font-size="12" font-weight="600" letter-spacing="2.4" fill="#94a3b8">STATUS · OPERATOR LIVE · 99.95% · AES-256</text>
+  </g>
+</svg>

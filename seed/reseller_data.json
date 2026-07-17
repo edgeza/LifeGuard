@@ -1,0 +1,232 @@
+{
+  "tenant": {
+    "id": "tnt_001",
+    "slug": "crescent-security",
+    "name": "Crescent Armed Response",
+    "logo_url": "/brand/crescent.svg",
+    "brand_primary_color": "#1d4ed8",
+    "brand_accent_color": "#06b6a4",
+    "subdomain": "control.crescent.co.za",
+    "country_code": "ZA",
+    "plan": "operator"
+  },
+  "summary": {
+    "mrr": 32180,
+    "mrr_growth_pct": 7.0,
+    "active_subscribers": 80,
+    "devices_in_field": 80,
+    "alerts_this_month": 1878,
+    "churn_pct": 2.4,
+    "trial_count": 12,
+    "support_tickets_open": 3
+  },
+  "mrr_series": [
+    {
+      "month": "2025-08",
+      "mrr": 14704,
+      "subscribers": 19,
+      "devices": 46,
+      "alerts": 91,
+      "new_signups": 4,
+      "churns": 2
+    },
+    {
+      "month": "2025-09",
+      "mrr": 16505,
+      "subscribers": 22,
+      "devices": 52,
+      "alerts": 64,
+      "new_signups": 4,
+      "churns": 0
+    },
+    {
+      "month": "2025-10",
+      "mrr": 17524,
+      "subscribers": 23,
+      "devices": 56,
+      "alerts": 155,
+      "new_signups": 10,
+      "churns": 3
+    },
+    {
+      "month": "2025-11",
+      "mrr": 19148,
+      "subscribers": 25,
+      "devices": 60,
+      "alerts": 220,
+      "new_signups": 2,
+      "churns": 1
+    },
+    {
+      "month": "2025-12",
+      "mrr": 21051,
+      "subscribers": 28,
+      "devices": 66,
+      "alerts": 205,
+      "new_signups": 12,
+      "churns": 1
+    },
+    {
+      "month": "2026-01",
+      "mrr": 22925,
+      "subscribers": 30,
+      "devices": 72,
+      "alerts": 73,
+      "new_signups": 6,
+      "churns": 3
+    },
+    {
+      "month": "2026-02",
+      "mrr": 24441,
+      "subscribers": 32,
+      "devices": 78,
+      "alerts": 161,
+      "new_signups": 12,
+      "churns": 0
+    },
+    {
+      "month": "2026-03",
+      "mrr": 26702,
+      "subscribers": 35,
+      "devices": 84,
+      "alerts": 173,
+      "new_signups": 10,
+      "churns": 0
+    },
+    {
+      "month": "2026-04",
+      "mrr": 29069,
+      "subscribers": 38,
+      "devices": 92,
+      "alerts": 143,
+      "new_signups": 6,
+      "churns": 1
+    },
+    {
+      "month": "2026-05",
+      "mrr": 30655,
+      "subscribers": 40,
+      "devices": 98,
+      "alerts": 72,
+      "new_signups": 3,
+      "churns": 2
+    },
+    {
+      "month": "2026-06",
+      "mrr": 31949,
+      "subscribers": 42,
+      "devices": 102,
+      "alerts": 192,
+      "new_signups": 5,
+      "churns": 1
+    },
+    {
+      "month": "2026-07",
+      "mrr": 33522,
+      "subscribers": 44,
+      "devices": 106,
+      "alerts": 149,
+      "new_signups": 12,
+      "churns": 2
+    }
+  ],
+  "top_customers": [
+    {
+      "id": "sub_001",
+      "name": "Susan O'Connor",
+      "plan": "consumer",
+      "mrr": 27.55,
+      "joined": "2026-05-06T21:10:31.366260+00:00"
+    },
+    {
+      "id": "sub_002",
+      "name": "Maria de Klerk",
+      "plan": "consumer",
+      "mrr": 24.9,
+      "joined": "2025-04-10T21:10:31.366260+00:00"
+    },
+    {
+      "id": "sub_003",
+      "name": "Beatrice Williams",
+      "plan": "consumer",
+      "mrr": 32.99,
+      "joined": "2025-02-02T21:10:31.366260+00:00"
+    },
+    {
+      "id": "sub_004",
+      "name": "Hendrik van der Merwe",
+      "plan": "consumer",
+      "mrr": 27.46,
+      "joined": "2026-03-01T21:10:31.366260+00:00"
+    },
+    {
+      "id": "sub_005",
+      "name": "Sipho Dlamini",
+      "plan": "consumer",
+      "mrr": 20.57,
+      "joined": "2024-11-21T21:10:31.366260+00:00"
+    },
+    {
+      "id": "sub_006",
+      "name": "Frederik van Niekerk",
+      "plan": "consumer",
+      "mrr": 27.83,
+      "joined": "2025-10-10T21:10:31.366260+00:00"
+    },
+    {
+      "id": "sub_007",
+      "name": "Esther van Wyk",
+      "plan": "consumer",
+      "mrr": 23.25,
+      "joined": "2025-08-30T21:10:31.366260+00:00"
+    },
+    {
+      "id": "sub_008",
+      "name": "Jan Hendrik Steyn",
+      "plan": "consumer",
+      "mrr": 47.28,
+      "joined": "2024-12-25T21:10:31.366260+00:00"
+    }
+  ],
+  "retail_plans": [
+    {
+      "id": "plan_basic",
+      "name": "Basic",
+      "wholesale_cents": 1900,
+      "retail_cents": 2499,
+      "active_customers": 184,
+      "featured": false
+    },
+    {
+      "id": "plan_pro",
+      "name": "Pro",
+      "wholesale_cents": 2900,
+      "retail_cents": 3999,
+      "active_customers": 92,
+      "featured": true
+    },
+    {
+      "id": "plan_family",
+      "name": "Family",
+      "wholesale_cents": 4900,
+      "retail_cents": 5999,
+      "active_customers": 36,
+      "featured": false
+    },
+    {
+      "id": "plan_estate",
+      "name": "Estate",
+      "wholesale_cents": 14900,
+      "retail_cents": 18900,
+      "active_customers": 8,
+      "featured": false
+    }
+  ],
+  "branding": {
+    "subdomain": "control.crescent.co.za",
+    "logo": "crescent.svg",
+    "color_primary": "#1d4ed8",
+    "color_accent": "#06b6a4",
+    "email_from": "no-reply@crescent.co.za"
+  }
+}

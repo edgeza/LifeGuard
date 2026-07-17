@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480" role="img" aria-label="LifePendant P2 — pendant with two-way voice and 14-day battery.">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#fafafb"/>
+      <stop offset="100%" stop-color="#e3e7ee"/>
+    </radialGradient>
+    <linearGradient id="bezel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e7eaf2"/>
+      <stop offset="50%" stop-color="#f0f2f7"/>
+      <stop offset="100%" stop-color="#b9bfcd"/>
+    </linearGradient>
+    <radialGradient id="face" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1a2230"/>
+      <stop offset="100%" stop-color="#0a0f17"/>
+    </radialGradient>
+    <linearGradient id="cord" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0a27a8"/>
+    </linearGradient>
+    <radialGradient id="ringLight" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#06b6a4" stop-opacity="0"/>
+      <stop offset="80%" stop-color="#06b6a4" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#06b6a4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="drop" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="12"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="480" height="480" fill="url(#bg)"/>
+  <ellipse cx="240" cy="395" rx="100" ry="9" fill="#0b1320" fill-opacity="0.10"/>
+
+  <!-- the cord — looping twice through a metal loop at the top -->
+  <g filter="url(#drop)">
+    <!-- cord going up out of the case to a top anchor -->
+    <path d="M 232 205 C 232 160, 215 130, 215 80" stroke="url(#cord)" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M 248 205 C 248 160, 265 130, 265 80" stroke="url(#cord)" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <!-- a metal loop at the top -->
+    <circle cx="240" cy="78" r="9" fill="url(#bezel)" stroke="#76819a" stroke-width="0.8"/>
+  </g>
+
+  <!-- the case — round with chamfered edge -->
+  <g filter="url(#drop)">
+    <circle cx="240" cy="240" r="78" fill="url(#bezel)"/>
+    <circle cx="240" cy="240" r="70" fill="url(#face)"/>
+    <!-- an SOS ring around the face that lights up -->
+    <circle cx="240" cy="240" r="74" fill="none" stroke="url(#ringLight)" stroke-width="6" opacity="0.9"/>
+    <!-- crown ring highlight -->
+    <circle cx="240" cy="240" r="78" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="1"/>
+  </g>
+
+  <!-- engraved face markings (etched-look labels) -->
+  <g font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#475569" fill-opacity="0.55" font-weight="500">
+    <text x="240" y="208" text-anchor="middle" letter-spacing="2.6">LIFEPENDANT · P2</text>
+  </g>
+
+  <!-- the big SOS button in the middle (a slightly raised pill) -->
+  <g filter="url(#drop)">
+    <circle cx="240" cy="248" r="36" fill="#dc2626"/>
+    <circle cx="240" cy="248" r="36" fill="none" stroke="#7f1d1d" stroke-width="0.8" stroke-opacity="0.7"/>
+    <circle cx="240" cy="248" r="32" fill="none" stroke="#fca5a5" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="240" y="253" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="#fff" letter-spacing="3.2">SOS</text>
+  </g>
+
+  <!-- mic and speaker grilles on the side -->
+  <g fill="#1f2937">
+    <circle cx="240" cy="220" r="1.2"/>
+    <circle cx="232" cy="220" r="1.2"/>
+    <circle cx="248" cy="220" r="1.2"/>
+    <circle cx="226" cy="220" r="1.2"/>
+    <circle cx="254" cy="220" r="1.2"/>
+    <circle cx="220" cy="220" r="1.2"/>
+  </g>
+  <g fill="#1f2937">
+    <circle cx="240" cy="282" r="1.2"/>
+    <circle cx="232" cy="282" r="1.2"/>
+    <circle cx="248" cy="282" r="1.2"/>
+    <circle cx="226" cy="282" r="1.2"/>
+    <circle cx="254" cy="282" r="1.2"/>
+    <circle cx="220" cy="282" r="1.2"/>
+  </g>
+
+  <!-- subtle wireless signal arcs above the case -->
+  <g stroke="#06b6a4" stroke-opacity="0.6" fill="none" stroke-linecap="round">
+    <path d="M 218 178 Q 240 158 262 178" stroke-width="1.4"/>
+    <path d="M 210 170 Q 240 142 270 170" stroke-width="1.2" opacity="0.5"/>
+  </g>
+
+  <text x="240" y="430" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="2.5" fill="#475569">LIFE PENDANT&nbsp;·&nbsp;P2</text>
+  <text x="240" y="450" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#64748b">22 g · 14 d standby · 2-way voice · IP67 · LTE-M</text>
+
+  <g transform="translate(40,420)" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" font-weight="500">
+    <rect x="0" y="-9" width="64" height="14" rx="2" fill="#fff" stroke="#e5edf5"/>
+    <text x="6" y="1">SKU LPP2</text>
+  </g>
+</svg>

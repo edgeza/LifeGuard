@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-bg text-ink font-sans;
+    font-size: 17px;
+    line-height: 26px;
+    font-feature-settings: "cv01", "ss03", "ss01", "tnum";
+  }
+  ::selection {
+    background: #ccfbf1;
+    color: #0f766e;
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .hairline {
+    border-color: #e7e5e4;
+  }
+}
+
+/* Subtle pulse for live status dot — calm, not anxious */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.live-dot { animation: pulse-soft 2.4s ease-in-out infinite; }

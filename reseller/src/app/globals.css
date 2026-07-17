@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    @apply bg-bg text-ink font-sans;
+    font-size: 14px;
+    line-height: 20px;
+    font-feature-settings: "cv01", "ss03", "ss01", "tnum";
+  }
+  ::selection { background: #dbeafe; color: #1e40af; }
+}
+
+@layer utilities {
+  .tabular { font-variant-numeric: tabular-nums; }
+  .mono    { font-family: theme('fontFamily.mono'); }
+  .hairline{ border-color: #e5e7eb; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+.live-dot { animation: pulse-soft 2.4s ease-in-out infinite; }
+
+/* API doc styling */
+.endpoint-row:hover { background: #f8fafc; }

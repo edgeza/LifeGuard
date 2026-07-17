@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480" role="img" aria-label="LifeCard C2 — wallet card with a single SOS button.">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#f4f6fb"/>
+      <stop offset="100%" stop-color="#dde3ee"/>
+    </radialGradient>
+    <linearGradient id="cardFace" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fefefe"/>
+      <stop offset="50%" stop-color="#f7f8fa"/>
+      <stop offset="100%" stop-color="#e2e6ee"/>
+    </linearGradient>
+    <linearGradient id="cardEdge" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="50%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <linearGradient id="sos" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06b6a4"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="14"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="480" height="480" fill="url(#bg)"/>
+  <ellipse cx="240" cy="345" rx="160" ry="11" fill="#0b1320" fill-opacity="0.08"/>
+
+  <!-- card is at a slight tilt to read like a credit card -->
+  <g transform="translate(240,230) rotate(-7)" filter="url(#cardShadow)">
+    <!-- card silhouette -->
+    <rect x="-160" y="-100" width="320" height="200" rx="14" fill="url(#cardEdge)"/>
+    <rect x="-156" y="-96" width="312" height="192" rx="11" fill="url(#cardFace)"/>
+
+    <!-- edge highlight -->
+    <rect x="-160" y="-100" width="320" height="200" rx="14" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="1.2"/>
+
+    <!-- header block -->
+    <text x="-140" y="-66" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="600" letter-spacing="2.6" fill="#94a3b8">LIFEGUARD</text>
+    <!-- mini circle logomark -->
+    <g transform="translate(140,-72)">
+      <circle cx="0" cy="0" r="9" fill="none" stroke="#94a3b8" stroke-width="2"/>
+      <circle cx="0" cy="0" r="5" fill="#94a3b8"/>
+    </g>
+
+    <!-- the big SOS button -->
+    <g transform="translate(0,12)">
+      <circle cx="0" cy="0" r="48" fill="url(#sos)"/>
+      <circle cx="0" cy="0" r="48" fill="none" stroke="#fff" stroke-opacity="0.25" stroke-width="1"/>
+      <circle cx="0" cy="0" r="42" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="0.8"/>
+      <text x="0" y="6" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="#fff" letter-spacing="3.5">SOS</text>
+    </g>
+
+    <!-- footer info -->
+    <text x="-140" y="78" font-family="JetBrains Mono, ui-monospace, monospace" font-size="8" fill="#64748b" font-weight="500">SN&nbsp;LFG2-0023149</text>
+    <text x="140" y="78" text-anchor="end" font-family="JetBrains Mono, ui-monospace, monospace" font-size="8" fill="#64748b" font-weight="500">BT 5.3 · 6 mo</text>
+  </g>
+
+  <text x="240" y="430" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="2.5" fill="#475569">LIFE CARD&nbsp;·&nbsp;C2</text>
+  <text x="240" y="450" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#64748b">8 g · CR2032 · Bluetooth only · Fits a wallet</text>
+
+  <g transform="translate(40,420)" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" font-weight="500">
+    <rect x="0" y="-9" width="64" height="14" rx="2" fill="#fff" stroke="#e5edf5"/>
+    <text x="6" y="1">SKU LFC2</text>
+  </g>
+</svg>
