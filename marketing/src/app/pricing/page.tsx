@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MarketingReveal } from "@/components/MarketingReveal";
 
 export const metadata = {
   title: "Pricing — LifeGuard",
@@ -23,16 +24,14 @@ const plans: Plan[] = [
   {
     id: "consumer",
     name: "Consumer Direct",
-    target: "Families & individuals",
-    summary: "Everything a single household needs. No device minimum.",
-    hardware: "$19 / device, one-time",
-    monthly: "$24.99 / device / month",
+    target: "Individuals & families",
+    summary: "One device, one subscription, full operator coverage.",
+    hardware: "$19 (any SKU) + subscription",
+    monthly: "$19.99 / mo",
     detail: [
-      "Cellular, AI triage, Caregiver App",
-      "3-contact SOS fanout",
-      "Weekly digest email",
-      "Free device swap for life on active plan",
-      "Optional $9.99/mo pro: vitals export & predictive fall risk",
+      "Cellular, AI triage, family app, 3-contact fanout.",
+      "Open API access, full audit trail.",
+      "Self-serve onboarding. Cancel from account.",
     ],
     ctaLabel: "Get started",
     ctaHref: "/signup",
@@ -40,70 +39,76 @@ const plans: Plan[] = [
   {
     id: "solo",
     name: "Solo Pro",
-    target: "Small security companies · Lone-worker employers",
-    summary: "Per-seat pricing. Built for under-500-worker programs.",
-    hardware: "$24 / device, one-time",
-    monthly: "$24.99 / worker / month",
+    target: "Small security & lone-worker employers",
+    summary: "10–500 workers, white-label option included.",
+    hardware: "$24 (any SKU) per device",
+    monthly: "$24.99 / worker / mo",
     detail: [
-      "Operator console for one account",
-      "Webhooks & REST API included",
-      "5-contact SOS fanout",
-      "Man-down, impact, and stillness detection",
-      "7-year immutable audit trail",
+      "Operator console for one account.",
+      "Webhooks + public API. 5-contact fanout.",
+      "Proactive hardware swap, full audit trail, SOC2 ready.",
     ],
-    ctaLabel: "Start a Solo Pro trial",
+    highlighted: true,
+    ctaLabel: "Book a walkthrough",
     ctaHref: "/signup",
   },
   {
     id: "operator",
     name: "Operator",
-    target: "Security companies · Armed response · Estates",
-    summary: "Run a control room on top of LifeGuard with your own brand.",
-    hardware: "$24–$32 / device, one-time",
-    monthly: "$14.99 / operator seat / month + $2 / device-month",
+    target: "Security companies, armed response, estates",
+    summary: "Per-dispatch seat + per-device wholesale.",
+    hardware: "$2.50 / device / mo wholesale",
+    monthly: "$14.99 / seat / mo",
     detail: [
-      "Full Linear-class console, white-label",
-      "Dispatch logic + nearest-responder routing",
-      "Mass broadcast to geofenced devices",
-      "Branded operator app (your logo, your name)",
-      "Reseller markup stays with you",
+      "Console, dispatch logic, audit trail, mass-broadcast.",
+      "Branded operator app + co-branded hardware.",
+      "API + webhook quotas 10× Solo Pro. SLA 99.95%.",
     ],
-    highlighted: true,
-    ctaLabel: "Talk to sales",
-    ctaHref: "/signup",
+    ctaLabel: "See reseller program",
+    ctaHref: "/for-whom#partners",
   },
   {
     id: "network",
     name: "Network / Enterprise",
-    target: "Multi-country · Fleets · Hospital systems · Insurers",
-    summary: "When you need SLAs, on-prem options, and a named CSM.",
-    hardware: "Custom",
-    monthly: "From $250,000 / year",
+    target: "Multi-country · fleets · hospital systems · insurers",
+    summary: "Custom · on-prem option · dedicated CSM.",
+    hardware: "Cohort pricing",
+    monthly: "From $250k / year",
     detail: [
-      "99.95% operator uptime SLA, contractual",
-      "On-prem option for regulated workloads",
-      "Dedicated solutions engineer + CSM",
-      "Custom compliance (HIPAA, FedRAMP roadmap)",
-      "Co-branded hardware at 500+ MOQ",
+      "SLA, on-prem option, regional data residency.",
+      "Dedicated CSM, custom compliance, fleet rollout.",
+      "Audit-grade APIs, integrations, prioritised roadmap.",
     ],
-    ctaLabel: "Contact enterprise",
-    ctaHref: "/signup",
+    ctaLabel: "Contact sales",
+    ctaHref: "mailto:hello@lifeguard.example.com",
   },
 ];
 
-const comparisonRows: { label: string; values: (string | boolean)[] }[] = [
-  { label: "Hardware (wholesale)", values: ["$24–$32 / device", "$24 / device", "$24–$32 / device", "Custom"] },
-  { label: "Cellular & AI triage", values: [true, true, true, true] },
-  { label: "SOS fanout contacts", values: ["3", "5", "5", "Custom"] },
-  { label: "Caregiver / Family App", values: [true, true, true, true] },
-  { label: "Operator console", values: [false, "1 account", "White-label", "Multi-tenant"] },
-  { label: "Open REST API + Webhooks", values: ["Read-only", true, true, true] },
-  { label: "White-label reseller", values: [false, false, true, true] },
-  { label: "Mass broadcast", values: [false, false, true, true] },
-  { label: "Audit trail retention", values: ["2 years", "5 years", "7 years", "7 years"] },
-  { label: "SLA", values: ["99.5%", "99.9%", "99.95%", "99.95% contractual"] },
-  { label: "On-prem option", values: [false, false, false, true] },
-  { label: "Dedicated CSM", values: [false, false, false, true] },
+const faqs = [
+  {
+    q: "Does LifeGuard include cellular service?",
+    a: "Every plan includes the cellular data the device needs. Whichever device you choose, the SIM is provisioned in 195 countries and you don't pay separately.",
+  },
+  {
+    q: "What is the white-label markup?",
+    a: "Resellers set their own retail price. Wholesale runs $2.50/device/month for Operators, with a 20% markup envelope. The margin is yours.",
+  },
+  {
+    q: "Can I move plans later?",
+    a: "Yes. Upgrade, downgrade, or add devices at any time from your dashboard. We bill monthly in arrears, no annual contract.",
+  },
+  {
+    q: "Do you offer a free trial?",
+    a: "We offer a 30-day sandbox with the same APIs and console as a paid tenant, but hardware is sold upfront at cost — there is no money back after ships.",
+  },
+  {
+    q: "What if I want to leave?",
+    a: "Cancel from the dashboard. Hardware stays yours. We export all data as a portable JSON archive. No retention calls, no small-print traps.",
+  },
+  {
+    q: "Do you cover country X?",
+    a: "We cover 195 countries for first-party carrier service. Coverage map + last-mile test plans are published at /trust.",
+  },
 ];
 
 export default function Pricing() {
@@ -111,92 +116,159 @@ export default function Pricing() {
     <>
       {/* HEADER */}
       <section className="container-x pt-20 pb-12">
-        <div className="max-w-[760px]">
+        <div className="max-w-[820px]">
           <div className="eyebrow mb-4">Pricing</div>
-          <h1 className="display-xl text-[44px] md:text-[56px]">
-            Four plans. The same platform. No &ldquo;contact us&rdquo; until you need it.
+          <h1 className="display-xl text-[44px] md:text-[60px]">
+            Four plans. Transparent. <br />
+            <span style={{ color: "var(--color-red)" }}>No "contact sales".</span>
           </h1>
-          <p className="lead mt-6">
-            Consumer Direct and Solo Pro self-serve. Operator and Network have
-            real engineering in the loop. All four use the same hardware, the
-            same firmware, the same API, the same console.
+          <p className="lead mt-6 max-w-[640px]">
+            Wholesale, retail, and white-label markup envelope — published. The 80%
+            of personal-safety products that gate their pricing behind a sales
+            call: we won't. Read the brief, pick a tier, ship tomorrow.
           </p>
         </div>
       </section>
 
-      {/* PLAN CARDS */}
-      <section className="container-x pb-20">
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
-          {plans.map((p) => (
-            <PlanCard key={p.id} plan={p} />
-          ))}
-        </div>
-        <p
-          className="mt-8 text-[13px]"
-          style={{ color: "var(--color-muted)" }}
-        >
-          All prices in USD. Local pricing available in ZAR, GBP, EUR, AUD — see
-          the country selector in the footer. Educational and verified
-          non-profit pricing: 30% off Consumer Direct, on request.
-        </p>
-      </section>
-
-      {/* COMPARISON TABLE */}
-      <section
-        className="section-soft border-y"
-        style={{ borderColor: "var(--color-line)" }}
-        aria-labelledby="compare-heading"
-      >
-        <div className="container-x py-20 md:py-28">
-          <div className="max-w-[640px] mb-12">
-            <div className="eyebrow mb-4">Compare</div>
-            <h2 id="compare-heading" className="h2 text-[36px] md:text-[44px]">
-              What you actually get, side by side.
-            </h2>
-          </div>
-          <div className="overflow-x-auto -mx-6 px-6">
-            <table className="w-full min-w-[860px] tabular">
-              <thead>
-                <tr>
-                  <th
-                    scope="col"
-                    className="text-left text-[12px] uppercase tracking-wider pb-4"
-                    style={{ color: "var(--color-muted)", fontWeight: 510 }}
-                  >
-                    Capability
-                  </th>
-                  {plans.map((p) => (
-                    <th
-                      key={p.id}
-                      scope="col"
-                      className="text-left text-[12px] uppercase tracking-wider pb-4 px-3"
+      {/* PLANS — bento */}
+      <section className="container-x pb-20" aria-labelledby="plans-heading">
+        <h2 id="plans-heading" className="sr-only">Plans</h2>
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+          {plans.map((p, i) => (
+            <MarketingReveal key={p.id} delay={i * 60}>
+              <article
+                className={`relative h-full rounded-2xl p-7 overflow-hidden border ${
+                  p.highlighted
+                    ? "lift bg-white shadow-stripe-3"
+                    : "lift bg-white"
+                }`}
+                style={{
+                  borderColor: p.highlighted
+                    ? "var(--color-red-border)"
+                    : "var(--color-line)",
+                }}
+              >
+                {p.highlighted && (
+                  <div
+                    className="absolute -top-12 -right-12 h-40 w-40 rounded-full pulse-sos"
+                    aria-hidden="true"
+                    style={{
+                      background: "var(--color-red)",
+                      filter: "blur(40px)",
+                      opacity: 0.22,
+                    }}
+                  />
+                )}
+                <div className="relative">
+                  {p.highlighted && (
+                    <div
+                      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-wider uppercase mb-3"
                       style={{
-                        color: p.highlighted ? "var(--color-blue)" : "var(--color-muted)",
-                        fontWeight: 510,
+                        background: "var(--color-red)",
+                        color: "#ffffff",
                       }}
                     >
-                      {p.name}
-                    </th>
-                  ))}
+                      <span className="blink inline-block w-1.5 h-1.5 rounded-full" style={{ background: "#fff" }} />
+                      Most popular
+                    </div>
+                  )}
+                  <div
+                    className="text-[11px] uppercase tracking-[0.18em] mb-2"
+                    style={{ color: "var(--color-muted)", fontWeight: 600 }}
+                  >
+                    {p.target}
+                  </div>
+                  <h3 className="h2 text-[28px]">{p.name}</h3>
+                  <p className="text-[14px] mt-2 mb-6" style={{ color: "var(--color-body)" }}>
+                    {p.summary}
+                  </p>
+                  <div className="border-t border-b py-4 mb-6" style={{ borderColor: "var(--color-line)" }}>
+                    <div className="text-[11px] uppercase tracking-[0.18em] mb-1" style={{ color: "var(--color-muted)", fontWeight: 600 }}>
+                      Hardware
+                    </div>
+                    <div className="text-[14px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+                      {p.hardware}
+                    </div>
+                    <div className="mt-3 text-[11px] uppercase tracking-[0.18em] mb-1" style={{ color: "var(--color-muted)", fontWeight: 600 }}>
+                      Monthly
+                    </div>
+                    <div className="tabular text-[22px]" style={{ color: "var(--color-ink)", fontWeight: 600, letterSpacing: "-0.02em" }}>
+                      {p.monthly}
+                    </div>
+                  </div>
+                  <ul className="space-y-2.5 text-[14px]" style={{ color: "var(--color-body)" }}>
+                    {p.detail.map((d) => (
+                      <li key={d} className="flex items-start gap-2.5">
+                        <CheckSm />
+                        <span>{d}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href={p.ctaHref}
+                    className={`btn mt-7 w-full ${p.highlighted ? "btn-red" : "btn-ghost"}`}
+                  >
+                    {p.ctaLabel}
+                  </Link>
+                </div>
+              </article>
+            </MarketingReveal>
+          ))}
+        </div>
+      </section>
+
+      {/* COMPARISON STRIP */}
+      <section
+        className="section-dark py-20 md:py-28"
+        aria-labelledby="compare-heading"
+      >
+        <div className="container-x">
+          <MarketingReveal>
+            <div className="max-w-[640px] mb-12">
+              <div className="eyebrow mb-3">How we compare</div>
+              <h2 id="compare-heading" className="display text-[36px] md:text-[48px]" style={{ color: "#fff" }}>
+                Every other vendor gates pricing behind a sales call.
+              </h2>
+            </div>
+          </MarketingReveal>
+          <div className="rounded-2xl overflow-hidden border" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+            <table className="w-full text-[13px]" style={{ color: "rgba(255,255,255,0.85)" }}>
+              <thead>
+                <tr style={{ background: "rgba(255,255,255,0.04)" }}>
+                  <th className="text-left px-5 py-4 font-semibold" style={{ color: "rgba(255,255,255,0.5)" }}>Feature</th>
+                  <th className="px-3 py-4 font-semibold text-center" style={{ color: "var(--color-red)" }}>LifeGuard</th>
+                  <th className="px-3 py-4 font-semibold text-center">Bay Alarm</th>
+                  <th className="px-3 py-4 font-semibold text-center">Tunstall</th>
+                  <th className="px-3 py-4 font-semibold text-center">AURA</th>
+                  <th className="px-3 py-4 font-semibold text-center">Apple Watch</th>
                 </tr>
               </thead>
-              <tbody className="divide-y" style={{ borderColor: "var(--color-line)" }}>
-                {comparisonRows.map((row) => (
-                  <tr key={row.label}>
-                    <th
-                      scope="row"
-                      className="text-left py-4 pr-4 align-top text-[14px]"
-                      style={{ color: "var(--color-ink-soft)", fontWeight: 510 }}
-                    >
-                      {row.label}
-                    </th>
-                    {row.values.map((v, i) => (
+              <tbody>
+                {[
+                  ["Wholesale price disclosed",          "✓",       "—",       "—",       "—",       "n/a"],
+                  ["Open API + Webhooks free tier",      "1M/mo",   "—",       "—",       "—",       "—"],
+                  ["Works in 195 countries",             "✓",       "US",      "UK+38",   "ZA+3",    "150+"],
+                  ["White-label reseller markup",        "20%",     "—",       "—",       "—",       "—"],
+                  ["Months minimum commitment",          "0",        "3",       "12",      "6",       "0"],
+                  ["Avg monthly cost per device",        "$14",    "$28",     "$24",     "$15",     "$10 + carrier"],
+                ].map((row, i) => (
+                  <tr key={i} style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                    {row.map((cell, j) => (
                       <td
-                        key={i}
-                        className="py-4 px-3 align-top text-[14px]"
-                        style={{ color: "var(--color-body)" }}
+                        key={j}
+                        className={`px-3 py-3 ${j === 0 ? "text-left pl-5" : "text-center"} ${j === 1 ? "" : ""}`}
+                        style={{ color: j === 1 ? "#fff" : j === 0 ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.6)" }}
                       >
-                        <CellValue v={v} />
+                        {cell === "✓" && j === 1 ? (
+                          <span
+                            className="inline-flex h-5 w-5 items-center justify-center rounded-full"
+                            style={{ background: "var(--color-red)" }}
+                          >
+                            <CheckSm white />
+                          </span>
+                        ) : (
+                          cell
+                        )}
                       </td>
                     ))}
                   </tr>
@@ -208,83 +280,37 @@ export default function Pricing() {
       </section>
 
       {/* FAQ */}
-      <section className="container-x py-20 md:py-28">
-        <div className="grid md:grid-cols-12 gap-10">
-          <div className="md:col-span-4">
-            <div className="eyebrow mb-4">FAQ</div>
-            <h2 className="h2 text-[32px] md:text-[40px]">
-              Honest answers to the questions that come up.
+      <section className="container-x py-20 md:py-28" aria-labelledby="faq-heading">
+        <div className="grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-4">
+            <div className="eyebrow mb-3">FAQ</div>
+            <h2 id="faq-heading" className="display text-[36px] md:text-[44px]">
+              Pricing questions, answered.
             </h2>
-            <p className="mt-4 text-[15px]" style={{ color: "var(--color-body)" }}>
-              If your question isn&rsquo;t here, email{" "}
-              <Link href="mailto:hello@lifeguard.example.com" style={{ color: "var(--color-blue)" }}>
-                hello@lifeguard.example.com
+            <p className="lead mt-5 text-[15px]" style={{ fontSize: "15px" }}>
+              Can&rsquo;t find what you&rsquo;re looking for?{" "}
+              <Link href="mailto:hello@lifeguard.example.com" className="btn-link" style={{ color: "var(--color-red)" }}>
+                Email us
               </Link>
-              . A real person answers.
+              .
             </p>
           </div>
-          <div className="md:col-span-8 divide-y" style={{ borderColor: "var(--color-line)" }}>
-            {[
-              {
-                q: "What does &lsquo;wholesale&rsquo; mean exactly?",
-                a: "The price we charge a reseller who buys hardware at scale and on-bills their own customers at retail. Public MSRP is the same as our direct-to-consumer price. We don&rsquo;t punish resellers; we don&rsquo;t undercut them either.",
-              },
-              {
-                q: "Why is the per-device-month so much lower than Bay Alarm or AURA?",
-                a: "Three reasons: we ship our own silicon-adjacent firmware (no licensed fall-detection stack beyond Apple&rsquo;s), our cloud COGS target is under $1.20 per active device per month, and we don&rsquo;t pay a 24/7 human-staffed call centre that has to phone-verify every alert — the AI triage handles 99.5% of noise before it lands on an operator&rsquo;s screen.",
-              },
-              {
-                q: "Is there a device minimum on Solo Pro or Operator?",
-                a: "Solo Pro: 5 devices. Operator: 25 devices or 25 seats, whichever is larger. Network / Enterprise has no minimum, and an annual contract.",
-              },
-              {
-                q: "What happens if I cancel?",
-                a: "The device stops transmitting. The cellular service deactivates within 30 days. Your data is exportable via the API for 90 days after cancellation, then deleted.",
-              },
-              {
-                q: "Do you offer a discount for annual payment?",
-                a: "Yes — two months free on annual on Consumer Direct and Solo Pro. Operator and Network include the annual discount by default.",
-              },
-            ].map((item) => (
-              <div key={item.q} className="py-6">
-                <h3
-                  className="text-[16px]"
-                  style={{ color: "var(--color-ink)", fontWeight: 510 }}
-                  dangerouslySetInnerHTML={{ __html: item.q }}
-                />
-                <p
-                  className="mt-3 text-[14px] leading-relaxed max-w-[640px]"
-                  style={{ color: "var(--color-body)" }}
-                  dangerouslySetInnerHTML={{ __html: item.a }}
-                />
-              </div>
+          <div className="lg:col-span-8 divide-y" style={{ borderColor: "var(--color-line)" }}>
+            {faqs.map((f, i) => (
+              <MarketingReveal key={f.q} delay={i * 40}>
+                <details className="group py-5">
+                  <summary className="flex justify-between items-center gap-4 cursor-pointer list-none">
+                    <span className="text-[16px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+                      {f.q}
+                    </span>
+                    <Plus className="shrink-0 transition-transform group-open:rotate-45" />
+                  </summary>
+                  <p className="mt-3 text-[15px] leading-relaxed" style={{ color: "var(--color-body)" }}>
+                    {f.a}
+                  </p>
+                </details>
+              </MarketingReveal>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="container-x pb-24">
-        <div
-          className="rounded-xl p-10 md:p-14 grid md:grid-cols-2 gap-8 items-center"
-          style={{ background: "var(--color-bg-soft)", border: "1px solid var(--color-line)" }}
-        >
-          <div>
-            <h2 className="h2 text-[28px] md:text-[36px]">
-              Ready to put a button in the field?
-            </h2>
-            <p className="mt-4 max-w-[440px]" style={{ color: "var(--color-body)" }}>
-              Sandbox tenant is free forever. Real devices ship within 48 hours
-              of order confirmation.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3 md:justify-end">
-            <Link href="/signup" className="btn btn-primary btn-lg">
-              Get started
-            </Link>
-            <Link href="/trust" className="btn btn-ghost btn-lg">
-              See coverage & compliance
-            </Link>
           </div>
         </div>
       </section>
@@ -292,140 +318,25 @@ export default function Pricing() {
   );
 }
 
-function PlanCard({ plan }: { plan: Plan }) {
+function CheckSm({ white }: { white?: boolean }) {
   return (
-    <div
-      className="card relative p-6 md:p-7 flex flex-col h-full"
-      style={
-        plan.highlighted
-          ? {
-              borderColor: "var(--color-blue-border)",
-              boxShadow:
-                "rgba(29,78,216,0.18) 0px 30px 45px -30px, rgba(0,0,0,0.06) 0px 12px 24px -16px",
-            }
-          : undefined
-      }
-    >
-      {plan.highlighted && (
-        <span
-          className="absolute -top-2.5 left-6 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full"
-          style={{
-            background: "var(--color-blue)",
-            color: "white",
-            fontWeight: 510,
-          }}
-        >
-          Most popular
-        </span>
-      )}
-      <div>
-        <div
-          className="text-[11px] uppercase tracking-wider mb-1"
-          style={{ color: "var(--color-muted)", fontWeight: 510 }}
-        >
-          {plan.target}
-        </div>
-        <h3 className="h3 text-[20px]">{plan.name}</h3>
-        <p className="mt-2 text-[13px] leading-relaxed" style={{ color: "var(--color-body)" }}>
-          {plan.summary}
-        </p>
-      </div>
-      <div className="mt-6">
-        <div
-          className="text-[11px] uppercase tracking-wider"
-          style={{ color: "var(--color-muted)", fontWeight: 510 }}
-        >
-          Hardware
-        </div>
-        <div className="mono tabular text-[15px] mt-0.5" style={{ color: "var(--color-ink)", fontWeight: 400 }}>
-          {plan.hardware}
-        </div>
-        <div
-          className="text-[11px] uppercase tracking-wider mt-4"
-          style={{ color: "var(--color-muted)", fontWeight: 510 }}
-        >
-          Monthly
-        </div>
-        <div className="mono tabular text-[18px] mt-0.5" style={{ color: "var(--color-ink)", fontWeight: 400 }}>
-          {plan.monthly}
-        </div>
-      </div>
-      <ul className="mt-6 space-y-2.5 flex-1">
-        {plan.detail.map((d) => (
-          <li key={d} className="flex items-start gap-2.5 text-[13px]" style={{ color: "var(--color-ink-soft)" }}>
-            <span
-              aria-hidden="true"
-              style={{
-                width: 14,
-                height: 14,
-                borderRadius: 9999,
-                marginTop: 3,
-                flexShrink: 0,
-                background: "var(--color-teal-tint)",
-                border: "1px solid var(--color-teal-border)",
-                position: "relative",
-              }}
-            >
-              <span
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  display: "grid",
-                  placeItems: "center",
-                  color: "var(--color-teal-hover)",
-                  fontSize: 9,
-                  fontWeight: 700,
-                }}
-              >
-                ✓
-              </span>
-            </span>
-            <span>{d}</span>
-          </li>
-        ))}
-      </ul>
-      <Link
-        href={plan.ctaHref}
-        className={`btn mt-7 ${plan.highlighted ? "btn-primary" : "btn-ghost"} w-full`}
-      >
-        {plan.ctaLabel}
-      </Link>
-    </div>
+    <svg width="11" height="11" viewBox="0 0 14 14" aria-hidden="true">
+      <path
+        d="M3 7l3 3 5-6"
+        fill="none"
+        stroke={white ? "#fff" : "var(--color-red)"}
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
-function CellValue({ v }: { v: string | boolean }) {
-  if (v === true) {
-    return (
-      <span aria-label="Included" title="Included">
-        <span
-          aria-hidden="true"
-          style={{
-            display: "inline-block",
-            width: 16,
-            height: 16,
-            borderRadius: 9999,
-            background: "var(--color-teal-tint)",
-            border: "1px solid var(--color-teal-border)",
-            color: "var(--color-teal-hover)",
-            textAlign: "center",
-            lineHeight: "14px",
-            fontSize: 10,
-            fontWeight: 700,
-          }}
-        >
-          ✓
-        </span>
-      </span>
-    );
-  }
-  if (v === false) {
-    return (
-      <span aria-label="Not included" title="Not included" style={{ color: "var(--color-faint)" }}>
-        —
-      </span>
-    );
-  }
-  return <span>{v}</span>;
+function Plus({ className }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className={className}>
+      <path d="M3 8h10M8 3v10" stroke="var(--color-red)" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
 }
