@@ -1,0 +1,127 @@
+# =========================================================================
+# LifeGuard — .gitignore
+# =========================================================================
+
+# ============================================================
+# Node & Next.js
+# ============================================================
+node_modules/
+.pnp/
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js build outputs (committed builds are CI's job)
+.next/
+out/
+build/
+dist/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# ============================================================
+# Env / secrets
+# ============================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# ============================================================
+# Logs / cache
+# ============================================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+.yarn/
+
+# ============================================================
+# Editor / IDE / OS
+# ============================================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# ============================================================
+# Test / coverage
+# ============================================================
+coverage/
+.nyc_output/
+junit.xml
+
+# ============================================================
+# ComfyUI / model artefacts (very large)
+# ============================================================
+comfyui-output/
+comfyui-models/
+models/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+
+# ============================================================
+# Binary / heavy asset patterns
+# ============================================================
+*.mp4
+*.mov
+*.psd
+*.ai
+*.sketch
+*.fig
+# PDFs are kept (small) — only auto-block large ones
+*.zip
+*.tar.gz
+*.tgz
+
+# ============================================================
+# Hermes / agent caches
+# ============================================================
+.hermes/
+*.tmp.json
+
+# ============================================================
+# App-specific overrides
+# ============================================================
+
+# Marketing
+marketing/.next/
+marketing/out/
+
+# Console
+console/.next/
+
+# Family
+family/.next/
+
+# Reseller
+reseller/.next/
+
+# Seed data screenshots (you may want to keep some — uncomment to track)
+# marketing/screenshots/*.png
+
+# ============================================================
+# Allow ONLY a controlled set of binary product assets to be committed.
+# All other binary content must live in `git-lfs` (see .gitattributes) or
+# be re-exported as compressed SVG.
+# ============================================================
+!marketing/public/products/*.svg
+!marketing/public/hero/*.svg
+!marketing/public/scenes/*.svg
+!marketing/public/trust/*.svg
+!marketing/public/dashboards/*.svg
+
+# Product photos live here in raw form (small once optimised). The 4 hero
+# photos in /assets/photos/ are the *only* binary image assets tracked.
+/assets/photos/*.png
+!/assets/photos/README.md
