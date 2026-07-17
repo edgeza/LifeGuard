@@ -93,27 +93,44 @@ export default function Home() {
                 <Stat label="Operator console SLA" value="99.95%" />
                 <Stat label="API rate limit, free tier" value="1M / mo" />
               </dl>
-            </div>
+              </div>
 
-            <div className="lg:col-span-5 lg:pt-6">
-              <DeviceTelemetry />
-              <div className="mt-6 grid grid-cols-2 gap-3">
-                <div className="relative rounded-lg overflow-hidden border" style={{ borderColor: "var(--color-line)" }}>
-                  <img src="/products/lifeband-g2.svg" alt="LifeBand G2 wristband" className="w-full h-auto block" width="240" height="240" />
-                </div>
-                <div className="relative rounded-lg overflow-hidden border" style={{ borderColor: "var(--color-line)" }}>
-                  <img src="/products/lifependant-p2.svg" alt="LifePendant P2 pendant" className="w-full h-auto block" width="240" height="240" />
+                <div className="lg:col-span-5 lg:pt-6">
+                  <DeviceTelemetry />
+                  <div className="mt-6 grid grid-cols-2 gap-3">
+                    <div className="relative rounded-lg overflow-hidden border" style={{ borderColor: "var(--color-line)" }}>
+                      <img src="/products/lifeband-g2.svg" alt="LifeBand G2 wristband" className="w-full h-auto block" width="240" height="240" />
+                    </div>
+                    <div className="relative rounded-lg overflow-hidden border" style={{ borderColor: "var(--color-line)" }}>
+                      <img src="/products/lifependant-p2.svg" alt="LifePendant P2 pendant" className="w-full h-auto block" width="240" height="240" />
+                    </div>
+                  </div>
+                  <p className="mt-3 text-[12px]" style={{ color: "var(--color-muted)" }}>
+                    <span style={{ fontWeight: 510 }}>LifeBand G2</span> &mdash; medical-grade wearable (HR / HRV / SpO₂ / fall, IP67, 7 d battery).
+                    <br />
+                    <span style={{ fontWeight: 510 }}>LifePendant P2</span> &mdash; two-way voice pendant with a single, large SOS button.
+                  </p>
                 </div>
               </div>
-              <p className="mt-3 text-[12px]" style={{ color: "var(--color-muted)" }}>
-                <span style={{ fontWeight: 510 }}>LifeBand G2</span> &mdash; medical-grade wearable (HR / HRV / SpO₂ / fall, IP67, 7 d battery).
-                <br />
-                <span style={{ fontWeight: 510 }}>LifePendant P2</span> &mdash; two-way voice pendant with a single, large SOS button.
+              </div>
+              </section>
+
+              {/* ECOSYSTEM — full-width editorial composition: a wearer on one side, the console on the other, an alert flowing between them. */}
+              <section className="container-x py-16 md:py-24" aria-label="LifeGuard ecosystem diagram">
+              <div className="rounded-xl overflow-hidden border shadow-stripe-3" style={{ borderColor: "var(--color-line)" }}>
+              <img
+                src="/hero/ecosystem.svg"
+                alt="The LifeGuard ecosystem: a wearer with the LifeBand on her wrist, a 3-second alert flowing to the operator console, an armed-response vehicle rolling"
+                className="w-full h-auto block"
+                width="1440"
+                height="900"
+                loading="lazy"
+              />
+              </div>
+              <p className="mt-4 text-[12px] text-center" style={{ color: "var(--color-muted)" }}>
+              One push from the band opens the call line, drops a pin on the operator&rsquo;s map, and routes the nearest armed-response vehicle before the wearer finishes the sentence.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
+              </section>
 
       {/* THE TEN */}
       <section id="ten" className="section-soft border-y" style={{ borderColor: "var(--color-line)" }}>

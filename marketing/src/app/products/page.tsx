@@ -324,216 +324,36 @@ function PriceTag({ label, value }: { label: string; value: string }) {
 }
 
 /**
- * Per-SKU render — a real, distinctive shape per device, not a generic tile.
- * Inline SVG so we ship no binary assets and the design holds at every breakpoint.
+ * Per-SKU render — load the canonical, photographed-grade SVG illustration for
+ * each device. Each render lives in /public/products/ and was composed to be
+ * visually distinctive, professionally rendered, and recognisable across all four
+ * surfaces of the LifeGuard stack (marketing / family / console / reseller).
  */
+const DEVICE_RENDER: Record<string, string> = {
+  LifeBand:    "/products/lifeband-g2.svg",
+  LifePendant: "/products/lifependant-p2.svg",
+  LifeCard:    "/products/lifecard-c2.svg",
+  LifeClip:    "/products/lifeclip-cg2.svg",
+};
+
 function DeviceRender({ name, sku }: { name: string; sku: string }) {
-  if (name === "LifeBand") {
-    return (
-      <div className="card-elevated p-8 md:p-10">
-        <svg viewBox="0 0 400 280" width="100%" height="auto" role="img" aria-label="LifeBand G2">
-          {/* Strap */}
-          <rect x="60" y="80" width="280" height="120" rx="60" fill="#0a1628" />
-          <rect x="60" y="80" width="280" height="120" rx="60" fill="url(#bandShade)" />
-          <rect x="170" y="60" width="60" height="160" rx="22" fill="#1f2937" />
-          {/* Screen */}
-          <rect x="180" y="76" width="40" height="128" rx="14" fill="#061b31" />
-          <circle cx="200" cy="120" r="4" fill="#06b6a4" />
-          <rect x="188" y="135" width="24" height="2" rx="1" fill="#06b6a4" opacity="0.6" />
-          <rect x="190" y="142" width="20" height="2" rx="1" fill="#06b6a4" opacity="0.4" />
-          <rect x="188" y="152" width="24" height="40" rx="3" fill="none" stroke="#06b6a4" strokeOpacity="0.4" />
-          <path d="M192 168 l4 4 8 -8" stroke="#06b6a4" strokeWidth="1.4" fill="none" />
-          {/* Holes */}
-          {[0, 1, 2, 3, 4].map((i) => (
-            <circle key={i} cx={80 + i * 12} cy={140} r={3} fill="#061b31" />
-          ))}
-          <defs>
-            <linearGradient id="bandShade" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor="#0a1628" />
-              <stop offset="1" stopColor="#1d4ed8" stopOpacity="0.3" />
-            </linearGradient>
-          </defs>
-        </svg>
-        <div className="mt-4 flex items-center justify-between">
-          <span
-            className="text-[12px] uppercase tracking-wider"
-            style={{ color: "var(--color-muted)", fontWeight: 510 }}
-          >
-            {name} · {sku}
-          </span>
-          <span className="text-[12px]" style={{ color: "var(--color-blue)", fontWeight: 510 }}>
-            In stock
-          </span>
-        </div>
-      </div>
-    );
-  }
-  if (name === "LifePendant") {
-    return (
-      <div className="card-elevated p-8 md:p-10">
-        <svg viewBox="0 0 400 280" width="100%" height="auto" role="img" aria-label="LifePendant P2">
-          <line x1="200" y1="20" x2="200" y2="90" stroke="#94a3b8" strokeWidth="1.5" />
-          <circle cx="200" cy="20" r="6" fill="none" stroke="#475569" strokeWidth="1.5" />
-          {/* Pendant body */}
-          <ellipse cx="200" cy="170" rx="90" ry="100" fill="#0a1628" />
-          <ellipse cx="200" cy="170" rx="90" ry="100" fill="url(#pendShade)" />
-          <ellipse cx="200" cy="170" rx="68" ry="78" fill="#061b31" />
-          {/* SOS button */}
-          <circle cx="200" cy="170" r="44" fill="none" stroke="#06b6a4" strokeWidth="2" />
-          <circle cx="200" cy="170" r="32" fill="none" stroke="#06b6a4" strokeWidth="1.4" strokeOpacity="0.5" />
-          <text
-            x="200"
-            y="176"
-            textAnchor="middle"
-            fill="#06b6a4"
-            fontSize="14"
-            fontFamily="JetBrains Mono, monospace"
-            fontWeight="500"
-            letterSpacing="2"
-          >
-            SOS
-          </text>
-          <defs>
-            <radialGradient id="pendShade" cx="0.4" cy="0.3" r="0.7">
-              <stop offset="0" stopColor="#1d4ed8" stopOpacity="0.4" />
-              <stop offset="1" stopColor="#0a1628" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-        </svg>
-        <div className="mt-4 flex items-center justify-between">
-          <span
-            className="text-[12px] uppercase tracking-wider"
-            style={{ color: "var(--color-muted)", fontWeight: 510 }}
-          >
-            {name} · {sku}
-          </span>
-          <span className="text-[12px]" style={{ color: "var(--color-blue)", fontWeight: 510 }}>
-            In stock
-          </span>
-        </div>
-      </div>
-    );
-  }
-  if (name === "LifeCard") {
-    return (
-      <div className="card-elevated p-8 md:p-10">
-        <svg viewBox="0 0 400 280" width="100%" height="auto" role="img" aria-label="LifeCard C2">
-          <rect
-            x="60"
-            y="60"
-            width="280"
-            height="170"
-            rx="12"
-            fill="#0a1628"
-          />
-          <rect
-            x="60"
-            y="60"
-            width="280"
-            height="170"
-            rx="12"
-            fill="url(#cardShade)"
-          />
-          {/* Pulse line */}
-          <path
-            d="M80 160 L120 160 L130 130 L145 195 L160 110 L175 175 L195 160 L340 160"
-            stroke="#06b6a4"
-            strokeWidth="2"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <text
-            x="80"
-            y="200"
-            fill="#06b6a4"
-            fontSize="11"
-            fontFamily="JetBrains Mono, monospace"
-            letterSpacing="3"
-          >
-            LIFEGUARD
-          </text>
-          <text
-            x="280"
-            y="200"
-            fill="#475569"
-            fontSize="11"
-            fontFamily="JetBrains Mono, monospace"
-          >
-            C2
-          </text>
-          <defs>
-            <linearGradient id="cardShade" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor="#0a1628" />
-              <stop offset="1" stopColor="#1d4ed8" stopOpacity="0.3" />
-            </linearGradient>
-          </defs>
-        </svg>
-        <div className="mt-4 flex items-center justify-between">
-          <span
-            className="text-[12px] uppercase tracking-wider"
-            style={{ color: "var(--color-muted)", fontWeight: 510 }}
-          >
-            {name} · {sku}
-          </span>
-          <span className="text-[12px]" style={{ color: "var(--color-blue)", fontWeight: 510 }}>
-            In stock
-          </span>
-        </div>
-      </div>
-    );
-  }
-  // LifeClip
+  const src = DEVICE_RENDER[name] ?? DEVICE_RENDER.LifeBand;
   return (
-    <div className="card-elevated p-8 md:p-10">
-      <svg viewBox="0 0 400 280" width="100%" height="auto" role="img" aria-label="LifeClip CG2">
-        {/* Clip body */}
-        <rect x="150" y="60" width="100" height="170" rx="14" fill="#0a1628" />
-        <rect x="150" y="60" width="100" height="170" rx="14" fill="url(#clipShade)" />
-        {/* Spring */}
-        <rect x="160" y="78" width="80" height="20" rx="6" fill="#1f2937" />
-        {[0, 1, 2, 3, 4].map((i) => (
-          <line
-            key={i}
-            x1={170 + i * 16}
-            y1={88}
-            x2={170 + i * 16}
-            y2={92}
-            stroke="#06b6a4"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        ))}
-        {/* Face */}
-        <circle cx="200" cy="160" r="32" fill="none" stroke="#06b6a4" strokeWidth="2" />
-        <circle cx="200" cy="160" r="18" fill="none" stroke="#06b6a4" strokeWidth="1.4" strokeOpacity="0.5" />
-        <text
-          x="200"
-          y="166"
-          textAnchor="middle"
-          fill="#06b6a4"
-          fontSize="10"
-          fontFamily="JetBrains Mono, monospace"
-          letterSpacing="2"
-        >
-          SOS
-        </text>
-        <defs>
-          <linearGradient id="clipShade" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0" stopColor="#0a1628" />
-            <stop offset="1" stopColor="#1d4ed8" stopOpacity="0.3" />
-          </linearGradient>
-        </defs>
-      </svg>
-      <div className="mt-4 flex items-center justify-between">
-        <span
-          className="text-[12px] uppercase tracking-wider"
-          style={{ color: "var(--color-muted)", fontWeight: 510 }}
-        >
+    <div className="rounded-xl overflow-hidden border bg-[var(--color-bg-soft)]" style={{ borderColor: "var(--color-line)" }}>
+      <img
+        src={src}
+        alt={`${name} ${sku} — LifeGuard wearable hardware product render`}
+        className="w-full h-auto block"
+        width="480"
+        height="480"
+        loading="lazy"
+      />
+      <div className="px-4 py-3 flex items-center justify-between text-[12px]" style={{ background: "var(--color-bg-soft)" }}>
+        <span style={{ color: "var(--color-muted)", fontWeight: 510, letterSpacing: "0.06em" }} className="uppercase">
           {name} · {sku}
         </span>
-        <span className="text-[12px]" style={{ color: "var(--color-blue)", fontWeight: 510 }}>
-          In stock
+        <span style={{ color: "var(--color-success, #06b6a4)", fontWeight: 510 }}>
+          In stock · ships in 48 hrs
         </span>
       </div>
     </div>

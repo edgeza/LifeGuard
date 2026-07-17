@@ -11,16 +11,35 @@ export default function ForWhom() {
     <>
       {/* HEADER */}
       <section className="container-x pt-20 pb-12">
-        <div className="eyebrow mb-4">For whom</div>
-        <h1 className="display-xl text-[44px] md:text-[56px] max-w-[760px]">
-          Four kinds of people need this. None of them are the same.
-        </h1>
-        <p className="lead mt-6 max-w-[600px]">
-          We don&rsquo;t have a single pitch for everyone. The pitch to a daughter
-          buying for her father is not the pitch to a security company owner
-          buying for an estate. Here is each one, written for the person it&rsquo;s
-          actually for.
-        </p>
+        <div className="grid lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-6">
+            <div className="eyebrow mb-4">For whom</div>
+            <h1 className="display-xl text-[44px] md:text-[56px] max-w-[760px]">
+              Four kinds of people need this. None of them are the same.
+            </h1>
+            <p className="lead mt-6 max-w-[600px]">
+              We don&rsquo;t have a single pitch for everyone. The pitch to a daughter
+              buying for her father is not the pitch to a security company owner
+              buying for an estate. Here is each one, written for the person it&rsquo;s
+              actually for.
+            </p>
+          </div>
+          <div className="lg:col-span-6">
+            <figure className="rounded-xl overflow-hidden border shadow-stripe-3" style={{ borderColor: "var(--color-line)" }}>
+              <img
+                src="/scenes/family-app-card.svg"
+                alt="A daughter opens the LifeGuard Caregiver App on her phone while having coffee at the kitchen counter. Shows three subscriber cards: mom, dad, son."
+                className="w-full h-auto block"
+                width="720"
+                height="480"
+                loading="lazy"
+              />
+              <figcaption className="text-[11px] px-4 py-3" style={{ color: "var(--color-muted)", background: "var(--color-bg-soft)" }}>
+                A Sunday-morning check from the kitchen counter. Not an always-on emergency.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
       </section>
 
       {/* PERSONA 1 — ELDERLY: A LONG, EDITORIAL COMPOSITION */}
@@ -66,6 +85,23 @@ export default function ForWhom() {
             </ul>
           </div>
         </div>
+
+        <figure className="mt-10 rounded-xl overflow-hidden border" style={{ borderColor: "var(--color-line)" }}>
+          <img
+            src="/scenes/wearer-on-wrist.svg"
+            alt="A close-up of an elderly woman's wrist wearing the LifeBand G2, with the screen displaying her heart rate (72 bpm) and the band clipped onto her arm beside a wooden walking stick."
+            className="w-full h-auto block"
+            width="720"
+            height="480"
+            loading="lazy"
+          />
+          <figcaption
+            className="text-[11px] px-4 py-3"
+            style={{ color: "var(--color-muted)", background: "var(--color-bg-soft)" }}
+          >
+            Margaret, 81. She wears the LifeBand on her morning walk. Once a week, she charges it.
+          </figcaption>
+        </figure>
 
         <div
           className="mt-10 rounded-lg p-6 md:p-7"
@@ -121,8 +157,26 @@ export default function ForWhom() {
           <Pill label="Compliance" value="POPIA · GDPR · ISO 27001 (in audit)" />
         </div>
 
+        <figure className="mt-12 rounded-xl overflow-hidden border" style={{ borderColor: "rgba(255,255,255,0.10)" }}>
+          <img
+            src="/scenes/operator-shift.svg"
+            alt="An armed-response operator seated at a control-room console, with the LifeGuard console showing Cape Town subscribers and active alerts."
+            className="w-full h-auto block"
+            width="720"
+            height="480"
+            loading="lazy"
+          />
+          <figcaption
+            className="text-[11px] px-4 py-3"
+            style={{ color: "rgba(230,237,247,0.7)", background: "rgba(255,255,255,0.04)" }}
+          >
+            A dedicated responder at a Crescent Armed Response desk on a Tuesday afternoon. The console shows three live alerts. Themba is on α-1; voice line is open on the highest-score incident.
+          </figcaption>
+        </figure>
+
         <div className="mt-10 flex flex-wrap gap-3">
           <Link href="/pricing" className="btn btn-primary">
+
             See Solo Pro pricing
           </Link>
           <Link href="/trust#compliance" className="btn btn-ghost">

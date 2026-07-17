@@ -64,6 +64,18 @@ export default function Trust() {
             <Badge label="HIPAA-ready" sub="Data model" status="ok" />
             <Badge label="FedRAMP" sub="Roadmap Q4 2026" status="progress" />
           </div>
+
+          <figure className="mt-12 rounded-xl overflow-hidden border bg-white" style={{ borderColor: "var(--color-line)" }}>
+            <img
+              src="/trust/compliance-badges.svg"
+              alt="LifeGuard compliance stack — ISO 27001 Certified, SOC 2 Type II Audited, GDPR EU Ready, POPIA SA Ready, HIPAA Ready. 99.95% operator SLA, AES-256 encryption."
+              className="w-full h-auto block"
+              width="720"
+              height="240"
+              loading="lazy"
+            />
+          </figure>
+
           <p className="mt-8 text-[13px] max-w-[760px]" style={{ color: "var(--color-muted)" }}>
             Certificates and audit reports are available under NDA to qualified
             prospects, partners, and procurement teams. Email{" "}
