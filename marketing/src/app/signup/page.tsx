@@ -3,7 +3,7 @@ import { SignupForm } from "@/components/SignupForm";
 
 export const metadata = {
   title: "Create your account — LifeGuard",
-  description: "Get a sandbox tenant in 10 minutes. Real devices ship in 48 hours.",
+  description: "Get a sandbox tenant in 10 minutes. Real devices ship same-day in ZA, 5-day target worldwide.",
 };
 
 export default function Signup() {
@@ -15,7 +15,7 @@ export default function Signup() {
           <h1 className="display-xl text-[40px] md:text-[52px]">
             One account.
             <br />
-            Hardware in 48 hours.
+            Hardware ships fast.
           </h1>
           <p className="lead mt-6 max-w-[480px]">
             We&rsquo;ll provision your tenant, send you a sandbox API key, and

@@ -77,7 +77,7 @@ export function Footer() {
               className="text-[28px] md:text-[34px] tracking-[-0.02em]"
               style={{ color: "#fff", fontWeight: 600 }}
             >
-              One account. Hardware ships within 48 hours.
+              One account. Hardware ships same-day in ZA, 5-day target worldwide.
             </h3>
             <p className="mt-2 text-[14px]" style={{ color: "rgba(255,255,255,0.6)" }}>
               Stripe-style onboarding · Real human in your inbox by next business day.

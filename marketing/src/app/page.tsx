@@ -15,27 +15,67 @@ import { TiltCard } from "@/components/TiltCard";
    ========================================================================= */
 
 const wins = [
-  { n: "01", title: "Wholesale from $2.50 per device per month.",                  body: "Bay Alarm = $27.95/mo plus a $99 device. AURA = R150 B2B. The enterprise floor for a usable personal-safety operator is now $2.50. We lowered it." },
-  { n: "02", title: "4G LTE-M, NB-IoT, GPS, Wi-Fi positioning, BT 5.3 indoor.",     body: "Apple Watch fall forwards to PSAP only. Life Alert is a landline or cellular with no GPS. Tunstall ships a UK 2G SIM. LifeGuard works on every band globally." },
-  { n: "03", title: "Medical-grade HR, HRV, SpO₂, skin temperature, 9-axis IMU.",   body: "Apple Watch covers some. No dedicated PERS vendor ships HRV (the gold-standard for cardiac event prediction) or skin temperature (early infection detection). We do." },
-  { n: "04", title: "3-second fanout to five contacts, in parallel, with GPS.",    body: "AURA quotes 30 seconds. Bay Alarm has no concept of nearest-responder. Five phones, three seconds, the device GPS is canonical, the operator sees the timeline." },
-  { n: "05", title: "AI triage turns 1,000 noise alerts into 5 real emergencies.",  body: "Falsified SOS presses are 60–80% of consumer PERS volume. A 7-signal classifier (button pattern, motion, G-force, HR spike, ambient sound, prior history, location delta) presents only the red-marked ones." },
-  { n: "06", title: "Open REST API, Webhooks, Postman, SDK in 6 languages.",       body: "Free, public, no rate-limit below 1M events a month. Bay Alarm has none. Apple Watch has none. Everbridge gates theirs behind $100k/year enterprise contracts." },
-  { n: "07", title: "A Linear-class control-room console. No install. No server.",  body: "SICURNET, Bold Gemini, Mimic, SIS integrations are 2010s Windows desktops. Dispatchers live in our console for eight hours a day. It is the best surface we ship." },
-  { n: "08", title: "White-label reseller at 20% retail markup. Yours to keep.",   body: "Bay Alarm and Tunstall don't resell. Appello charges per-ARC licensing. AURA locks you onto their app. Yours: domain, name, logo, app, console. Reseller markup stays with the reseller." },
-  { n: "09", title: "First-party carrier coverage in 195 countries.",              body: "Cartrack works in 38. Tunstall has 38 country offices but a UK device. MVNO agreements plus 4G LTE-M roaming mean a device bought in Joburg works in Tokyo with zero reconfiguration." },
-  { n: "10", title: "24-month hardware warranty + free swap, life-of-subscription.", body: "Life Alert is three months. Bay Alarm is lifetime on subscription (good) but no proactive swap on degradation. Firmware detects decay, we ship the replacement before it breaks." },
+  {
+    n: "01",
+    title: "From $2.50 / device / month at scale.",
+    body: "Bay Alarm = $27.95/mo plus a $99 device. AURA = R150 B2B. Our retail floor is $9 / device / month; wholesale drops to $2.50 once a partner hits 10k units. We&rsquo;ll publish the curve.",
+  },
+  {
+    n: "02",
+    title: "4G LTE-M, NB-IoT, GPS, Wi-Fi positioning, BT 5.3 indoor.",
+    body: "Apple Watch fall forwards to PSAP only. Life Alert is landline or cellular with no GPS. Tunstall ships a UK 2G SIM. We work on LTE-M bands globally, with first-party carrier profiles in our four lead markets.",
+  },
+  {
+    n: "03",
+    title: "Medical-grade HR, HRV, SpO₂, skin temperature, 9-axis IMU.",
+    body: "Apple Watch covers some. No dedicated PERS vendor in our price band ships HRV (the gold-standard for cardiac event prediction) or skin temperature (early infection signal). Our firmware stack reads both.",
+  },
+  {
+    n: "04",
+    title: "3-second fanout target, with GPS.",
+    body: "AURA quotes 30 seconds. Bay Alarm has no concept of nearest-responder. Our fanout target is three seconds from button-press to five phones ringing in parallel, the device GPS as the canonical location, the operator&rsquo;s timeline rebuilt.",
+  },
+  {
+    n: "05",
+    title: "ML triage on every alert.",
+    body: "Most consumer PERS volume is falsified or accidental. Our classifier reads button pattern, motion preceding, G-force, HR delta, ambient sound, prior history, and location delta. Low-score events become silent parent-app pushes; high-score events open the operator line.",
+  },
+  {
+    n: "06",
+    title: "Open REST API, Webhooks, SDK in 6 languages.",
+    body: "Free, public, 100k events / month included. Bay Alarm has none. Apple Watch has none. Everbridge gates theirs behind enterprise contracts. We ship SDKs for TypeScript, Python, Go, Ruby, Java, and C#.",
+  },
+  {
+    n: "07",
+    title: "A Linear-class control-room console.",
+    body: "SICURNET, Bold Gemini, Mimic, and SIS integrations are 2010s Windows desktops. Dispatchers live in our console for eight hours a day. We made it the best surface we ship because that&rsquo;s the person who&rsquo;s awake at 03:00 when it matters.",
+  },
+  {
+    n: "08",
+    title: "White-label reseller markup. Yours to keep.",
+    body: "Bay Alarm and Tunstall don&rsquo;t resell. Appello charges per-ARC licensing. AURA locks partners onto its app. Yours: domain, name, logo, app, console, support inbox. Markup stays with you. We never see your customer&rsquo;s data.",
+  },
+  {
+    n: "09",
+    title: "4 first-party carriers. Roaming partner for the rest.",
+    body: "South Africa, UK, Netherlands, and Australia run on direct carrier MVNO agreements today. Everywhere else, a single global LTE-M roaming profile means a device bought in Joburg works in Tokyo with no reconfiguration. Coverage map updated weekly.",
+  },
+  {
+    n: "10",
+    title: "2-year warranty · firmware-detected swap.",
+    body: "Life Alert is three months. Bay Alarm is lifetime on subscription. We do two years and, when our firmware detects a degradation pattern that predicts failure, we ship the replacement before it breaks &mdash; free, both ways.",
+  },
 ];
 
 const marqueeItems = [
-  "Operator SLA · 99.95%",
-  "Sustained up to 7-day battery · IP67",
+  "Operator SLA target · 99.9%",
+  "7-day battery · IP67",
   "ISO 27001 certified · SOC 2 in audit",
-  "AI triage · 97.4% accuracy, 60–80% noise cut",
-  "Open API · 1M events / month free tier",
-  "Hardware shipped in 48 hours · global",
+  "4 first-party carrier markets · global LTE-M roaming",
+  "Open API · 100k events / month included",
+  "Hardware shipped same-day in ZA · 5-day target worldwide",
   "Reseller 20% markup · keep the margin",
-  "4G LTE-M · NB-IoT · 195 countries",
+  "4G LTE-M · NB-IoT · GPS · BT 5.3 indoor positioning",
 ];
 
 const principles = [
@@ -123,8 +163,10 @@ export default function Home() {
               </h1>
               <p className="lead mt-6 max-w-[560px]">
                 LifeGuard pairs medical-grade wearables with a Linear-class
-                control-room console and a public REST API. Ten concrete advantages
-                over every other vendor in the $40B personal-safety market.
+                control-room console and a public REST API. Ten honest advantages
+                over every other vendor in the personal-safety market &mdash; what
+                we actually ship, what we&rsquo;re working toward, and what we
+                refuse to ship until it&rsquo;s ready.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link href="#signup" className="btn btn-red btn-lg shadow-stripe-3">
@@ -136,9 +178,9 @@ export default function Home() {
                 </Link>
               </div>
               <dl className="mt-12 grid grid-cols-3 gap-6 max-w-[520px]">
-                <Stat label="Countries with first-party carriers" value="195"     numericTo={195} delay={0} />
-                <Stat label="Operator console SLA"               value="99.95%"  numericTo={99.95} decimals={2} suffix="%" delay={120} />
-                <Stat label="API rate limit, free tier"          value="1M / mo" />
+                <Stat label="First-party carrier markets"   value="4"         numericTo={4}     delay={0}   />
+                <Stat label="Operator SLA target"           value="99.9%"    numericTo={99.9}  decimals={1} suffix="%" delay={120} />
+                <Stat label="API events / month included"   value="100k"     />
               </dl>
             </div>
 
@@ -308,7 +350,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-start gap-3">
                   <Check />
-                  <span>AI triage cuts noise alerts by 60–80%. Operators only see what matters.</span>
+                  <span>ML triage filters most accidental presses before an operator sees them.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check />
@@ -379,7 +421,7 @@ export default function Home() {
           <div>
             <div className="eyebrow mb-4">Get started</div>
             <h2 className="display text-[36px] md:text-[44px]">
-              One account. Hardware ships within 48 hours.
+              One account. Hardware ships same-day in ZA, 5-day target worldwide.
             </h2>
             <p className="lead mt-5 max-w-[440px]">
               We&rsquo;ll provision your tenant, send you a sandbox API key, and put

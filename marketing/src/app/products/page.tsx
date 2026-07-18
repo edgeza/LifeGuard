@@ -16,7 +16,7 @@ import {
 export const metadata = {
   title: "Hardware, platform, API — LifeGuard",
   description:
-    "Three wearable SKUs on a shared firmware image, a 195-country cloud platform, an open REST API with SDKs in six languages, and integrations with the platforms your customers already use.",
+    "Three wearable SKUs on a shared firmware image, a cloud platform with first-party carriers in four markets and global LTE-M roaming, an open REST API with SDKs in six languages, and integrations with the platforms your customers already use.",
 };
 
 const devices = [
@@ -76,13 +76,13 @@ const devices = [
 const platformFeatures = [
   {
     n: "01",
-    title: "SOS fanout in 3 seconds.",
+    title: "SOS fanout target: 3 seconds.",
     body: "Five emergency contacts in parallel. SMS carries location and a live-tracking link. Routed to the geographically nearest professional responder if subscribed.",
   },
   {
     n: "02",
-    title: "AI triage on every alert.",
-    body: "7-signal classifier: button press pattern, motion preceding, G-force, HR spike, ambient sound, prior history, location delta. Low-score = silent parent-app push. High-score = call operator, ready-to-dispatch incident.",
+    title: "ML triage on every alert.",
+    body: "Seven signals: button-press pattern, motion preceding, G-force, HR delta, ambient sound, prior history, location delta. Low-score = silent parent-app push. High-score = open the operator line. We don't publish a single accuracy number because we don't have a labeled validation set yet.",
   },
   {
     n: "03",
@@ -231,7 +231,7 @@ export default function ProductsPage() {
                         style={{ color: "var(--color-red)", fontWeight: 600 }}
                       >
                         <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: "var(--color-red)" }} />
-                        In stock · ships in 48 hrs
+                        In stock · ships same-day in ZA · 5-day target worldwide
                       </span>
                     </div>
                   </div>
@@ -384,7 +384,7 @@ export default function ProductsPage() {
                     {i.name === "Wear OS"       && "Tiles, complications, voice: 'Hey LifeGuard, send help'."}
                     {i.name === "SMS fallback"  && "Every alert reaches a phone — even with no app installed."}
                     {i.name === "Voice"         && "Two-way cellular voice on every pendant and band — no app needed."}
-                    {i.name === "REST API"      && "Public, REST, OAuth + Webhooks. SDK in 6 languages. No rate limit under 1M events."}
+                    {i.name === "REST API"      && "Public, REST, OAuth + Webhooks. SDK in 6 languages. 100k events / month included."}
                     {i.name === "MQTT"          && "Live telemetry into your platform, no polling — sub-200 ms path."}
                   </p>
                 </article>
@@ -490,7 +490,7 @@ export default function ProductsPage() {
             </h2>
             <p className="lead mt-5">
               Public REST. Signed webhooks. SDK in six languages. Free up to
-              1&nbsp;M events a month. No "contact sales" gating.
+              100k events a month. No &quot;contact sales&quot; gating.
             </p>
           </div>
         </MarketingReveal>

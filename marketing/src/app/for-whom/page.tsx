@@ -142,7 +142,7 @@ export default function ForWhom() {
           <Stage
             step="02"
             title="Escalate"
-            body="The alert lands in your operator console in 3 seconds, with GPS, HR, the last 60 seconds of ambient audio, and the worker&rsquo;s incident profile."
+            body="The alert lands in your operator console in 3 seconds (target), with GPS, HR, the last 60 seconds of ambient audio, and the worker&rsquo;s incident profile."
           />
           <Stage
             step="03"
@@ -280,7 +280,7 @@ export default function ForWhom() {
           <h3 className="h3 text-[18px]">What we promise, in writing</h3>
           <div className="mt-4 grid md:grid-cols-3 gap-6">
             <Promise
-              title="Press to voice line, in 3 seconds."
+              title="Press to voice line, in 3 seconds (target)."
               body="No app to open. No unlock. The voice line is open and the operator is on it before you finish the thought."
             />
             <Promise

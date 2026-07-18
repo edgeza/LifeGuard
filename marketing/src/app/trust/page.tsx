@@ -6,18 +6,17 @@ export const metadata = {
 };
 
 // Curated set — countries we highlight as "operator-grade coverage" first
+// Countries where we hold first-party carrier MVNO agreements today.
+// Order matters — these are the lead markets the user sees on the map.
 const coverageRegions: { name: string; status: string; cities: string }[] = [
-  { name: "South Africa", status: "First-party", cities: "JHB · CPT · DBN · PE · BLO" },
+  { name: "South Africa",  status: "First-party", cities: "JHB · CPT · DBN · PE · BLO" },
   { name: "United Kingdom", status: "First-party", cities: "London · Manchester · Edinburgh" },
-  { name: "Germany", status: "First-party", cities: "Berlin · Munich · Hamburg · Frankfurt" },
-  { name: "Netherlands", status: "First-party", cities: "Amsterdam · Rotterdam · Utrecht" },
-  { name: "United States", status: "First-party", cities: "NYC · SF · Austin · Chicago" },
-  { name: "Australia", status: "First-party", cities: "Sydney · Melbourne · Brisbane" },
-  { name: "Japan", status: "First-party", cities: "Tokyo · Osaka · Kyoto" },
-  { name: "Brazil", status: "First-party", cities: "São Paulo · Rio · Belo Horizonte" },
+  { name: "Netherlands",   status: "First-party", cities: "Amsterdam · Rotterdam · Utrecht" },
+  { name: "Australia",     status: "First-party", cities: "Sydney · Melbourne · Brisbane" },
 ];
 
-const restOfWorldCount = 195 - coverageRegions.length;
+// Roaming = everywhere else. We don't claim a country count we can't verify.
+const restOfWorldCount = "Rest of world";
 
 export default function Trust() {
   return (
@@ -68,7 +67,7 @@ export default function Trust() {
           <figure className="mt-12 rounded-xl overflow-hidden border bg-white" style={{ borderColor: "var(--color-line)" }}>
             <img
               src="/trust/compliance-badges.svg"
-              alt="LifeGuard compliance stack — ISO 27001 Certified, SOC 2 Type II Audited, GDPR EU Ready, POPIA SA Ready, HIPAA Ready. 99.95% operator SLA, AES-256 encryption."
+              alt="LifeGuard compliance stack — ISO 27001 Certified, SOC 2 Type II Audited, GDPR EU Ready, POPIA SA Ready, HIPAA Ready. 99.9% operator SLA target, AES-256 encryption."
               className="w-full h-auto block"
               width="720"
               height="240"
@@ -93,13 +92,15 @@ export default function Trust() {
           <div className="lg:col-span-4">
             <div className="eyebrow mb-4">Country coverage</div>
             <h2 id="coverage-heading" className="h2 text-[32px] md:text-[40px]">
-              195 countries. First-party carrier in the eight we lead with.
+              4 first-party markets. Roaming partner everywhere else.
             </h2>
             <p className="mt-5 text-[15px] leading-relaxed" style={{ color: "var(--color-body)" }}>
               A device bought in Johannesburg roams to Tokyo with no
               reconfiguration. We hold MVNO agreements with first-party carriers
-              in our eight lead markets, and partner-roaming everywhere else
-              where local 4G LTE-M is available.
+              in our four lead markets today, and partner-roam everywhere else
+              where local 4G LTE-M is available. We&rsquo;re transparent about
+              the gap &mdash; a country we don&rsquo;t list means a country
+              we&rsquo;ve not yet onboarded.
             </p>
             <dl className="mt-8 grid grid-cols-2 gap-6 max-w-[360px]">
               <div>
@@ -112,10 +113,10 @@ export default function Trust() {
               </div>
               <div>
                 <dt className="text-[11px] uppercase tracking-wider" style={{ color: "var(--color-muted)", fontWeight: 510 }}>
-                  Roaming & partner
+                  Roaming partner
                 </dt>
-                <dd className="mono tabular text-[28px] mt-1" style={{ color: "var(--color-ink)", fontWeight: 300, letterSpacing: "-0.02em" }}>
-                  {restOfWorldCount}+
+                <dd className="text-[14px] mt-3" style={{ color: "var(--color-ink)", fontWeight: 500 }}>
+                  Global LTE-M
                 </dd>
               </div>
             </dl>
@@ -314,7 +315,7 @@ function CoverageMap({ regions }: { regions: typeof coverageRegions }) {
           <Legend swatch="var(--color-red)" label="Roaming partner" style="ring" />
         </div>
         <span className="text-[12px] tabular" style={{ color: "var(--color-muted)" }}>
-          {regions.length} first-party · 187 roaming
+          {regions.length} first-party · global LTE-M roaming
         </span>
       </div>
       <div
@@ -325,7 +326,7 @@ function CoverageMap({ regions }: { regions: typeof coverageRegions }) {
           border: "1px solid var(--color-line)",
         }}
         role="img"
-        aria-label="World map: 195 countries with cellular coverage"
+        aria-label="World map showing 4 first-party carrier markets and the global LTE-M roaming footprint"
       >
         {/* Equator + meridians, hairline */}
         <svg
@@ -456,13 +457,15 @@ function Legend({ swatch, label, style }: { swatch: string; label: string; style
 }
 
 function StatusPanel() {
+  // Service-level targets, not measured historical uptime. The status page
+  // reflects last-90-days live data; this card shows what we're aiming for.
   const services = [
-    { name: "Device ingest (MQTT)", uptime: "99.99%", state: "ok" },
-    { name: "Operator console", uptime: "99.97%", state: "ok" },
-    { name: "API · REST", uptime: "99.99%", state: "ok" },
-    { name: "API · Webhooks delivery", uptime: "99.95%", state: "ok" },
-    { name: "WebSocket live-stream", uptime: "99.96%", state: "ok" },
-    { name: "Family / Caregiver App", uptime: "99.99%", state: "ok" },
+    { name: "Device ingest (MQTT)",   uptime: "Target 99.9%", state: "ok" },
+    { name: "Operator console",       uptime: "Target 99.9%", state: "ok" },
+    { name: "API · REST",             uptime: "Target 99.95%", state: "ok" },
+    { name: "API · Webhooks delivery",uptime: "Target 99.9%", state: "ok" },
+    { name: "WebSocket live-stream",  uptime: "Target 99.9%", state: "ok" },
+    { name: "Family / Caregiver App", uptime: "Target 99.95%", state: "ok" },
   ];
   return (
     <div
@@ -493,7 +496,7 @@ function StatusPanel() {
           </span>
         </div>
         <span className="text-[12px] tabular" style={{ color: "var(--color-muted)" }}>
-          90-day
+          Targets · not live history
         </span>
       </div>
       <ul className="divide-y" style={{ borderColor: "var(--color-line)" }}>

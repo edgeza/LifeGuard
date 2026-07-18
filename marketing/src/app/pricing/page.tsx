@@ -64,7 +64,7 @@ const plans: Plan[] = [
     detail: [
       "Console, dispatch logic, audit trail, mass-broadcast.",
       "Branded operator app + co-branded hardware.",
-      "API + webhook quotas 10× Solo Pro. SLA 99.95%.",
+      "API + webhook quotas 10× Solo Pro. SLA target 99.9%.",
     ],
     ctaLabel: "See reseller program",
     ctaHref: "/for-whom#partners",
@@ -89,7 +89,7 @@ const plans: Plan[] = [
 const faqs = [
   {
     q: "Does LifeGuard include cellular service?",
-    a: "Every plan includes the cellular data the device needs. Whichever device you choose, the SIM is provisioned in 195 countries and you don't pay separately.",
+    a: "Every plan includes the cellular data the device needs. The SIM is provisioned in our four first-party carrier markets and roams on partner LTE-M everywhere else. No separate cellular line item.",
   },
   {
     q: "What is the white-label markup?",
@@ -109,7 +109,7 @@ const faqs = [
   },
   {
     q: "Do you cover country X?",
-    a: "We cover 195 countries for first-party carrier service. Coverage map + last-mile test plans are published at /trust.",
+    a: "We hold first-party carrier MVNO agreements in 4 markets today: South Africa, the UK, the Netherlands, and Australia. A single global LTE-M roaming profile covers the rest. Coverage map + last-mile test plans are at /trust.",
   },
 ];
 
@@ -262,8 +262,9 @@ export default function Pricing() {
               <tbody>
                 {[
                   ["Wholesale price disclosed",          "✓",       "—",       "—",       "—",       "n/a"],
-                  ["Open API + Webhooks free tier",      "1M/mo",   "—",       "—",       "—",       "—"],
-                  ["Works in 195 countries",             "✓",       "US",      "UK+38",   "ZA+3",    "150+"],
+                  ["Open API + Webhooks free tier",      "100k/mo", "—",       "—",       "—",       "—"],
+                  ["First-party carrier markets",        "4",       "US",      "UK+38",   "ZA+3",    "150+"],
+                  ["Cellular coverage",                 "Global LTE-M roaming", "US only", "UK+38", "ZA+3", "150+"],
                   ["White-label reseller markup",        "20%",     "—",       "—",       "—",       "—"],
                   ["Months minimum commitment",          "0",        "3",       "12",      "6",       "0"],
                   ["Avg monthly cost per device",        "$14",    "$28",     "$24",     "$15",     "$10 + carrier"],

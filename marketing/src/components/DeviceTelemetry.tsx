@@ -128,7 +128,7 @@ export function DeviceTelemetry() {
         >
           <FootCol label="Last fall"       value="47 d ago" />
           <FootCol label="Firmware"        value="LG-G2 · 4.7.1" />
-          <FootCol label="SLA"            value="99.95 %" />
+          <FootCol label="SLA target"     value="99.9 %" />
         </div>
       </div>
     </div>

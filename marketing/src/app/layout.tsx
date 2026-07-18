@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "LifeGuard — Wearable safety, operator-grade response, open API",
   description:
-    "LifeGuard pairs medical-grade wearables with a Linear-class control-room console and a public API. 195 countries. From $2.50 per device-month.",
+    "LifeGuard pairs medical-grade wearables with a Linear-class control-room console and a public REST API. 4 first-party carrier markets. From $9 device-month retail.",
   metadataBase: new URL("https://lifeguard.example.com"),
   openGraph: {
     title: "LifeGuard",
