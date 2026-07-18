@@ -1,14 +1,12 @@
 import Link from "next/link";
-import { DeviceTelemetry } from "@/components/DeviceTelemetry";
 import { SignupForm } from "@/components/SignupForm";
 import { MarketingReveal } from "@/components/MarketingReveal";
 import { Aurora } from "@/components/Aurora";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { IntegrationOrbit } from "@/components/IntegrationOrbit";
-import { BackgroundGradientAnimation } from "@/components/BackgroundGradientAnimation";
 import { Spotlight } from "@/components/Spotlight";
 import { CardSpotlight } from "@/components/CardSpotlight";
-import { TiltCard } from "@/components/TiltCard";
+import { CardContainer, CardBody, CardItem } from "@/components/ThreeDCard";
 
 /* =========================================================================
    Page copy
@@ -104,101 +102,419 @@ export default function Home() {
   return (
     <>
       {/* ============================================================== */}
-      {/* HERO                                                          */}
+      {/* HERO — Linear-class dark                                       */}
       {/* ============================================================== */}
-      <section className="relative overflow-hidden bg-white" aria-labelledby="hero-title">
-        {/* 21st.dev-style animated gradient background (aceternity) */}
-        <BackgroundGradientAnimation
-          interactive
-          blendingValue="hard-light"
-          className="absolute inset-0 z-0"
-        >
-          <></>
-        </BackgroundGradientAnimation>
-
-        {/* Page-level spotlight (left and right) */}
-        <Spotlight className="-top-40 left-0 md:-top-20 md:left-60 z-[1]" fill="#e11d2e" />
-        <Spotlight className="-top-40 right-0 md:-top-20 md:right-60 z-[1]" fill="#8b0c14" />
-
-        {/* Subtle dot grid overlay */}
+      <section
+        className="relative overflow-hidden"
+        aria-labelledby="hero-title"
+        style={{ background: "#08090a", color: "#fafafa" }}
+      >
+        {/* Subtle radial glow behind headline — Linear-style */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 dot-grid dot-grid-fade opacity-50 z-[1] pointer-events-none"
-        />
-
-        {/* Bottom fade for clean transition */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-40 z-[1] pointer-events-none"
+          className="absolute inset-0 z-0 pointer-events-none"
           style={{
-            background: "linear-gradient(to top, rgba(255,255,255,0.95), rgba(255,255,255,0))",
+            background:
+              "radial-gradient(ellipse 70% 60% at 50% 0%, rgba(225,29,46,0.18) 0%, rgba(225,29,46,0.06) 35%, transparent 60%)",
           }}
         />
 
+        {/* Linear-style grid pattern */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-0 pointer-events-none opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+            maskImage:
+              "radial-gradient(ellipse 60% 80% at 50% 30%, #000 30%, transparent 80%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 60% 80% at 50% 30%, #000 30%, transparent 80%)",
+          }}
+        />
+
+        {/* Page-level spotlight (red glow) */}
+        <Spotlight className="-top-40 left-0 md:-top-20 md:left-60 z-[1]" fill="#e11d2e" />
+
         <div className="container-x relative pt-20 pb-24 md:pt-28 md:pb-32">
-          <div className="grid lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 mb-6 rounded-full border px-3 py-1.5 text-[12px] badge-animate" style={{ borderColor: "var(--color-red-border)", background: "var(--color-red-tint)", color: "var(--color-red-hover)" }}>
-                <span className="pulse-sos inline-block w-1.5 h-1.5 rounded-full" style={{ background: "var(--color-sos)" }} />
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            {/* LEFT — headline + lead + CTAs + stats */}
+            <div className="lg:col-span-7 relative z-[2]">
+              <div
+                className="inline-flex items-center gap-2 mb-7 rounded-full border px-3 py-1.5 text-[12px] badge-animate"
+                style={{
+                  borderColor: "rgba(255,255,255,0.10)",
+                  background: "rgba(255,255,255,0.04)",
+                  color: "rgba(255,255,255,0.75)",
+                  fontWeight: 500,
+                }}
+              >
+                <span
+                  className="pulse-sos inline-block w-1.5 h-1.5 rounded-full"
+                  style={{ background: "var(--color-red)" }}
+                />
                 v2026.07 · Now shipping with AI triage on every alert
               </div>
+
               <h1
                 id="hero-title"
-                className="display-xl text-[44px] md:text-[60px] lg:text-[76px]"
+                className="text-[40px] md:text-[56px] lg:text-[68px]"
+                style={{
+                  fontWeight: 510,
+                  letterSpacing: "-0.04em",
+                  lineHeight: 1.04,
+                  color: "#fafafa",
+                }}
               >
                 When the band presses,
                 <br />
                 <span className="relative inline-block">
                   <span className="shimmer-text">the line opens.</span>
-                  <span
-                    aria-hidden="true"
-                    className="absolute left-0 right-0 -bottom-1 h-[6px] rounded-full"
-                    style={{
-                      background:
-                        "linear-gradient(90deg, rgba(225,29,46,0.0) 0%, var(--color-red) 30%, var(--color-red) 70%, rgba(225,29,46,0.0) 100%)",
-                      filter: "blur(0.5px)",
-                    }}
-                  />
                 </span>
               </h1>
-              <p className="lead mt-6 max-w-[560px]">
+
+              <p
+                className="mt-7 max-w-[560px] text-[18px]"
+                style={{
+                  color: "rgba(255,255,255,0.65)",
+                  lineHeight: 1.55,
+                  letterSpacing: "-0.005em",
+                }}
+              >
                 LifeGuard pairs medical-grade wearables with a Linear-class
                 control-room console and a public REST API. Ten honest advantages
-                over every other vendor in the personal-safety market — what
-                we actually ship, what we’re working toward, and what we
-                refuse to ship until it’s ready.
+                over every other vendor in the personal-safety market.
               </p>
+
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link href="#signup" className="btn btn-red btn-lg shadow-stripe-3">
+                <Link
+                  href="#signup"
+                  className="btn btn-red btn-lg"
+                  style={{ boxShadow: "0 0 28px rgba(225,29,46,0.35)" }}
+                >
                   Get started
                   <ArrowRight />
                 </Link>
-                <Link href="/products" className="btn btn-ghost btn-lg">
+                <Link
+                  href="/products"
+                  className="btn btn-lg"
+                  style={{
+                    background: "rgba(255,255,255,0.06)",
+                    color: "#fafafa",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                  }}
+                >
                   See the hardware
                 </Link>
-                <Link href="#api-quickstart" className="btn btn-ghost btn-lg">
+                <Link
+                  href="#api-quickstart"
+                  className="btn btn-lg"
+                  style={{
+                    background: "transparent",
+                    color: "rgba(255,255,255,0.85)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                  }}
+                >
                   <CodeIcon /> Try the API in 30s
                 </Link>
               </div>
 
-              {/* Inline API preview — see the data shape in 8 lines */}
+              {/* Stats — Linear-class dark chip row */}
+              <dl className="mt-12 grid grid-cols-3 md:grid-cols-5 gap-6 max-w-[640px]">
+                <StatDark label="First-party carriers"   value="4"         numericTo={4}     delay={0}   />
+                <StatDark label="Operator SLA"           value="99.9%"    numericTo={99.9}  decimals={1} suffix="%" delay={120} />
+                <StatDark label="API events / mo"        value="100k"     />
+                <StatDark label="SDK languages"          value="6"        />
+                <StatDark label="Hardware SKUs"          value="3"        />
+              </dl>
+            </div>
+
+            {/* RIGHT — 21st.dev-style 3D device showcase */}
+            <div className="lg:col-span-5 relative z-[2]">
+              <MarketingReveal>
+                <CardContainer containerClassName="py-6">
+                  <CardBody
+                    className="relative w-full max-w-[460px] mx-auto rounded-3xl p-7"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+                      border: "1px solid rgba(255,255,255,0.10)",
+                      boxShadow:
+                        "0 30px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.10)",
+                    }}
+                  >
+                    {/* Brand chip on the card */}
+                    <CardItem translateZ={30} className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="inline-block w-2 h-2 rounded-full"
+                          style={{ background: "#e11d2e", boxShadow: "0 0 10px #e11d2e" }}
+                        />
+                        <span
+                          className="text-[11px] uppercase"
+                          style={{
+                            color: "rgba(255,255,255,0.7)",
+                            letterSpacing: "0.18em",
+                            fontWeight: 600,
+                          }}
+                        >
+                          LifeBand G2 · LIVE
+                        </span>
+                      </div>
+                      <span
+                        className="text-[11px] mono"
+                        style={{ color: "rgba(255,255,255,0.5)" }}
+                      >
+                        v2026.07
+                      </span>
+                    </CardItem>
+
+                    {/* The hero device image — floating forward */}
+                    <CardItem translateZ={80} className="flex justify-center">
+                      <div
+                        className="relative w-full max-w-[300px] aspect-square flex items-center justify-center"
+                        style={{
+                          background:
+                            "radial-gradient(circle at 50% 40%, rgba(225,29,46,0.28) 0%, rgba(225,29,46,0.08) 50%, transparent 75%)",
+                        }}
+                      >
+                        <img
+                          src="/photos/lifeband-g2.png"
+                          alt="LifeBand G2 wearable"
+                          className="w-full h-auto block relative z-[1]"
+                          width="320"
+                          height="320"
+                          loading="eager"
+                          style={{
+                            filter: "drop-shadow(0 30px 40px rgba(225,29,46,0.45)) brightness(1.08)",
+                          }}
+                        />
+                      </div>
+                    </CardItem>
+
+                    {/* Real-time stats row */}
+                    <CardItem translateZ={50} className="mt-7 grid grid-cols-3 gap-3">
+                      {[
+                        { k: "HR", v: "72", u: "bpm" },
+                        { k: "SpO₂", v: "98", u: "%" },
+                        { k: "HRV", v: "64", u: "ms" },
+                      ].map((m) => (
+                        <div
+                          key={m.k}
+                          className="rounded-xl p-3 text-center"
+                          style={{
+                            background: "rgba(255,255,255,0.06)",
+                            border: "1px solid rgba(255,255,255,0.10)",
+                          }}
+                        >
+                          <div
+                            className="text-[10px] uppercase tracking-[0.16em]"
+                            style={{ color: "rgba(255,255,255,0.45)", fontWeight: 600 }}
+                          >
+                            {m.k}
+                          </div>
+                          <div
+                            className="mt-1 tabular text-[20px]"
+                            style={{ color: "#fafafa", fontWeight: 600, letterSpacing: "-0.02em" }}
+                          >
+                            {m.v}
+                            <span
+                              className="ml-0.5 text-[10px]"
+                              style={{ color: "rgba(255,255,255,0.4)", fontWeight: 500 }}
+                            >
+                              {m.u}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </CardItem>
+
+                    {/* Live alert strip */}
+                    <CardItem
+                      translateZ={40}
+                      className="mt-5 flex items-center gap-3 rounded-xl p-3"
+                      style={{
+                        background: "rgba(225,29,46,0.10)",
+                        border: "1px solid rgba(225,29,46,0.30)",
+                      }}
+                    >
+                      <span
+                        className="inline-block w-2 h-2 rounded-full pulse-sos shrink-0"
+                        style={{ background: "#e11d2e" }}
+                      />
+                      <span
+                        className="text-[12.5px]"
+                        style={{ color: "rgba(255,255,255,0.92)", fontWeight: 500 }}
+                      >
+                        Fan-out 3s · GPS locked · 5 responders ringing
+                      </span>
+                    </CardItem>
+
+                    {/* Small device tiles below */}
+                    <CardItem translateZ={20} className="mt-5 grid grid-cols-2 gap-3">
+                      <DeviceTileDark
+                        img="/photos/lifependant-p2.png"
+                        name="LifePendant P2"
+                        tagline="Two-way voice · single SOS"
+                      />
+                      <DeviceTileDark
+                        img="/photos/lifeclip-cg2.png"
+                        name="LifeClip CG2"
+                        tagline="Falls · steps · 9-axis"
+                      />
+                    </CardItem>
+                  </CardBody>
+                </CardContainer>
+              </MarketingReveal>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom fade to next section */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-32 z-[1] pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(8,9,10,1) 0%, rgba(8,9,10,0) 100%)",
+          }}
+        />
+      </section>
+
+      {/* ============================================================== */}
+      {/* 21ST.DEV BENTO — what you actually get                         */}
+      {/* ============================================================== */}
+      <section
+        className="relative py-20 md:py-28"
+        aria-labelledby="bento-heading"
+        style={{ background: "#08090a", color: "#fafafa" }}
+      >
+        {/* soft top fade to marry into hero */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-16 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(8,9,10,0.95) 0%, transparent 100%)",
+          }}
+        />
+        <div className="container-x relative">
+          <MarketingReveal>
+            <div className="max-w-[680px] mb-10">
               <div
-                id="api-quickstart"
-                className="mt-8 rounded-xl overflow-hidden border"
+                className="eyebrow mb-3"
+                style={{ color: "rgba(255,255,255,0.5)" }}
+              >
+                What you actually get
+              </div>
+              <h2
+                id="bento-heading"
+                className="text-[32px] md:text-[44px]"
                 style={{
-                  borderColor: "var(--color-line)",
-                  background: "#0a0a0a",
+                  fontWeight: 510,
+                  letterSpacing: "-0.03em",
+                  lineHeight: 1.05,
+                  color: "#fafafa",
                 }}
               >
-                <div
-                  className="flex items-center justify-between px-4 py-2 border-b"
-                  style={{ borderColor: "rgba(255,255,255,0.08)" }}
-                >
+                Hardware on the wrist. An API under the hood.
+                <br />
+                <span style={{ color: "rgba(255,255,255,0.55)" }}>
+                  A console the operators actually like.
+                </span>
+              </h2>
+            </div>
+          </MarketingReveal>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* CELL 1 — Real product photo with stats overlay */}
+            <MarketingReveal>
+              <article
+                className="beam-border relative h-[360px] overflow-hidden rounded-2xl p-7 flex flex-col justify-between"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.015) 100%)",
+                }}
+              >
+                <div className="aurora-bg">
+                  <span className="blob b1" />
+                </div>
+                <header className="relative z-[1] flex items-center justify-between">
+                  <span
+                    className="text-[11px] uppercase tracking-[0.18em]"
+                    style={{ color: "rgba(255,255,255,0.55)", fontWeight: 600 }}
+                  >
+                    Hardware
+                  </span>
+                  <span
+                    className="text-[11px] mono"
+                    style={{ color: "rgba(255,255,255,0.4)" }}
+                  >
+                    SKU · G2
+                  </span>
+                </header>
+                <div className="relative z-[1] flex items-center justify-center flex-1 my-4">
+                  <img
+                    src="/photos/lifeband-g2.png"
+                    alt="LifeBand G2 wearable"
+                    className="h-[180px] w-auto block"
+                    width="280"
+                    height="280"
+                    loading="lazy"
+                    style={{ filter: "drop-shadow(0 18px 32px rgba(225,29,46,0.35))" }}
+                  />
+                </div>
+                <footer className="relative z-[1] grid grid-cols-4 gap-2">
+                  {[
+                    { k: "HR", v: "72" },
+                    { k: "SpO₂", v: "98%" },
+                    { k: "HRV", v: "64ms" },
+                    { k: "Temp", v: "36.6" },
+                  ].map((m) => (
+                    <div
+                      key={m.k}
+                      className="rounded-lg p-2 text-center"
+                      style={{
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.06)",
+                      }}
+                    >
+                      <div
+                        className="text-[9.5px] uppercase tracking-[0.14em]"
+                        style={{ color: "rgba(255,255,255,0.45)", fontWeight: 600 }}
+                      >
+                        {m.k}
+                      </div>
+                      <div
+                        className="mt-0.5 tabular text-[14px]"
+                        style={{ color: "#fafafa", fontWeight: 600 }}
+                      >
+                        {m.v}
+                      </div>
+                    </div>
+                  ))}
+                </footer>
+              </article>
+            </MarketingReveal>
+
+            {/* CELL 2 — Code block showing real API call */}
+            <MarketingReveal delay={80}>
+              <article
+                id="api-quickstart"
+                className="lift-strong relative h-[360px] rounded-2xl p-7 overflow-hidden flex flex-col"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                }}
+              >
+                <header className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <span
                       aria-hidden="true"
                       className="inline-block w-2 h-2 rounded-full"
-                      style={{ background: "var(--color-red)" }}
+                      style={{ background: "#e11d2e" }}
                     />
                     <span
                       className="text-[11px] uppercase tracking-[0.18em]"
@@ -210,54 +526,172 @@ export default function Home() {
                   <Link
                     href="/docs"
                     className="text-[11px] mono"
-                    style={{ color: "var(--color-red)", fontWeight: 600 }}
+                    style={{ color: "#e11d2e", fontWeight: 600 }}
                   >
                     full docs →
                   </Link>
-                </div>
+                </header>
                 <pre
-                  className="mono overflow-x-auto p-4 text-[12.5px] leading-relaxed"
+                  className="mono overflow-x-auto text-[12.5px] leading-relaxed"
                   style={{
                     color: "rgba(255,255,255,0.92)",
                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
                     fontVariantLigatures: "none",
                   }}
                 >{`curl -X POST https://api.lifeguard.example/v1/subscribers \\
-  -H "Authorization: Bearer $LIFEGUARD_KEY" \\
-  -d '{"name":"Nomvula M.","device_sku":"G2","contacts":["+27..."]}'`}</pre>
+  -H "Authorization: Bearer ***" \\
+  -d '{"name":"Nomvula M.",
+       "device_sku":"G2",
+       "contacts":["+27..."]}'`}</pre>
                 <pre
-                  className="mono overflow-x-auto px-4 pb-4 text-[12.5px] leading-relaxed"
+                  className="mono overflow-x-auto mt-3 text-[12.5px] leading-relaxed"
                   style={{
                     color: "#86efac",
                     fontFamily: "JetBrains Mono, ui-monospace, monospace",
                     fontVariantLigatures: "none",
                   }}
                 >{`# → 201 Created
-{ "id": "sub_044", "device_id": "dev_044", "tenant": "t_2zZ4", "plan": "solo" }`}</pre>
-              </div>
+{
+  "id": "sub_044",
+  "device_id": "dev_044",
+  "tenant": "t_2zZ4",
+  "plan": "solo"
+}`}</pre>
+                <footer className="mt-auto pt-3 flex items-center justify-between border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                  <span
+                    className="text-[11px]"
+                    style={{ color: "rgba(255,255,255,0.45)", fontWeight: 500 }}
+                  >
+                    SDK in 6 languages · 100k events / month included
+                  </span>
+                  <span
+                    className="text-[11px] mono"
+                    style={{ color: "rgba(255,255,255,0.4)" }}
+                  >
+                    200 OK · 78 ms
+                  </span>
+                </footer>
+              </article>
+            </MarketingReveal>
 
-              <dl className="mt-12 grid grid-cols-3 md:grid-cols-5 gap-6 max-w-[640px]">
-                <Stat label="First-party carrier markets"   value="4"         numericTo={4}     delay={0}   />
-                <Stat label="Operator SLA target"           value="99.9%"    numericTo={99.9}  decimals={1} suffix="%" delay={120} />
-                <Stat label="API events / month included"   value="100k"     />
-                <Stat label="SDK languages"                  value="6"        />
-                <Stat label="Hardware SKUs"                  value="3"        />
-              </dl>
-            </div>
+            {/* CELL 3 — Five wins list */}
+            <MarketingReveal delay={120}>
+              <article
+                className="lift-strong relative h-[360px] rounded-2xl p-7 overflow-hidden"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                }}
+              >
+                <header className="flex items-center justify-between mb-4">
+                  <span
+                    className="text-[11px] uppercase tracking-[0.18em]"
+                    style={{ color: "rgba(255,255,255,0.55)", fontWeight: 600 }}
+                  >
+                    Five wins
+                  </span>
+                  <Link
+                    href="#ten"
+                    className="text-[11px] mono"
+                    style={{ color: "#e11d2e", fontWeight: 600 }}
+                  >
+                    see all 10 →
+                  </Link>
+                </header>
+                <ol className="space-y-3 text-[14px]" style={{ color: "rgba(255,255,255,0.78)" }}>
+                  {wins.slice(0, 5).map((w) => (
+                    <li key={w.n} className="flex gap-3">
+                      <span
+                        className="shrink-0 mt-0.5 tabular text-[11px] mono"
+                        style={{ color: "#e11d2e", fontWeight: 700 }}
+                      >
+                        {w.n}
+                      </span>
+                      <span style={{ color: "rgba(255,255,255,0.85)" }}>{w.title}</span>
+                    </li>
+                  ))}
+                </ol>
+              </article>
+            </MarketingReveal>
 
-            <div className="lg:col-span-5 lg:pt-6 relative z-[2]">
-              <MarketingReveal>
-                <DeviceTelemetry />
-                <div className="mt-6 grid grid-cols-2 gap-3">
-                  <TiltCard className="rounded-xl overflow-hidden">
-                    <DeviceTile img="/photos/lifeband-g2.png"    name="LifeBand G2"    tagline="HR / HRV / SpO₂ · IP67 · 7 d battery" />
-                  </TiltCard>
-                  <TiltCard className="rounded-xl overflow-hidden">
-                    <DeviceTile img="/photos/lifependant-p2.png" name="LifePendant P2" tagline="Two-way voice · single SOS" />
-                  </TiltCard>
+            {/* CELL 4 — Compliance badges */}
+            <MarketingReveal delay={160}>
+              <article
+                className="lift-strong relative h-[360px] rounded-2xl p-7 overflow-hidden flex flex-col"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                }}
+              >
+                <header className="flex items-center justify-between mb-4">
+                  <span
+                    className="text-[11px] uppercase tracking-[0.18em]"
+                    style={{ color: "rgba(255,255,255,0.55)", fontWeight: 600 }}
+                  >
+                    Compliance
+                  </span>
+                  <Link
+                    href="/trust"
+                    className="text-[11px] mono"
+                    style={{ color: "#e11d2e", fontWeight: 600 }}
+                  >
+                    trust page →
+                  </Link>
+                </header>
+                <div className="grid grid-cols-2 gap-3 flex-1">
+                  {[
+                    { k: "ISO 27001",       v: "Certified" },
+                    { k: "SOC 2 Type II",   v: "In audit" },
+                    { k: "POPIA",           v: "Compliant" },
+                    { k: "GDPR",            v: "Compliant" },
+                  ].map((b) => (
+                    <div
+                      key={b.k}
+                      className="rounded-xl p-4 flex flex-col justify-between"
+                      style={{
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.06)",
+                      }}
+                    >
+                      <div
+                        className="text-[11px] uppercase tracking-[0.14em]"
+                        style={{ color: "rgba(255,255,255,0.5)", fontWeight: 600 }}
+                      >
+                        {b.k}
+                      </div>
+                      <div
+                        className="mt-2 flex items-center gap-2"
+                        style={{ color: "#fafafa", fontWeight: 600 }}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="inline-block w-2 h-2 rounded-full"
+                          style={{ background: "#e11d2e" }}
+                        />
+                        <span className="text-[13px]">{b.v}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </MarketingReveal>
-            </div>
+                <footer className="mt-4 pt-3 flex items-center justify-between border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                  <span
+                    className="text-[11px]"
+                    style={{ color: "rgba(255,255,255,0.45)", fontWeight: 500 }}
+                  >
+                    Audit log · 7-year retention
+                  </span>
+                  <Link
+                    href="/trust"
+                    className="text-[11px] mono"
+                    style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500 }}
+                  >
+                    full report →
+                  </Link>
+                </footer>
+              </article>
+            </MarketingReveal>
           </div>
         </div>
       </section>
@@ -706,7 +1140,7 @@ export default function Home() {
    Small components
    ========================================================================= */
 
-function Stat({
+function StatDark({
   label,
   value,
   numericTo,
@@ -723,10 +1157,16 @@ function Stat({
 }) {
   return (
     <div>
-      <dt className="text-[11px] uppercase tracking-[0.18em]" style={{ color: "var(--color-muted)", fontWeight: 600 }}>
+      <dt
+        className="text-[11px] uppercase tracking-[0.18em]"
+        style={{ color: "rgba(255,255,255,0.5)", fontWeight: 600 }}
+      >
         {label}
       </dt>
-      <dd className="tabular mt-1.5 text-[26px]" style={{ color: "var(--color-ink)", fontWeight: 600, letterSpacing: "-0.02em" }}>
+      <dd
+        className="tabular mt-1.5 text-[26px]"
+        style={{ color: "#fafafa", fontWeight: 600, letterSpacing: "-0.02em" }}
+      >
         {numericTo !== undefined ? (
           <AnimatedNumber
             to={numericTo}
@@ -738,6 +1178,41 @@ function Stat({
           value
         )}
       </dd>
+    </div>
+  );
+}
+
+function DeviceTileDark({ img, name, tagline }: { img: string; name: string; tagline: string }) {
+  return (
+    <div
+      className="rounded-xl overflow-hidden flex items-center gap-3 p-2.5"
+      style={{
+        background: "rgba(255,255,255,0.03)",
+        border: "1px solid rgba(255,255,255,0.06)",
+      }}
+    >
+      <img
+        src={img}
+        alt={name}
+        className="w-10 h-10 object-contain shrink-0"
+        width="48"
+        height="48"
+        loading="lazy"
+      />
+      <div className="min-w-0">
+        <div
+          className="text-[11.5px] truncate"
+          style={{ color: "#fafafa", fontWeight: 600 }}
+        >
+          {name}
+        </div>
+        <div
+          className="text-[10px] truncate"
+          style={{ color: "rgba(255,255,255,0.5)", fontWeight: 500 }}
+        >
+          {tagline}
+        </div>
+      </div>
     </div>
   );
 }

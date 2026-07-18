@@ -20,7 +20,7 @@ const steps: Step[] = [
     n: "01",
     title: "Name your agent.",
     body:
-      "Pick a name for the bot. Some families call it &lsquo;Marlene’s helper’. Some call it &lsquo;Esther’ after an old friend. Some call it &lsquo;the bot’. The name shows up on the elder’s voice button and on outbound SMS.",
+      "Pick a name for the bot. Some families call it \u2018Marlene\u2019s helper\u2019. Some call it \u2018Esther\u2019 after an old friend. Some call it \u2018the bot\u2019. The name shows up on the elder\u2019s voice button and on outbound SMS.",
     fields: [
       { label: "Agent name",  placeholder: "Esther", type: "text" },
       { label: "Your role",   placeholder: "Daughter, neighbour, paid carer", type: "text" },
@@ -62,7 +62,7 @@ const steps: Step[] = [
     fields: [
       { label: "Agent email (auto)",  placeholder: "esther@care.life.guard", type: "text" },
       { label: "iCal feed URL",       placeholder: "webcal://care.life.guard/api/v1/agents/agent_044/calendar.ics", type: "text" },
-      { label: "First message template", placeholder: "&lsquo;Hi Marlene. Esther here. I’ll check in with you about your medication every morning.’", type: "textarea" },
+      { label: "First message template", placeholder: "\u2018Hi Marlene. Esther here. I\u2019ll check in with you about your medication every morning.\u2019", type: "textarea" },
     ],
   },
 ];

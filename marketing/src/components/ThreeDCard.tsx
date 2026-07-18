@@ -27,10 +27,12 @@ export function CardContainer({
   children,
   className = "",
   containerClassName = "",
+  style,
 }: {
   children: React.ReactNode;
   className?: string;
   containerClassName?: string;
+  style?: React.CSSProperties;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState({ mouseX: 0, mouseY: 0 });
@@ -73,14 +75,16 @@ export function CardContainer({
 export function CardBody({
   children,
   className = "",
+  style,
 }: {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
 }) {
   return (
     <div
       className={`relative ${className}`}
-      style={{ transformStyle: "preserve-3d" }}
+      style={{ transformStyle: "preserve-3d", ...style }}
     >
       {children}
     </div>
@@ -97,6 +101,7 @@ export function CardItem({
   rotateX = 0,
   rotateY = 0,
   rotateZ = 0,
+  style,
 }: {
   as?: React.ElementType;
   children: React.ReactNode;
@@ -107,6 +112,7 @@ export function CardItem({
   rotateX?: number | string;
   rotateY?: number | string;
   rotateZ?: number | string;
+  style?: React.CSSProperties;
 }) {
   return (
     <Tag
@@ -114,6 +120,7 @@ export function CardItem({
       style={{
         transform: `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`,
         transformStyle: "preserve-3d",
+        ...style,
       }}
     >
       {children}

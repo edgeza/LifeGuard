@@ -34,10 +34,10 @@ export function CookieBanner() {
     <div
       role="dialog"
       aria-label="Cookie preferences"
-      className="fixed inset-x-0 bottom-0 z-50 p-4"
+      className="fixed right-4 bottom-4 z-50 max-w-[380px] w-[calc(100vw-2rem)]"
     >
       <div
-        className="mx-auto max-w-[920px] rounded-2xl p-5 md:p-6 shadow-stripe-3 flex flex-col md:flex-row md:items-center gap-5"
+        className="rounded-xl p-4 shadow-stripe-3 flex flex-col gap-3"
         style={{
           background: "#0a0a0a",
           color: "rgba(255,255,255,0.92)",
