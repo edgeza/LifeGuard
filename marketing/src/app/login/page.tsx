@@ -21,7 +21,7 @@ export default function Login() {
           <div className="space-y-3">
             <Link
               href="https://console.lifeguard.example.com"
-              className="btn btn-primary btn-lg w-full"
+              className="btn btn-red btn-lg w-full"
             >
               Continue with SSO
             </Link>
@@ -37,7 +37,7 @@ export default function Login() {
             style={{ borderColor: "var(--color-line)", color: "var(--color-muted)" }}
           >
             Don&rsquo;t have an account?{" "}
-            <Link href="/signup" style={{ color: "var(--color-blue)", fontWeight: 510 }}>
+            <Link href="/signup" style={{ color: "var(--color-red)", fontWeight: 510 }}>
               Create one
             </Link>
             .

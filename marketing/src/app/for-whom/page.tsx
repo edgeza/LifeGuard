@@ -175,7 +175,7 @@ export default function ForWhom() {
         </figure>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <Link href="/pricing" className="btn btn-primary">
+          <Link href="/pricing" className="btn btn-red">
 
             See Solo Pro pricing
           </Link>
@@ -333,7 +333,7 @@ export default function ForWhom() {
                 <li key={step.time} className="grid grid-cols-[64px_1fr] gap-4">
                   <span
                     className="mono tabular text-[13px]"
-                    style={{ color: "var(--color-blue)", fontWeight: 510 }}
+                    style={{ color: "var(--color-red)", fontWeight: 510 }}
                   >
                     {step.time}
                   </span>
@@ -404,7 +404,7 @@ export default function ForWhom() {
                 digest. Free device swap.
               </p>
               <div className="mt-5 flex flex-col gap-2">
-                <Link href="/signup" className="btn btn-primary w-full">
+                <Link href="/signup" className="btn btn-red w-full">
                   Get started
                 </Link>
                 <Link href="/pricing" className="btn btn-ghost w-full">
@@ -436,7 +436,7 @@ export default function ForWhom() {
           <div className="mt-6 flex justify-center gap-3">
             <Link
               href="mailto:hello@lifeguard.example.com"
-              className="btn btn-primary btn-lg"
+              className="btn btn-red btn-lg"
             >
               Talk to us
             </Link>
@@ -474,7 +474,7 @@ function Persona({
               <span
                 className="tabular text-[12px] tracking-wider"
                 style={{
-                  color: tone === "dark" ? "#06b6a4" : "var(--color-blue)",
+                  color: tone === "dark" ? "#e11d2e" : "var(--color-red)",
                   fontWeight: 510,
                 }}
               >
@@ -546,7 +546,7 @@ function Dot() {
         height: 6,
         borderRadius: 9999,
         marginTop: 8,
-        background: "var(--color-blue)",
+        background: "var(--color-red)",
         flexShrink: 0,
       }}
     />
@@ -599,7 +599,7 @@ function Stage({ step, title, body }: { step: string; title: string; body: strin
     <div>
       <div
         className="mono tabular text-[12px] tracking-wider mb-2"
-        style={{ color: "var(--color-teal)", fontWeight: 510 }}
+        style={{ color: "var(--color-red)", fontWeight: 510 }}
       >
         {step}
       </div>

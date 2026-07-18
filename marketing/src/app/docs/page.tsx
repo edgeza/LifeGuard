@@ -77,7 +77,7 @@ export default function Docs() {
             ship a LifeGuard integration in an afternoon.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/signup" className="btn btn-primary btn-lg">
+            <Link href="/signup" className="btn btn-red btn-lg">
               Get a sandbox key
             </Link>
             <Link href="https://github.com/lifeguard/postman" className="btn btn-ghost btn-lg">
@@ -140,8 +140,8 @@ export default function Docs() {
                   <li key={it}>
                     <Link
                       href="#"
-                      className="text-[14px] inline-flex items-center gap-1.5 hover:text-[var(--color-blue)] transition-colors"
-                      style={{ color: "var(--color-ink-soft)" }}
+                      className="text-[14px] inline-flex items-center gap-1.5 hover:text-[var(--color-red)] transition-colors"
+                      style={{ color: "var(--color-ink)" }}
                     >
                       {it}
                       <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">

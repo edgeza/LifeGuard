@@ -17,6 +17,7 @@ const productsMenu: ProductChild[] = [
   { label: "LifeClip CG2",    href: "/products#lifeclip",    hint: "Discreet clip · 3 days",       icon: IconClip },
   { label: "Operator Console",href: "/products#console",     hint: "Linear-class control room",    icon: IconConsole },
   { label: "Open API & SDK",  href: "/products#api",         hint: "REST · Webhooks · 6 languages", icon: IconApi },
+  { label: "Integrations",    href: "/integration",          hint: "iOS · Watch · Android · SMS",   icon: IconWatch },
 ];
 
 export function Nav() {
@@ -428,6 +429,17 @@ function IconApi(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <path d="M4 8l-2 4 2 4M20 8l2 4-2 4M9 6l-2 12M15 6l2 12" />
+    </svg>
+  );
+}
+
+function IconWatch(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <rect x="6" y="6" width="12" height="12" rx="2.5" />
+      <path d="M9 3h6l-1 3" />
+      <path d="M9 21h6l-1-3" />
+      <path d="M9 12h2l1-1 2 1 1-2" />
     </svg>
   );
 }

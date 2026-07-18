@@ -15,13 +15,13 @@ export function SignupForm() {
         <div className="flex items-center gap-3">
           <span
             className="inline-flex items-center justify-center rounded-full"
-            style={{ width: 36, height: 36, background: "var(--color-teal-tint)" }}
+            style={{ width: 36, height: 36, background: "var(--color-red-tint)" }}
             aria-hidden="true"
           >
             <svg width="18" height="18" viewBox="0 0 18 18">
               <path
                 d="M5 9.3l2.6 2.6L13 6.5"
-                stroke="var(--color-teal-hover)"
+                stroke="var(--color-red-hover)"
                 strokeWidth="1.8"
                 fill="none"
                 strokeLinecap="round"
@@ -95,7 +95,7 @@ export function SignupForm() {
           <option value="developer">Developer evaluating the API</option>
         </select>
       </div>
-      <button type="submit" className="btn btn-primary btn-lg w-full mt-6">
+      <button type="submit" className="btn btn-red btn-lg w-full mt-6">
         Create my account
       </button>
       <p className="mt-4 text-[12px] leading-relaxed" style={{ color: "var(--color-muted)" }}>
@@ -136,7 +136,7 @@ function Field({
         placeholder={placeholder}
         autoComplete={autoComplete}
         required
-        className="w-full h-10 rounded-md border bg-white px-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)] focus:border-transparent"
+        className="w-full h-10 rounded-md border bg-white px-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-[var(--color-red)] focus:border-transparent"
         style={{ borderColor: "var(--color-line)", color: "var(--color-ink)" }}
       />
     </div>

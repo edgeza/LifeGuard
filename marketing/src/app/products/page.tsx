@@ -156,7 +156,7 @@ export default function Products() {
                 <div className="flex items-baseline gap-3 mb-3">
                   <span
                     className="tabular text-[12px] tracking-wider"
-                    style={{ color: "var(--color-blue)", fontWeight: 510 }}
+                    style={{ color: "var(--color-red)", fontWeight: 510 }}
                   >
                     SKU {d.sku}
                   </span>
@@ -184,7 +184,7 @@ export default function Products() {
                       </dt>
                       <dd
                         className="text-[13px]"
-                        style={{ color: "var(--color-ink-soft)" }}
+                        style={{ color: "var(--color-ink)" }}
                       >
                         {v}
                       </dd>
@@ -228,7 +228,7 @@ export default function Products() {
               <li key={f.n} className="grid grid-cols-[40px_1fr] gap-4">
                 <span
                   className="tabular text-[12px] tracking-wider"
-                  style={{ color: "var(--color-blue)", fontWeight: 510 }}
+                  style={{ color: "var(--color-red)", fontWeight: 510 }}
                 >
                   {f.n}
                 </span>
@@ -279,7 +279,7 @@ export default function Products() {
                       height: 6,
                       borderRadius: 9999,
                       marginTop: 8,
-                      background: "var(--color-blue)",
+                      background: "var(--color-red)",
                     }}
                   />
                   <span>{l}</span>
@@ -287,7 +287,7 @@ export default function Products() {
               ))}
             </ul>
             <div className="mt-10 flex gap-3">
-              <Link href="/docs" className="btn btn-primary">
+              <Link href="/docs" className="btn btn-red">
                 Read the docs
               </Link>
               <Link href="/signup" className="btn btn-ghost">
@@ -329,30 +329,52 @@ function PriceTag({ label, value }: { label: string; value: string }) {
  * visually distinctive, professionally rendered, and recognisable across all four
  * surfaces of the LifeGuard stack (marketing / family / console / reseller).
  */
+// Real product photos win where we have them (lifeband, lifependant, lifeclip).
+// LifeCard has no photo so we fall back to the SVG render.
+const DEVICE_PHOTO: Record<string, { src: string; alt: string }> = {
+  LifeBand:    { src: "/photos/lifeband-g2.png",    alt: "LifeBand G2 wristband — real product photography" },
+  LifePendant: { src: "/photos/lifependant-p2.png", alt: "LifePendant P2 pendant with SOS button — real product photography" },
+  LifeClip:    { src: "/photos/lifeclip-cg2.png",    alt: "LifeClip CG2 discreet clip — real product photography" },
+};
+
 const DEVICE_RENDER: Record<string, string> = {
-  LifeBand:    "/products/lifeband-g2.svg",
-  LifePendant: "/products/lifependant-p2.svg",
   LifeCard:    "/products/lifecard-c2.svg",
-  LifeClip:    "/products/lifeclip-cg2.svg",
 };
 
 function DeviceRender({ name, sku }: { name: string; sku: string }) {
-  const src = DEVICE_RENDER[name] ?? DEVICE_RENDER.LifeBand;
+  const photo = DEVICE_PHOTO[name];
+  const svg   = DEVICE_RENDER[name];
+
   return (
-    <div className="rounded-xl overflow-hidden border bg-[var(--color-bg-soft)]" style={{ borderColor: "var(--color-line)" }}>
-      <img
-        src={src}
-        alt={`${name} ${sku} — LifeGuard wearable hardware product render`}
-        className="w-full h-auto block"
-        width="480"
-        height="480"
-        loading="lazy"
-      />
+    <div
+      className="lift rounded-2xl overflow-hidden border bg-[var(--color-bg-soft)] shadow-stripe-2"
+      style={{ borderColor: "var(--color-line)" }}
+    >
+      {photo ? (
+        <img
+          src={photo.src}
+          alt={photo.alt}
+          className="w-full h-auto block aspect-square object-cover"
+          width="900"
+          height="900"
+          loading="lazy"
+        />
+      ) : (
+        <img
+          src={svg!}
+          alt={`${name} ${sku} — LifeGuard wearable hardware product render`}
+          className="w-full h-auto block"
+          width="480"
+          height="480"
+          loading="lazy"
+        />
+      )}
       <div className="px-4 py-3 flex items-center justify-between text-[12px]" style={{ background: "var(--color-bg-soft)" }}>
-        <span style={{ color: "var(--color-muted)", fontWeight: 510, letterSpacing: "0.06em" }} className="uppercase">
+        <span style={{ color: "var(--color-muted)", fontWeight: 600, letterSpacing: "0.06em" }} className="uppercase">
           {name} · {sku}
         </span>
-        <span style={{ color: "var(--color-success, #06b6a4)", fontWeight: 510 }}>
+        <span className="flex items-center gap-1.5" style={{ color: "var(--color-red)", fontWeight: 600 }}>
+          <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: "var(--color-red)" }} />
           In stock · ships in 48 hrs
         </span>
       </div>

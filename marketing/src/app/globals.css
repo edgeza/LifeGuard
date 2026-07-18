@@ -14,9 +14,8 @@
 
   /* Ink — almost-black hues for type */
   --color-ink: #0a0a0a;
-  --color-ink-soft: #1f1f1f;
-  --color-body: #404040;
-  --color-muted: #6b6b6b;
+  --color-body: #4b5563;
+  --color-muted: #6b7280;
   --color-faint: #a3a3a3;
 
   /* Lifeguard red — the hero accent */
@@ -223,11 +222,9 @@ body {
 .btn-red:active {
   transform: translateY(0);
 }
-.btn-red:disabled,
-.btn-primary {
-  /* fallback alias used in existing files */
-  background: var(--color-red);
-  color: #ffffff;
+.btn-red:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-dark {
@@ -238,7 +235,7 @@ body {
     inset 0 -1px 0 rgba(255, 255, 255, 0.06);
 }
 .btn-dark:hover {
-  background: var(--color-ink-soft);
+  background: var(--color-ink);
   transform: translateY(-1px);
 }
 

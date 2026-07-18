@@ -79,7 +79,7 @@ export default function Trust() {
           <p className="mt-8 text-[13px] max-w-[760px]" style={{ color: "var(--color-muted)" }}>
             Certificates and audit reports are available under NDA to qualified
             prospects, partners, and procurement teams. Email{" "}
-            <Link href="mailto:trust@lifeguard.example.com" style={{ color: "var(--color-blue)" }}>
+            <Link href="mailto:trust@lifeguard.example.com" style={{ color: "var(--color-red)" }}>
               trust@lifeguard.example.com
             </Link>
             .
@@ -184,7 +184,7 @@ export default function Trust() {
               is yellow.
             </p>
             <div className="mt-8 flex gap-3">
-              <Link href="https://status.lifeguard.example.com" className="btn btn-primary">
+              <Link href="https://status.lifeguard.example.com" className="btn btn-red">
                 Open status page
               </Link>
               <Link href="https://status.lifeguard.example.com/incidents" className="btn btn-ghost">
@@ -223,7 +223,7 @@ export default function Trust() {
             <li className="flex items-start gap-3">
               <Dot />
               <span>DPA, privacy policy, and sub-processor list:{" "}
-                <Link href="/trust#dpa" style={{ color: "var(--color-blue)" }}>
+                <Link href="/trust#dpa" style={{ color: "var(--color-red)" }}>
                   lifeguard.example.com/trust
                 </Link>.
               </span>
@@ -246,7 +246,7 @@ function Badge({
 }) {
   const tone =
     status === "ok"
-      ? { bg: "var(--color-teal-tint)", border: "var(--color-teal-border)", text: "var(--color-success)" }
+      ? { bg: "var(--color-red-tint)", border: "var(--color-red-border)", text: "var(--color-success)" }
       : { bg: "var(--color-amber-bg)", border: "var(--color-amber-border)", text: "var(--color-amber)" };
   return (
     <div
@@ -310,8 +310,8 @@ function CoverageMap({ regions }: { regions: typeof coverageRegions }) {
     >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3 text-[12px]" style={{ color: "var(--color-muted)" }}>
-          <Legend swatch="var(--color-blue)" label="First-party carrier" />
-          <Legend swatch="var(--color-teal)" label="Roaming partner" />
+          <Legend swatch="var(--color-red)" label="First-party carrier" style="solid" />
+          <Legend swatch="var(--color-red)" label="Roaming partner" style="ring" />
         </div>
         <span className="text-[12px] tabular" style={{ color: "var(--color-muted)" }}>
           {regions.length} first-party · 187 roaming
@@ -321,7 +321,7 @@ function CoverageMap({ regions }: { regions: typeof coverageRegions }) {
         className="relative h-[280px] rounded-lg overflow-hidden"
         style={{
           background:
-            "linear-gradient(180deg, var(--color-bg-soft) 0%, rgba(239,244,255,0.5) 100%)",
+            "linear-gradient(180deg, var(--color-bg-soft) 0%, rgba(225,29,46,0.04) 100%)",
           border: "1px solid var(--color-line)",
         }}
         role="img"
@@ -386,7 +386,7 @@ function CoverageMap({ regions }: { regions: typeof coverageRegions }) {
                   cx={x}
                   cy={y}
                   r={isLead ? 6 : 3}
-                  fill={isLead ? "var(--color-blue)" : "var(--color-teal)"}
+                  fill={isLead ? "var(--color-red)" : "var(--color-red)"}
                   opacity={isLead ? 0.95 : 0.6}
                 />
                 {isLead && (
@@ -395,7 +395,7 @@ function CoverageMap({ regions }: { regions: typeof coverageRegions }) {
                     cy={y}
                     r={11}
                     fill="none"
-                    stroke="var(--color-blue)"
+                    stroke="var(--color-red)"
                     strokeOpacity="0.3"
                     strokeWidth="1"
                   />
@@ -414,10 +414,10 @@ function CoverageMap({ regions }: { regions: typeof coverageRegions }) {
                 width: 6,
                 height: 6,
                 borderRadius: 9999,
-                background: "var(--color-blue)",
+                background: "var(--color-red)",
               }}
             />
-            <span style={{ color: "var(--color-ink-soft)", fontWeight: 510 }}>{r.name}</span>
+            <span style={{ color: "var(--color-ink)", fontWeight: 510 }}>{r.name}</span>
             <span style={{ color: "var(--color-muted)" }} className="tabular">
               {r.cities}
             </span>
@@ -428,17 +428,27 @@ function CoverageMap({ regions }: { regions: typeof coverageRegions }) {
   );
 }
 
-function Legend({ swatch, label }: { swatch: string; label: string }) {
+function Legend({ swatch, label, style }: { swatch: string; label: string; style?: "solid" | "ring" }) {
   return (
     <span className="inline-flex items-center gap-1.5">
       <span
         aria-hidden="true"
-        style={{
-          width: 8,
-          height: 8,
-          borderRadius: 9999,
-          background: swatch,
-        }}
+        style={
+          style === "ring"
+            ? {
+                width: 8,
+                height: 8,
+                borderRadius: 9999,
+                background: "transparent",
+                border: `1.5px solid ${swatch}`,
+              }
+            : {
+                width: 8,
+                height: 8,
+                borderRadius: 9999,
+                background: swatch,
+              }
+        }
       />
       {label}
     </span>
@@ -517,7 +527,7 @@ function StatusPanel() {
         style={{ background: "var(--color-bg-soft)" }}
       >
         <span style={{ color: "var(--color-muted)" }}>Last updated</span>
-        <span className="mono tabular" style={{ color: "var(--color-ink-soft)" }}>
+        <span className="mono tabular" style={{ color: "var(--color-ink)" }}>
           {new Date().toISOString().slice(0, 16).replace("T", " ")} UTC
         </span>
       </div>
@@ -534,7 +544,7 @@ function Dot() {
         height: 6,
         borderRadius: 9999,
         marginTop: 8,
-        background: "var(--color-blue)",
+        background: "var(--color-red)",
         flexShrink: 0,
       }}
     />

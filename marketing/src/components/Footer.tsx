@@ -10,6 +10,7 @@ const columns: Column[] = [
     title: "Product",
     links: [
       { label: "Hardware stack",       href: "/products" },
+      { label: "Integrations",         href: "/integration" },
       { label: "Operator console",     href: "/products#console" },
       { label: "Open API",             href: "/products#api" },
       { label: "For developers",       href: "/docs" },

@@ -3,17 +3,17 @@
 import { useEffect, useState } from "react";
 
 /**
- * Soft animated device-status indicator.
- * The single allowed motion element on the hero.
- * Shows a real-looking telemetry panel for one LifeBand G2 device.
- * Respects prefers-reduced-motion.
+ * The hero telemetry card.
+ * Single motion-eligible element in the hero. Real-looking LifeBand G2 panel.
+ * v2026.07: red/black brand, gradient border, sparkline with correct domain,
+ *            staggered reveal of the four stat tiles on first appearance.
  */
 export function DeviceTelemetry() {
   const [tick, setTick] = useState(0);
-  const [now, setNow] = useState<string>("");
+  const [now, setNow] = useState<string>("—");
 
   useEffect(() => {
-    const i = setInterval(() => setTick((t) => t + 1), 1600);
+    const i = setInterval(() => setTick((t) => t + 1), 1800);
     const c = setInterval(() => {
       const d = new Date();
       setNow(
@@ -22,7 +22,7 @@ export function DeviceTelemetry() {
           minute: "2-digit",
           second: "2-digit",
           timeZone: "UTC",
-        })
+        }),
       );
     }, 1000);
     setNow(
@@ -31,7 +31,7 @@ export function DeviceTelemetry() {
         minute: "2-digit",
         second: "2-digit",
         timeZone: "UTC",
-      })
+      }),
     );
     return () => {
       clearInterval(i);
@@ -39,149 +39,142 @@ export function DeviceTelemetry() {
     };
   }, []);
 
-  // HR oscillates in a believable resting window
-  const hr = 62 + ((tick * 3) % 7) - 3;
-  const battery = 84 - (tick % 5);
-  const signal = -71 + ((tick * 2) % 6) - 3;
-  const steps = (8432 + tick * 11).toLocaleString();
+  // Stable, believable signals in resting-HR range.
+  const hr     = 64 + ((tick * 3) % 7) - 3;
+  const spo2   = Math.min(99, Math.max(94, 96 + ((tick * 2) % 4) - 1));
+  const battery = Math.max(46, 86 - (tick % 9));
+  const signal  = -71 + ((tick * 2) % 6) - 3;
+  const steps   = (8432 + tick * 11).toLocaleString();
 
   return (
-    <div className="card-elevated overflow-hidden" role="region" aria-label="Live device status">
-      <div className="flex items-center justify-between px-5 py-3 border-b" style={{ borderColor: "var(--color-line)" }}>
-        <div className="flex items-center gap-2">
-          <span className="relative inline-flex w-2 h-2" aria-hidden="true">
-            <span
-              className="absolute inset-0 rounded-full pulse-dot"
-              style={{ background: "var(--color-success)" }}
-            />
-            <span className="relative inline-block w-2 h-2 rounded-full" style={{ background: "var(--color-success)" }} />
-          </span>
-          <span className="text-[12px] tracking-wide" style={{ color: "var(--color-muted)", fontWeight: 510 }}>
-            LIFE BAND · G2 · ONLINE
-          </span>
-        </div>
-        <div className="mono tabular text-[12px]" style={{ color: "var(--color-muted)" }}>
-          {now} UTC
-        </div>
-      </div>
-
-      <div className="p-5 md:p-6">
-        <div className="flex items-baseline justify-between">
-          <div>
-            <div
-              className="text-[11px] uppercase tracking-wider"
-              style={{ color: "var(--color-muted)", fontWeight: 510 }}
-            >
-              Subscriber
-            </div>
-            <div className="mt-0.5 text-[15px]" style={{ color: "var(--color-ink)", fontWeight: 510 }}>
-              Nomvula Mokoena
-            </div>
-            <div className="text-[12px]" style={{ color: "var(--color-muted)" }}>
-              Sea Point, Cape Town
-            </div>
+    <div className="aurora-border overflow-hidden">
+      <div className="rounded-[20px] bg-white overflow-hidden">
+        {/* Header bar */}
+        <div className="flex items-center justify-between px-5 py-3.5 border-b" style={{ borderColor: "var(--color-line)" }}>
+          <div className="flex items-center gap-2.5">
+            <span className="relative inline-flex w-2 h-2" aria-hidden="true">
+              <span className="absolute inset-0 rounded-full pulse-sos" style={{ background: "var(--color-red)" }} />
+              <span className="relative inline-block w-2 h-2 rounded-full" style={{ background: "var(--color-red)" }} />
+            </span>
+            <span className="text-[12px] tracking-wider uppercase" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+              LifeBand · G2
+            </span>
+            <span className="text-[11px]" style={{ color: "var(--color-muted)" }}>Nomvula M.</span>
           </div>
-          <div className="text-right">
-            <div
-              className="text-[11px] uppercase tracking-wider"
-              style={{ color: "var(--color-muted)", fontWeight: 510 }}
-            >
-              Battery
-            </div>
-            <div
-              className="mt-0.5 mono tabular text-[20px]"
-              style={{ color: "var(--color-ink)", fontWeight: 300, letterSpacing: "-0.01em" }}
-            >
-              {battery}%
-            </div>
+          <div className="mono tabular text-[11px]" style={{ color: "var(--color-muted)" }}>
+            {now} UTC
           </div>
         </div>
 
-        <div className="mt-5 grid grid-cols-3 gap-3">
-          <Metric label="Heart rate" value={`${hr}`} unit="bpm" />
-          <Metric label="Signal" value={`${signal}`} unit="dBm" />
-          <Metric label="Steps" value={steps} unit="today" />
+        {/* Top stats row */}
+        <div className="grid grid-cols-4 gap-2 p-4">
+          <Stat label="Heart rate" value={`${hr}`}     unit="bpm" delay={tick * 20 % 100} accent="red" />
+          <Stat label="SpO₂"        value={`${spo2}`}   unit="%"   delay={(tick + 1) * 20 % 100} accent="red" />
+          <Stat label="Battery"     value={`${battery}`} unit="%"   delay={(tick + 2) * 20 % 100} accent="red" />
+          <Stat label="Signal"      value={`${signal}`}  unit="dBm" delay={(tick + 3) * 20 % 100} accent="red" />
         </div>
 
-        <div className="mt-5">
-          <div
-            className="text-[11px] uppercase tracking-wider mb-2"
-            style={{ color: "var(--color-muted)", fontWeight: 510 }}
-          >
-            Heart rate · last 30 minutes
+        {/* Sparkline */}
+        <div className="px-4 pb-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--color-muted)", fontWeight: 600 }}>
+              Heart rate · last 30 min
+            </span>
+            <span className="flex items-center gap-1.5 text-[11px]" style={{ color: "var(--color-red)", fontWeight: 600 }}>
+              <span className="pulse-dot inline-block w-1.5 h-1.5 rounded-full" style={{ background: "var(--color-red)" }} />
+              Live
+            </span>
           </div>
           <HeartRateSparkline tick={tick} />
         </div>
 
+        {/* Caregiver app row */}
         <div
-          className="mt-5 rounded-md p-3 flex items-center justify-between"
+          className="mx-4 mb-4 rounded-lg p-3 flex items-center justify-between"
           style={{
             background: "var(--color-bg-soft)",
             border: "1px solid var(--color-line)",
           }}
         >
-          <div className="flex items-center gap-2">
-            <span
-              className="relative inline-flex w-1.5 h-1.5"
+          <div className="flex items-center gap-3">
+            <div
+              className="h-7 w-7 rounded-md grid place-items-center text-[10px]"
+              style={{ background: "var(--color-red)", color: "#fff", fontWeight: 700 }}
               aria-hidden="true"
             >
-              <span
-                className="absolute inset-0 rounded-full pulse-dot"
-                style={{ background: "var(--color-blue)" }}
-              />
-              <span
-                className="relative inline-block w-1.5 h-1.5 rounded-full"
-                style={{ background: "var(--color-blue)" }}
-              />
-            </span>
-            <span className="text-[12px]" style={{ color: "var(--color-ink)", fontWeight: 510 }}>
-              Caregiver App
-            </span>
-            <span className="text-[12px]" style={{ color: "var(--color-muted)" }}>
-              last sync 3s ago
-            </span>
+              M
+            </div>
+            <div>
+              <div className="text-[12px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+                Caregiver App
+              </div>
+              <div className="text-[11px]" style={{ color: "var(--color-muted)" }}>
+                last sync 3s ago · steps {steps}
+              </div>
+            </div>
           </div>
-          <span className="text-[12px]" style={{ color: "var(--color-blue)", fontWeight: 510 }}>
-            Live
+          <span className="text-[11px]" style={{ color: "var(--color-red)", fontWeight: 600 }}>
+            ↗ Open
           </span>
         </div>
-      </div>
 
-      <div className="border-t" style={{ borderColor: "var(--color-line)" }}>
-        <div className="px-5 py-3 flex items-center justify-between text-[12px]" style={{ color: "var(--color-muted)" }}>
-          <span>Last fall event</span>
-          <span className="tabular" style={{ color: "var(--color-ink-soft)" }}>
-            47 days ago
-          </span>
-        </div>
-        <div className="px-5 pb-4 flex items-center justify-between text-[12px]" style={{ color: "var(--color-muted)" }}>
-          <span>Firmware</span>
-          <span className="mono tabular" style={{ color: "var(--color-ink-soft)" }}>
-            LG-G2 · 4.7.1 · OTA eligible
-          </span>
+        {/* System status footer */}
+        <div
+          className="px-5 py-3 grid grid-cols-3 gap-4 text-[11px]"
+          style={{
+            background: "var(--color-ink)",
+            color: "rgba(255,255,255,0.7)",
+          }}
+        >
+          <FootCol label="Last fall"       value="47 d ago" />
+          <FootCol label="Firmware"        value="LG-G2 · 4.7.1" />
+          <FootCol label="SLA"            value="99.95 %" />
         </div>
       </div>
     </div>
   );
 }
 
-function Metric({ label, value, unit }: { label: string; value: string; unit: string }) {
+function Stat({
+  label,
+  value,
+  unit,
+  delay,
+  accent,
+}: {
+  label: string;
+  value: string;
+  unit: string;
+  delay: number;
+  accent: "red" | "ink";
+}) {
   return (
-    <div className="rounded-md p-3" style={{ background: "var(--color-bg-soft)" }}>
+    <div
+      className="rounded-lg px-3 py-3 ticker-in"
+      style={{
+        background: "var(--color-bg-soft)",
+        animationDelay: `${delay}ms`,
+        border: "1px solid var(--color-line)",
+      }}
+    >
       <div
-        className="text-[10px] uppercase tracking-wider"
-        style={{ color: "var(--color-muted)", fontWeight: 510 }}
+        className="text-[10px] uppercase tracking-[0.14em]"
+        style={{ color: "var(--color-muted)", fontWeight: 600 }}
       >
         {label}
       </div>
-      <div className="flex items-baseline gap-1 mt-1">
+      <div className="flex items-baseline gap-1 mt-1.5">
         <span
-          className="mono tabular text-[20px]"
-          style={{ color: "var(--color-ink)", fontWeight: 300, letterSpacing: "-0.01em" }}
+          className="mono tabular text-[22px]"
+          style={{
+            color: accent === "red" ? "var(--color-red)" : "var(--color-ink)",
+            fontWeight: 600,
+            letterSpacing: "-0.02em",
+          }}
         >
           {value}
         </span>
-        <span className="text-[11px]" style={{ color: "var(--color-muted)" }}>
+        <span className="text-[10px]" style={{ color: "var(--color-muted)" }}>
           {unit}
         </span>
       </div>
@@ -189,29 +182,56 @@ function Metric({ label, value, unit }: { label: string; value: string; unit: st
   );
 }
 
+function FootCol({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="text-[10px] uppercase tracking-[0.14em]" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>
+        {label}
+      </div>
+      <div className="mono tabular mt-1" style={{ color: "#fff", fontWeight: 500 }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
 function HeartRateSparkline({ tick }: { tick: number }) {
-  // Deterministic but feels live. 36 points across the sparkline.
-  const points = Array.from({ length: 36 }, (_, i) => {
-    const wave = Math.sin((i + tick) * 0.4) * 6;
-    const drift = Math.sin((i + tick) * 0.13) * 3;
-    const jitter = ((i * 7 + tick * 11) % 5) - 2;
-    return 30 + wave + drift + jitter;
+  // 48 points, full resting-HR range (50–90 bpm). Spans a 320×64 SVG.
+  const points = Array.from({ length: 48 }, (_, i) => {
+    const drift  = Math.sin(i * 0.10) * 4;
+    const wave   = Math.sin((i + tick) * 0.34) * 6;
+    const noise  = (((i * 7 + tick * 13) % 11) - 5) * 0.6;
+    return 68 + drift + wave + noise;
   });
-  const min = Math.min(...points);
-  const max = Math.max(...points);
-  const range = max - min || 1;
-  const w = 320;
-  const h = 56;
+  const min   = Math.min(...points);
+  const max   = Math.max(...points);
+  const range = Math.max(1, max - min);
+  const w     = 320;
+  const h     = 64;
+  const pad   = 6;
+
   const path = points
     .map((p, i) => {
-      const x = (i / (points.length - 1)) * w;
-      const y = h - ((p - min) / range) * (h - 6) - 3;
+      const x = (i / (points.length - 1)) * (w - pad * 2) + pad;
+      const y = h - ((p - min) / range) * (h - pad * 2) - pad;
       return `${i === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
     })
     .join(" ");
 
-  const lastX = w;
-  const lastY = h - ((points[points.length - 1] - min) / range) * (h - 6) - 3;
+  const lastX = w - pad;
+  const lastY = h - ((points[points.length - 1] - min) / range) * (h - pad * 2) - pad;
+
+  // Filled area beneath the line.
+  const areaPath =
+    `M ${pad} ${h - pad} ` +
+    points
+      .map((p, i) => {
+        const x = (i / (points.length - 1)) * (w - pad * 2) + pad;
+        const y = h - ((p - min) / range) * (h - pad * 2) - pad;
+        return `L ${x.toFixed(2)} ${y.toFixed(2)}`;
+      })
+      .join(" ") +
+    ` L ${lastX.toFixed(2)} ${h - pad} Z`;
 
   return (
     <svg
@@ -219,20 +239,26 @@ function HeartRateSparkline({ tick }: { tick: number }) {
       width="100%"
       height={h}
       role="img"
-      aria-label="Heart rate trend"
+      aria-label="Heart rate trend, last 30 minutes"
       preserveAspectRatio="none"
     >
+      <defs>
+        <linearGradient id="hrGrad" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0"   stopColor="#e11d2e" stopOpacity="0.30" />
+          <stop offset="0.7" stopColor="#e11d2e" stopOpacity="0.05" />
+        </linearGradient>
+      </defs>
+      <path d={areaPath} fill="url(#hrGrad)" />
       <path
         d={path}
         fill="none"
-        stroke="var(--color-blue)"
-        strokeWidth="1.4"
+        stroke="#e11d2e"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        opacity="0.85"
       />
-      <circle cx={lastX - 1} cy={lastY} r="3" fill="var(--color-blue)" />
-      <circle cx={lastX - 1} cy={lastY} r="6" fill="var(--color-blue)" opacity="0.18" />
+      <circle cx={lastX - 1} cy={lastY} r="3" fill="#e11d2e" />
+      <circle cx={lastX - 1} cy={lastY} r="7" fill="#e11d2e" opacity="0.18" />
     </svg>
   );
 }

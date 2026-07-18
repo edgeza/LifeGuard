@@ -125,8 +125,8 @@ export default function Home() {
               <MarketingReveal>
                 <DeviceTelemetry />
                 <div className="mt-6 grid grid-cols-2 gap-3">
-                  <DeviceTile img="/products/lifeband-g2.svg" name="LifeBand G2" tagline="HR / HRV / SpO₂ · IP67 · 7 d battery" />
-                  <DeviceTile img="/products/lifependant-p2.svg" name="LifePendant P2" tagline="Two-way voice · single SOS" />
+                  <DeviceTile img="/photos/lifeband-g2.png"    name="LifeBand G2"    tagline="HR / HRV / SpO₂ · IP67 · 7 d battery" />
+                  <DeviceTile img="/photos/lifependant-p2.png" name="LifePendant P2" tagline="Two-way voice · single SOS" />
                 </div>
               </MarketingReveal>
             </div>
@@ -417,8 +417,8 @@ function Check() {
 
 function DeviceTile({ img, name, tagline }: { img: string; name: string; tagline: string }) {
   return (
-    <div className="lift relative rounded-xl overflow-hidden border bg-white" style={{ borderColor: "var(--color-line)" }}>
-      <img src={img} alt={name} className="w-full h-auto block" width="240" height="240" loading="lazy" />
+    <div className="lift relative rounded-xl overflow-hidden border bg-white shadow-stripe-2" style={{ borderColor: "var(--color-line)" }}>
+      <img src={img} alt={name} className="w-full h-auto block aspect-square object-cover" width="240" height="240" loading="lazy" />
       <div className="px-3 py-2 text-[11px] flex flex-col gap-0.5" style={{ background: "var(--color-bg-soft)" }}>
         <span style={{ color: "var(--color-ink)", fontWeight: 600 }}>{name}</span>
         <span style={{ color: "var(--color-muted)" }}>{tagline}</span>

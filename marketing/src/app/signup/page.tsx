@@ -40,7 +40,7 @@ export default function Signup() {
                     height: 6,
                     borderRadius: 9999,
                     marginTop: 8,
-                    background: "var(--color-blue)",
+                    background: "var(--color-red)",
                   }}
                 />
                 <span>{l}</span>
@@ -49,7 +49,7 @@ export default function Signup() {
           </ul>
           <div className="mt-10 text-[13px]" style={{ color: "var(--color-muted)" }}>
             Already have an account?{" "}
-            <Link href="/login" style={{ color: "var(--color-blue)", fontWeight: 510 }}>
+            <Link href="/login" style={{ color: "var(--color-red)", fontWeight: 510 }}>
               Log in
             </Link>
             .
