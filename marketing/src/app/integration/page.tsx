@@ -16,6 +16,7 @@ const integrations = [
   { name: "Voice (Twilio etc.)", tagline: "Two-way cellular voice on every pendant",             glyph: "voice",   color: "#f43f5e" },
   { name: "Public REST API",     tagline: "REST · Webhooks · OAuth · 6-language SDK",            glyph: "api",     color: "#e11d2e" },
   { name: "MQTT / WebSocket",    tagline: "Live telemetry into your platform, no polling",       glyph: "mqtt",    color: "#06b6a4" },
+  { name: "SMS gateway",         tagline: "Outbound SMS from the bot to the elder and the family — works on any phone, even with no app", glyph: "smsout", color: "#f97316" },
 ];
 
 export default function IntegrationsPage() {
@@ -70,7 +71,7 @@ export default function IntegrationsPage() {
             <div className="max-w-[640px] mb-10">
               <div className="eyebrow mb-3">Channels</div>
               <h2 id="int-grid-heading" className="display text-[36px] md:text-[48px]">
-                Eight ways in. One signal out.
+                Nine ways in. One signal out.
               </h2>
             </div>
           </MarketingReveal>
@@ -283,6 +284,13 @@ function Glyph({ token, color }: { token: string; color: string }) {
           <path d="M5 14a7 7 0 0 1 14 0" />
           <path d="M2 18a14 14 0 0 1 20 0" />
           <circle cx="12" cy="14" r="1.2" fill={c} />
+        </svg>
+      );
+    case "smsout":
+      return (
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke={c} strokeWidth="1.6">
+          <path d="M4 4h16v12H7l-3 3V4z" />
+          <path d="M8 9h8M8 12h5" />
         </svg>
       );
     default:

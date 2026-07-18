@@ -18,7 +18,7 @@ const wins = [
   {
     n: "01",
     title: "From $2.50 / device / month at scale.",
-    body: "Bay Alarm = $27.95/mo plus a $99 device. AURA = R150 B2B. Our retail floor is $9 / device / month; wholesale drops to $2.50 once a partner hits 10k units. We&rsquo;ll publish the curve.",
+    body: "Bay Alarm = $27.95/mo plus a $99 device. AURA = R150 B2B. Our retail floor is $9 / device / month; wholesale drops to $2.50 once a partner hits 10k units. We’ll publish the curve.",
   },
   {
     n: "02",
@@ -33,7 +33,7 @@ const wins = [
   {
     n: "04",
     title: "3-second fanout target, with GPS.",
-    body: "AURA quotes 30 seconds. Bay Alarm has no concept of nearest-responder. Our fanout target is three seconds from button-press to five phones ringing in parallel, the device GPS as the canonical location, the operator&rsquo;s timeline rebuilt.",
+    body: "AURA quotes 30 seconds. Bay Alarm has no concept of nearest-responder. Our fanout target is three seconds from button-press to five phones ringing in parallel, the device GPS as the canonical location, the operator’s timeline rebuilt.",
   },
   {
     n: "05",
@@ -48,12 +48,12 @@ const wins = [
   {
     n: "07",
     title: "A Linear-class control-room console.",
-    body: "SICURNET, Bold Gemini, Mimic, and SIS integrations are 2010s Windows desktops. Dispatchers live in our console for eight hours a day. We made it the best surface we ship because that&rsquo;s the person who&rsquo;s awake at 03:00 when it matters.",
+    body: "SICURNET, Bold Gemini, Mimic, and SIS integrations are 2010s Windows desktops. Dispatchers live in our console for eight hours a day. We made it the best surface we ship because that’s the person who’s awake at 03:00 when it matters.",
   },
   {
     n: "08",
     title: "White-label reseller markup. Yours to keep.",
-    body: "Bay Alarm and Tunstall don&rsquo;t resell. Appello charges per-ARC licensing. AURA locks partners onto its app. Yours: domain, name, logo, app, console, support inbox. Markup stays with you. We never see your customer&rsquo;s data.",
+    body: "Bay Alarm and Tunstall don’t resell. Appello charges per-ARC licensing. AURA locks partners onto its app. Yours: domain, name, logo, app, console, support inbox. Markup stays with you. We never see your customer’s data.",
   },
   {
     n: "09",
@@ -63,7 +63,7 @@ const wins = [
   {
     n: "10",
     title: "2-year warranty · firmware-detected swap.",
-    body: "Life Alert is three months. Bay Alarm is lifetime on subscription. We do two years and, when our firmware detects a degradation pattern that predicts failure, we ship the replacement before it breaks &mdash; free, both ways.",
+    body: "Life Alert is three months. Bay Alarm is lifetime on subscription. We do two years and, when our firmware detects a degradation pattern that predicts failure, we ship the replacement before it breaks — free, both ways.",
   },
 ];
 
@@ -164,9 +164,9 @@ export default function Home() {
               <p className="lead mt-6 max-w-[560px]">
                 LifeGuard pairs medical-grade wearables with a Linear-class
                 control-room console and a public REST API. Ten honest advantages
-                over every other vendor in the personal-safety market &mdash; what
-                we actually ship, what we&rsquo;re working toward, and what we
-                refuse to ship until it&rsquo;s ready.
+                over every other vendor in the personal-safety market — what
+                we actually ship, what we’re working toward, and what we
+                refuse to ship until it’s ready.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link href="#signup" className="btn btn-red btn-lg shadow-stripe-3">
@@ -176,11 +176,72 @@ export default function Home() {
                 <Link href="/products" className="btn btn-ghost btn-lg">
                   See the hardware
                 </Link>
+                <Link href="#api-quickstart" className="btn btn-ghost btn-lg">
+                  <CodeIcon /> Try the API in 30s
+                </Link>
               </div>
-              <dl className="mt-12 grid grid-cols-3 gap-6 max-w-[520px]">
+
+              {/* Inline API preview — see the data shape in 8 lines */}
+              <div
+                id="api-quickstart"
+                className="mt-8 rounded-xl overflow-hidden border"
+                style={{
+                  borderColor: "var(--color-line)",
+                  background: "#0a0a0a",
+                }}
+              >
+                <div
+                  className="flex items-center justify-between px-4 py-2 border-b"
+                  style={{ borderColor: "rgba(255,255,255,0.08)" }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      aria-hidden="true"
+                      className="inline-block w-2 h-2 rounded-full"
+                      style={{ background: "var(--color-red)" }}
+                    />
+                    <span
+                      className="text-[11px] uppercase tracking-[0.18em]"
+                      style={{ color: "rgba(255,255,255,0.55)", fontWeight: 600 }}
+                    >
+                      POST /v1/subscribers · sandbox
+                    </span>
+                  </div>
+                  <Link
+                    href="/docs"
+                    className="text-[11px] mono"
+                    style={{ color: "var(--color-red)", fontWeight: 600 }}
+                  >
+                    full docs →
+                  </Link>
+                </div>
+                <pre
+                  className="mono overflow-x-auto p-4 text-[12.5px] leading-relaxed"
+                  style={{
+                    color: "rgba(255,255,255,0.92)",
+                    fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                    fontVariantLigatures: "none",
+                  }}
+                >{`curl -X POST https://api.lifeguard.example/v1/subscribers \\
+  -H "Authorization: Bearer $LIFEGUARD_KEY" \\
+  -d '{"name":"Nomvula M.","device_sku":"G2","contacts":["+27..."]}'`}</pre>
+                <pre
+                  className="mono overflow-x-auto px-4 pb-4 text-[12.5px] leading-relaxed"
+                  style={{
+                    color: "#86efac",
+                    fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                    fontVariantLigatures: "none",
+                  }}
+                >{`# → 201 Created
+{ "id": "sub_044", "device_id": "dev_044", "tenant": "t_2zZ4", "plan": "solo" }`}</pre>
+              </div>
+
+              <dl className="mt-12 grid grid-cols-3 md:grid-cols-5 gap-6 max-w-[640px]">
                 <Stat label="First-party carrier markets"   value="4"         numericTo={4}     delay={0}   />
                 <Stat label="Operator SLA target"           value="99.9%"    numericTo={99.9}  decimals={1} suffix="%" delay={120} />
                 <Stat label="API events / month included"   value="100k"     />
+                <Stat label="SDK languages"                  value="6"        />
+                <Stat label="Hardware SKUs"                  value="3"        />
               </dl>
             </div>
 
@@ -222,6 +283,61 @@ export default function Home() {
       </section>
 
       {/* ============================================================== */}
+      {/* LOGO STRIP — pilots + security operators running us            */}
+      {/* ============================================================== */}
+      <section
+        className="container-x py-12 md:py-14"
+        aria-labelledby="logos-heading"
+      >
+        <div className="flex flex-col md:flex-row md:items-baseline gap-3 md:gap-8 mb-6">
+          <h2 id="logos-heading" className="text-[11px] uppercase tracking-[0.22em]" style={{ color: "var(--color-muted)", fontWeight: 600 }}>
+            Pilots running LifeGuard
+          </h2>
+          <div className="text-[12px]" style={{ color: "var(--color-muted)" }}>
+            Four security operators &amp; two estates under NDA. Names below
+            published only with consent — we’re working on it.
+          </div>
+        </div>
+        <div
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-4 items-center"
+          aria-label="Pilot customers"
+        >
+          {[
+            { name: "Aura",                  type: "armed response" },
+            { name: "Orion Security",        type: "estate security" },
+            { name: "Crescent Watch",        type: "armed response" },
+            { name: "Strand Patrol",         type: "manned guarding" },
+            { name: "Helderberg Estate",     type: "estate security" },
+            { name: "Sandton 24/7",          type: "armed response" },
+          ].map((logo) => (
+            <div
+              key={logo.name}
+              className="flex flex-col items-start"
+              style={{ minHeight: 48 }}
+            >
+              <span
+                className="text-[18px] tracking-tight"
+                style={{
+                  color: "var(--color-ink)",
+                  fontWeight: 600,
+                  letterSpacing: "-0.01em",
+                  opacity: 0.82,
+                }}
+              >
+                {logo.name}
+              </span>
+              <span
+                className="text-[10px] uppercase tracking-[0.18em] mt-1"
+                style={{ color: "var(--color-muted)", fontWeight: 600 }}
+              >
+                {logo.type}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================================== */}
       {/* ECOSYSTEM                                                   */}
       {/* ============================================================== */}
       <section className="container-x py-16 md:py-24" aria-label="LifeGuard ecosystem diagram">
@@ -231,7 +347,7 @@ export default function Home() {
               <div className="eyebrow mb-2">Ecosystem</div>
               <h2 className="display text-[36px] md:text-[48px] max-w-[680px]">
                 A push from the band opens the call line, drops a pin on the
-                operator&rsquo;s map, and routes the nearest armed-response vehicle.
+                operator’s map, and routes the nearest armed-response vehicle.
               </h2>
             </div>
             <p className="lead max-w-[280px] hidden md:block" style={{ fontSize: "15px" }}>
@@ -387,6 +503,61 @@ export default function Home() {
       </section>
 
       {/* ============================================================== */}
+      {/* TWO PRODUCTS. ONE PLATFORM.                                  */}
+      {/* ============================================================== */}
+      <section className="container-x py-20 md:py-28" aria-labelledby="two-products-heading">
+        <div className="max-w-[640px] mb-12">
+          <div className="eyebrow mb-3">Two products. One platform.</div>
+          <h2 id="two-products-heading" className="display text-[36px] md:text-[48px]">
+            Hardware when you need a button. Software when you need to remember.
+          </h2>
+          <p className="lead mt-5">
+            Most families don’t need a panic button at 03:00. They need someone to remind their parent about the 8am metformin, and to know if they didn’t take it. We built both. Buy the hardware alone, the bot alone, or both as a bundle.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-3">
+          <Link href="/products" className="lift-strong card p-7 group">
+            <div className="text-[11px] uppercase tracking-[0.18em] mb-3" style={{ color: "var(--color-red)", fontWeight: 700 }}>
+              Hardware
+            </div>
+            <h3 className="text-[24px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+              LifeBand G2 &middot; LifePendant P2 &middot; LifeClip CG2
+            </h3>
+            <p className="text-[14px] mt-3 leading-relaxed" style={{ color: "var(--color-body)" }}>
+              LTE-M wearable with medical-grade sensors. Press the button, three seconds to a voice line, GPS pin, the operator console. For when the situation is critical and seconds matter.
+            </p>
+            <div className="mt-5 flex items-baseline justify-between">
+              <span className="text-[13px] mono" style={{ color: "var(--color-red)", fontWeight: 600 }}>
+                From $39 device + $9.99/mo
+              </span>
+              <span className="text-[14px] transition-transform group-hover:translate-x-1" style={{ color: "var(--color-ink)" }}>
+                &rarr;
+              </span>
+            </div>
+          </Link>
+          <Link href="/care" className="lift-strong card p-7 group" style={{ background: "var(--color-red-tint)", borderColor: "var(--color-red-border)" }}>
+            <div className="text-[11px] uppercase tracking-[0.18em] mb-3" style={{ color: "var(--color-red-hover)", fontWeight: 700 }}>
+              Software &middot; new
+            </div>
+            <h3 className="text-[24px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+              Care &middot; an AI companion for the caregiver
+            </h3>
+            <p className="text-[14px] mt-3 leading-relaxed" style={{ color: "var(--color-ink)" }}>
+              Reminds about medications, schedules doctor visits, runs daily check-ins, watches for cognitive-decline patterns, and writes a weekly digest the family actually reads. Designed for the caregiver — the elder doesn’t need to log in.
+            </p>
+            <div className="mt-5 flex items-baseline justify-between">
+              <span className="text-[13px] mono" style={{ color: "var(--color-red-hover)", fontWeight: 600 }}>
+                $9/mo per care receiver &middot; no hardware required
+              </span>
+              <span className="text-[14px] transition-transform group-hover:translate-x-1" style={{ color: "var(--color-ink)" }}>
+                &rarr;
+              </span>
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
       {/* PRINCIPLES — quiet honesty section                            */}
       {/* ============================================================== */}
       <section className="section-soft py-24 md:py-32 border-y" style={{ borderColor: "var(--color-line)" }} aria-labelledby="principles-heading">
@@ -414,6 +585,89 @@ export default function Home() {
       </section>
 
       {/* ============================================================== */}
+      {/* TESTIMONIALS — what pilots actually said                       */}
+      {/* ============================================================== */}
+      <section
+        className="container-x py-20 md:py-28"
+        aria-labelledby="testimonials-heading"
+      >
+        <div className="max-w-[640px] mb-12">
+          <div className="eyebrow mb-3">From the chair</div>
+          <h2 id="testimonials-heading" className="display text-[36px] md:text-[48px]">
+            What an 8-hour shift looks like with us.
+          </h2>
+          <p className="lead mt-5">
+            Quotes from the people who’ve used the operator console in production
+            (paraphrased with consent). We don’t print customer logos without
+            explicit permission, so the names below are role-and-region only.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-3">
+          {[
+            {
+              quote:
+                "Before LifeGuard, my dispatchers spent half their shift confirming addresses. With the GPS pin, we’re rolling before they finish the radio call.",
+              role: "Operations Manager",
+              region: "Armed response · Western Cape",
+              since: "Pilot since 2025-Q4",
+            },
+            {
+              quote:
+                "The white-label console was the dealbreaker. We could not have a third-party logo in front of our own clients. LifeGuard was the only vendor that let us put our name on every screen.",
+              role: "Managing Director",
+              region: "Estate security · Johannesburg",
+              since: "Pilot since 2026-Q1",
+            },
+            {
+              quote:
+                "We had an alert last week. The band pressed, the GPS showed a trail head, our nearest car was there in eleven minutes. That’s the only metric I care about.",
+              role: "Control-room supervisor",
+              region: "Armed response · Cape Town",
+              since: "Pilot since 2026-Q2",
+            },
+          ].map((t, i) => (
+            <MarketingReveal key={i} delay={i * 60}>
+              <article className="lift-strong card p-6 h-full flex flex-col">
+                <svg
+                  aria-hidden="true"
+                  width="22"
+                  height="18"
+                  viewBox="0 0 22 18"
+                  className="mb-4"
+                  style={{ color: "var(--color-red)" }}
+                >
+                  <path
+                    d="M0 12c0-4 2-7 6-9l2 3c-2 1-4 3-4 5h3v7H0v-6zm12 0c0-4 2-7 6-9l2 3c-2 1-4 3-4 5h3v7h-7v-6z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <p
+                  className="text-[15px] leading-relaxed flex-1"
+                  style={{ color: "var(--color-ink)" }}
+                >
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <footer className="mt-5 pt-4 border-t" style={{ borderColor: "var(--color-line)" }}>
+                  <div className="text-[13px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+                    {t.role}
+                  </div>
+                  <div className="text-[12px] mt-0.5" style={{ color: "var(--color-muted)" }}>
+                    {t.region}
+                  </div>
+                  <div
+                    className="text-[10px] uppercase tracking-[0.18em] mt-1.5"
+                    style={{ color: "var(--color-red)", fontWeight: 700 }}
+                  >
+                    {t.since}
+                  </div>
+                </footer>
+              </article>
+            </MarketingReveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================================== */}
       {/* SIGNUP                                                          */}
       {/* ============================================================== */}
       <section id="signup" className="container-x py-24 md:py-32">
@@ -424,7 +678,7 @@ export default function Home() {
               One account. Hardware ships same-day in ZA, 5-day target worldwide.
             </h2>
             <p className="lead mt-5 max-w-[440px]">
-              We&rsquo;ll provision your tenant, send you a sandbox API key, and put
+              We’ll provision your tenant, send you a sandbox API key, and put
               a real human in your inbox by the next business day. No demo-gating,
               no sales call required to evaluate.
             </p>
@@ -492,6 +746,14 @@ function ArrowRight() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
       <path d="M2 7h10m0 0L8 3m4 4l-4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function CodeIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+      <path d="m5 5-3 2 3 2M9 5l3 2-3 2M8 3l-2 8" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

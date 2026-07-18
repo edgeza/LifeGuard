@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "For whom — LifeGuard",
   description:
-    "Four personas, four tailored pitches. Elderly, lone worker, women and at-risk individuals, families.",
+    "Five personas, five tailored pitches. Elderly, lone worker, women and at-risk individuals, families, family caregivers.",
 };
 
 export default function ForWhom() {
@@ -15,12 +15,12 @@ export default function ForWhom() {
           <div className="lg:col-span-6">
             <div className="eyebrow mb-4">For whom</div>
             <h1 className="display-xl text-[44px] md:text-[56px] max-w-[760px]">
-              Four kinds of people need this. None of them are the same.
+              Five kinds of people need this. None of them are the same.
             </h1>
             <p className="lead mt-6 max-w-[600px]">
-              We don&rsquo;t have a single pitch for everyone. The pitch to a daughter
+              We don’t have a single pitch for everyone. The pitch to a daughter
               buying for her father is not the pitch to a security company owner
-              buying for an estate. Here is each one, written for the person it&rsquo;s
+              buying for an estate. Here is each one, written for the person it’s
               actually for.
             </p>
           </div>
@@ -48,7 +48,7 @@ export default function ForWhom() {
         eyebrow="Persona 01"
         name="Elderly"
         headline="A button that just works. A family that knows."
-        lede="Your mother is 84 and lives alone. She doesn&rsquo;t want a fall detector she has to charge every night, a smartphone app she has to remember to open, or a monthly subscription she has to defend on the bank statement. She wants a wristband she puts on once a week, a button she can press with a thumb, and a daughter who texts back &lsquo;got it, mom&rsquo; when she walks the dog."
+        lede="Your mother is 84 and lives alone. She doesn’t want a fall detector she has to charge every night, a smartphone app she has to remember to open, or a monthly subscription she has to defend on the bank statement. She wants a wristband she puts on once a week, a button she can press with a thumb, and a daughter who texts back ‘got it, mom’ when she walks the dog."
         tone="soft"
       >
         <div className="grid md:grid-cols-2 gap-10">
@@ -56,7 +56,7 @@ export default function ForWhom() {
             <h3 className="h3 text-[18px]">What we ship to her wrist</h3>
             <ul className="mt-4 space-y-3 text-[15px]" style={{ color: "var(--color-body)" }}>
               {[
-                "LifeBand G2 in a soft silicone strap — she wears it on her non-dominant wrist and forgets it&rsquo;s there",
+                "LifeBand G2 in a soft silicone strap — she wears it on her non-dominant wrist and forgets it’s there",
                 "7-day battery means she only has to remember to charge on Sunday morning",
                 "Single large recessed button — she presses with her thumb, hears a confirmation tone, and knows the call went out",
                 "Fall detection runs in firmware, not in an app she has to keep open",
@@ -72,9 +72,9 @@ export default function ForWhom() {
             <h3 className="h3 text-[18px]">What you, her daughter, see</h3>
             <ul className="mt-4 space-y-3 text-[15px]" style={{ color: "var(--color-body)" }}>
               {[
-                "Caregiver App — a single green dot that says &lsquo;all good&rsquo; every time you open it",
+                "Caregiver App — a single green dot that says ‘all good’ every time you open it",
                 "Vitals sparkline: resting heart rate, sleep hours, steps. Not a medical readout — a reassurance readout",
-                "Last-fall timestamp and a 60-day &lsquo;no falls&rsquo; counter",
+                "Last-fall timestamp and a 60-day ‘no falls’ counter",
                 "Weekly email digest on Sunday — the same time the band goes on the charger",
               ].map((line) => (
                 <li key={line} className="flex items-start gap-3">
@@ -130,19 +130,19 @@ export default function ForWhom() {
         eyebrow="Persona 02"
         name="Lone worker"
         headline="Hands-free escalation. Evidence trail. Employer liability covered."
-        lede="You&rsquo;re a head of operations for a utility company with 1,800 field engineers. You need a panic button that&rsquo;s discreet, durable, and not a smartphone — because field engineers don&rsquo;t always have their phone in their hand when the mast goes wrong and the farmer with the shotgun turns up. You need the button to escalate, the dispatch to land, and the audit trail to defend the company if anything goes to court."
+        lede="You’re a head of operations for a utility company with 1,800 field engineers. You need a panic button that’s discreet, durable, and not a smartphone — because field engineers don’t always have their phone in their hand when the mast goes wrong and the farmer with the shotgun turns up. You need the button to escalate, the dispatch to land, and the audit trail to defend the company if anything goes to court."
         tone="dark"
       >
         <div className="grid md:grid-cols-3 gap-8">
           <Stage
             step="01"
             title="Detect"
-            body="9-axis IMU detects freefall, impact, or &lsquo;man-down&rsquo; stillness longer than 90 seconds. The device auto-opens a voice line before the worker has to ask."
+            body="9-axis IMU detects freefall, impact, or ‘man-down’ stillness longer than 90 seconds. The device auto-opens a voice line before the worker has to ask."
           />
           <Stage
             step="02"
             title="Escalate"
-            body="The alert lands in your operator console in 3 seconds (target), with GPS, HR, the last 60 seconds of ambient audio, and the worker&rsquo;s incident profile."
+            body="The alert lands in your operator console in 3 seconds (target), with GPS, HR, the last 60 seconds of ambient audio, and the worker’s incident profile."
           />
           <Stage
             step="03"
@@ -191,12 +191,12 @@ export default function ForWhom() {
         eyebrow="Persona 03"
         name="Women & at-risk individuals"
         headline="Invisible panic. Real armed response."
-        lede="Most panic devices fail the same way: the press is too slow, the dispatch is too late, the operator is too far away to matter. LifeGuard&rsquo;s panic was designed by women who&rsquo;ve had to use them — and tested by operators who know the difference between a button that triggers a workflow and a button that ends an incident."
+        lede="Most panic devices fail the same way: the press is too slow, the dispatch is too late, the operator is too far away to matter. LifeGuard’s panic was designed by women who’ve had to use them — and tested by operators who know the difference between a button that triggers a workflow and a button that ends an incident."
         tone="soft"
       >
         <div className="grid md:grid-cols-12 gap-10 items-start">
           <div className="md:col-span-5">
-            <h3 className="h3 text-[18px]">What &lsquo;invisible&rsquo; means here</h3>
+            <h3 className="h3 text-[18px]">What ‘invisible’ means here</h3>
             <p
               className="mt-3 text-[15px] leading-relaxed"
               style={{ color: "var(--color-body)" }}
@@ -301,7 +301,7 @@ export default function ForWhom() {
         eyebrow="Persona 04"
         name="Families"
         headline="A Sunday-morning ritual, not an always-on emergency."
-        lede="The way most families actually use LifeGuard isn&rsquo;t the SOS button. It&rsquo;s the Sunday-morning check: she opens the Caregiver App while the kettle boils, sees the green dot, sees mom took her walk, sees dad&rsquo;s resting HR is back to baseline after the flu. That&rsquo;s the moment LifeGuard is worth the subscription."
+        lede="The way most families actually use LifeGuard isn’t the SOS button. It’s the Sunday-morning check: she opens the Caregiver App while the kettle boils, sees the green dot, sees mom took her walk, sees dad’s resting HR is back to baseline after the flu. That’s the moment LifeGuard is worth the subscription."
         tone="soft"
       >
         <div className="grid lg:grid-cols-12 gap-10 items-start">
@@ -316,18 +316,18 @@ export default function ForWhom() {
                 },
                 {
                   time: "07:43",
-                  title: "Mom&rsquo;s vitals.",
+                  title: "Mom’s vitals.",
                   body: "Resting HR 68, HRV 42 ms, sleep 7h 12m, steps yesterday 4,212. Looks like a good week. No falls logged.",
                 },
                 {
                   time: "07:45",
-                  title: "Dad&rsquo;s amber dot.",
-                  body: "Battery at 12%. Tap to nudge — LifeBand buzzes once on his wrist with a &lsquo;please charge&rsquo; icon. He&rsquo;ll plug it in after breakfast.",
+                  title: "Dad’s amber dot.",
+                  body: "Battery at 12%. Tap to nudge — LifeBand buzzes once on his wrist with a ‘please charge’ icon. He’ll plug it in after breakfast.",
                 },
                 {
                   time: "07:48",
                   title: "Weekly digest lands in her inbox.",
-                  body: "Both parents, both devices, both weeks. One email. She reads it once, files it under &lsquo;good&rsquo;.",
+                  body: "Both parents, both devices, both weeks. One email. She reads it once, files it under ‘good’.",
                 },
               ].map((step) => (
                 <li key={step.time} className="grid grid-cols-[64px_1fr] gap-4">
@@ -416,6 +416,94 @@ export default function ForWhom() {
         </div>
       </Persona>
 
+      {/* PERSONA 5 — FAMILY CAREGIVERS: MULTI-SIBLING / CARE-BOT COMPOSITION */}
+      <Persona
+        index={5}
+        eyebrow="Persona 05"
+        name="Family caregivers"
+        headline="The responsibility, split across four siblings and one aunt."
+        lede="Lerato opens the app at 07:30 with the kettle on. She sees mom took her metformin at 08:03, has a Dr Patel appointment Thursday at 10:15, and her resting HR is back to baseline after last week’s flu. She doesn’t need to call. The bot told her before she asked. The other three siblings see the same digest — nobody is the one who always has to remember."
+        tone="soft"
+      >
+        <div className="grid md:grid-cols-2 gap-10">
+          <div>
+            <h3 className="h3 text-[18px]">The shape of the week.</h3>
+            <ul className="mt-4 space-y-3 text-[15px]" style={{ color: "var(--color-body)" }}>
+              {[
+                "Monday — bot nudges mom about the Tuesday cardiology follow-up. Mom replies by SMS: ‘yes 10am, Thabo will drive’. Bot logs it, pings Thabo once.",
+                "Wednesday — resting HR spikes 14 bpm over baseline for 36 hours. Bot flags it on the family digest. Lerato calls between meetings. Mom had a quiet UTI, caught early.",
+                "Sunday — weekly digest lands in four inboxes. One read, one shared. The WhatsApp thread stays quiet, because nobody is in the dark.",
+                "Quarterly — the bot writes a summary for Dr Patel: medication adherence, HRV trend, weight, missed appointments. One PDF, attached to the next visit.",
+              ].map((line) => (
+                <li key={line} className="flex items-start gap-3">
+                  <Dot />
+                  <span dangerouslySetInnerHTML={{ __html: line }} />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="h3 text-[18px]">What the family stops doing.</h3>
+            <ul className="mt-4 space-y-3 text-[15px]" style={{ color: "var(--color-body)" }}>
+              {[
+                "The 21:00 phone call to ask ‘did you take your pills?’ — the bot does it, gently, at the right time.",
+                "The shared spreadsheet nobody updates — replaced by a read-only digest the family can’t drift out of sync on.",
+                "The guilt of being the only one who remembers — the bot distributes the load by routing nudges to whoever is closest (geographically, schedule-wise, relationship-wise).",
+                "The repeated story on every doctor visit — quarterly summaries ship in the format the clinic actually wants.",
+              ].map((line) => (
+                <li key={line} className="flex items-start gap-3">
+                  <Dot />
+                  <span dangerouslySetInnerHTML={{ __html: line }} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-10 grid md:grid-cols-3 gap-6">
+          <Pill label="Care receivers"   value="1+ per tenant" />
+          <Pill label="Family members"   value="Up to 6 per care receiver" />
+          <Pill label="Channels in/out"  value="Caregiver App · SMS · Email digest" />
+        </div>
+
+        <figure className="mt-12 rounded-xl overflow-hidden border" style={{ borderColor: "var(--color-line)" }}>
+          <img
+            src="/scenes/family-caregiver-app.svg"
+            alt="A family group chat showing a weekly LifeGuard digest from the Care bot — medication adherence, upcoming appointment, vitals trend — shared by the four siblings in the thread."
+            className="w-full h-auto block"
+            width="720"
+            height="480"
+            loading="lazy"
+          />
+          <figcaption
+            className="text-[11px] px-4 py-3"
+            style={{ color: "var(--color-muted)", background: "var(--color-bg-soft)" }}
+          >
+            The Sunday digest, in the family group chat. Nobody has to chase.
+          </figcaption>
+        </figure>
+
+        <div
+          className="mt-10 rounded-lg p-6 md:p-7"
+          style={{ background: "white", border: "1px solid var(--color-line)" }}
+        >
+          <div
+            className="text-[11px] uppercase tracking-wider mb-2"
+            style={{ color: "var(--color-muted)", fontWeight: 510 }}
+          >
+            Pricing for this persona
+          </div>
+          <div className="flex flex-wrap items-baseline gap-x-8 gap-y-2">
+            <PriceMain value="$9 / mo" sub="Per care receiver. No hardware required." />
+            <PriceAdd value="+ hardware" sub="Add LifeBand G2 or LifeClip CG2 for SOS coverage — $9.99/mo per device." />
+          </div>
+          <Link href="/care" className="btn btn-link mt-4 px-0">
+            See how Care works
+            <Arrow />
+          </Link>
+        </div>
+      </Persona>
+
       {/* CLOSING CTA */}
       <section className="container-x py-24">
         <div
@@ -426,11 +514,11 @@ export default function ForWhom() {
             className="display text-[32px] md:text-[44px] max-w-[640px] mx-auto"
             style={{ color: "#ffffff" }}
           >
-            Don&rsquo;t see yourself in one of these four?
+            Don’t see yourself in one of these five?
           </h2>
           <p className="mt-4 max-w-[520px] mx-auto" style={{ color: "rgba(230,237,247,0.7)" }}>
             We also support patients with chronic cardiac conditions, kids
-            (Junior Guardian SKU), and pets (Pet Tracker SKU). Email us. We&rsquo;ll
+            (Junior Guardian SKU), and pets (Pet Tracker SKU). Email us. We’ll
             be specific about what we ship.
           </p>
           <div className="mt-6 flex justify-center gap-3">

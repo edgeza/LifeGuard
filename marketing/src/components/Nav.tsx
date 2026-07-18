@@ -17,6 +17,10 @@ const productsMenu: ProductChild[] = [
   { label: "Operator Console",href: "/products#console",     hint: "Linear-class control room",    icon: IconConsole },
   { label: "Open API & SDK",  href: "/products#api",         hint: "REST · Webhooks · 6 languages", icon: IconApi },
   { label: "Integrations",    href: "/integration",          hint: "iOS · Watch · Android · SMS",   icon: IconWatch },
+  { label: "Care",            href: "/care",                 hint: "AI bot · new",                 icon: IconWatch },
+  { label: "Care architecture", href: "/care/architecture",  hint: "One agent per care receiver",  icon: IconWatch },
+  { label: "Care dashboard",   href: "/care/dashboard",      hint: "What caregivers see",         icon: IconWatch },
+  { label: "Care onboarding",  href: "/care/onboarding",     hint: "Set up the agent",            icon: IconWatch },
 ];
 
 export function Nav() {
@@ -96,6 +100,7 @@ export function Nav() {
               popRef={productPopRef}
             />
             <NavLink href="/for-whom">For whom</NavLink>
+            <NavLink href="/care">Care</NavLink>
             <NavLink href="/pricing">Pricing</NavLink>
             <NavLink href="/trust">Trust</NavLink>
             <NavLink href="/docs">Docs</NavLink>

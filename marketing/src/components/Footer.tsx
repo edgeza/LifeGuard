@@ -15,24 +15,28 @@ const columns: Column[] = [
       { label: "Open API",             href: "/products#api" },
       { label: "For developers",       href: "/docs" },
       { label: "Pricing",              href: "/pricing" },
+      { label: "Care (AI bot)",        href: "/care" },
+      { label: "Care architecture",    href: "/care/architecture" },
+      { label: "Care dashboard",       href: "/care/dashboard" },
+      { label: "Care onboarding",      href: "/care/onboarding" },
     ],
   },
   {
     title: "Resources",
     links: [
       { label: "Documentation",        href: "/docs" },
-      { label: "API status",           href: "/trust#status" },
+      { label: "API status",           href: "/status" },
       { label: "Compliance",          href: "/trust" },
       { label: "Coverage map",         href: "/trust#coverage" },
-      { label: "Changelog",            href: "/docs#changelog" },
+      { label: "Changelog",            href: "/changelog" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About",                href: "/trust#about" },
+      { label: "About",                href: "/about" },
       { label: "Press kit",            href: "/trust#press" },
-      { label: "Careers",              href: "/trust#careers" },
+      { label: "Careers",              href: "/careers" },
       { label: "Contact",              href: "mailto:hello@lifeguard.example.com" },
       { label: "Partners",             href: "/for-whom#partners" },
     ],
@@ -175,7 +179,7 @@ export function Footer() {
             <span>Made for the line that no one ever wants to call.</span>
           </div>
           <div className="flex items-center gap-4 text-[12px]" style={{ color: "rgba(255,255,255,0.5)" }}>
-            <Link href="/trust#status" className="inline-flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.7)" }}>
+            <Link href="/status" className="inline-flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.7)" }}>
               <span
                 aria-hidden="true"
                 className="pulse-sos"

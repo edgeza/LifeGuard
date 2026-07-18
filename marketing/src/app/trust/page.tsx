@@ -185,10 +185,10 @@ export default function Trust() {
               is yellow.
             </p>
             <div className="mt-8 flex gap-3">
-              <Link href="https://status.lifeguard.example.com" className="btn btn-red">
+              <Link href="/status" className="btn btn-red">
                 Open status page
               </Link>
-              <Link href="https://status.lifeguard.example.com/incidents" className="btn btn-ghost">
+              <Link href="/status#incidents" className="btn btn-ghost">
                 Incident history
               </Link>
             </div>
