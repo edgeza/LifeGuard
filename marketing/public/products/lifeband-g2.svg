@@ -114,7 +114,7 @@
   <!-- screen UI: time / HR / status -->
   <g font-family="Inter, -apple-system, system-ui, Segoe UI, Roboto, sans-serif" fill="#e6e9ef">
     <text x="200" y="210" font-size="9" font-weight="600" letter-spacing="2.4" fill="#94a3b8">LIFE BAND</text>
-    <text x="280" y="210" font-size="9" font-weight="600" letter-spacing="2.4" fill="#06b6a4" text-anchor="end">●&nbsp;LINK</text>
+    <text x="280" y="210" font-size="9" font-weight="600" letter-spacing="2.4" fill="#06b6a4" text-anchor="end">● LINK</text>
 
     <text x="200" y="240" font-size="30" font-weight="300" font-feature-settings="'cv11','ss01'" letter-spacing="-0.6">13:47</text>
 
@@ -134,7 +134,7 @@
   <circle cx="240" cy="240" r="36" fill="none" stroke="#06b6a4" stroke-opacity="0.15" stroke-width="0.6"/>
 
   <!-- bottom product label -->
-  <text x="240" y="420" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="2.5" fill="#475569">LIFE BAND&nbsp;·&nbsp;G2</text>
+  <text x="240" y="420" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="2.5" fill="#475569">LIFE BAND · G2</text>
   <text x="240" y="440" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#64748b">38 g · IP67 · LTE-M / Wi-Fi / GPS · 7 d battery</text>
 
   <!-- the small spec chip bottom-left -->

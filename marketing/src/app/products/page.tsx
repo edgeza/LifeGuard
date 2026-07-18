@@ -1,6 +1,17 @@
 import Link from "next/link";
 import { MarketingReveal } from "@/components/MarketingReveal";
 import { IntegrationOrbit } from "@/components/IntegrationOrbit";
+import {
+  IconIOS,
+  IconWatch,
+  IconAndroid,
+  IconWearOS,
+  IconSMS,
+  IconVoice,
+  IconAPI,
+  IconMQTT,
+  IconArrowRight,
+} from "@/components/Icons";
 
 export const metadata = {
   title: "Hardware, platform, API — LifeGuard",
@@ -95,26 +106,39 @@ const platformFeatures = [
   },
 ];
 
-const integrations = [
-  { name: "iOS",          glyph: "" },
-  { name: "Apple Watch",  glyph: "" },
-  { name: "Android",      glyph: "" },
-  { name: "Wear OS",      glyph: "" },
-  { name: "SMS fallback", glyph: "" },
-  { name: "Voice",        glyph: "" },
-  { name: "REST API",     glyph: "" },
-  { name: "MQTT",         glyph: "" },
+const integrations: { name: string }[] = [
+  { name: "iOS" },
+  { name: "Apple Watch" },
+  { name: "Android" },
+  { name: "Wear OS" },
+  { name: "SMS fallback" },
+  { name: "Voice" },
+  { name: "REST API" },
+  { name: "MQTT" },
 ];
 
-const satelliteEmoji: Record<string, string> = {
-  "iOS": "📱",
-  "Apple Watch": "⌚",
-  "Android": "🤖",
-  "Wear OS": "◍",
-  "SMS fallback": "✉",
-  "Voice": "🎙",
-  "REST API": "{ }",
-  "MQTT": "📡",
+// Per-channel icon component — proper SVG glyphs in the brand red.
+const satelliteIcons: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
+  "iOS": IconIOS,
+  "Apple Watch": IconWatch,
+  "Android": IconAndroid,
+  "Wear OS": IconWearOS,
+  "SMS fallback": IconSMS,
+  "Voice": IconVoice,
+  "REST API": IconAPI,
+  "MQTT": IconMQTT,
+};
+
+const ChannelIcon = ({
+  name,
+  className,
+  ...props
+}: {
+  name: string;
+  className?: string;
+} & React.SVGProps<SVGSVGElement>) => {
+  const Glyph = satelliteIcons[name] ?? IconAPI;
+  return <Glyph className={className} {...props} />;
 };
 
 export default function ProductsPage() {
@@ -152,7 +176,14 @@ export default function ProductsPage() {
                   size={360}
                   satellites={integrations.map((i) => ({
                     name: i.name,
-                    glyph: satelliteEmoji[i.name] ?? "·",
+                    glyph: (
+                      <ChannelIcon
+                        name={i.name}
+                        width={26}
+                        height={26}
+                        style={{ color: "var(--color-red)" }}
+                      />
+                    ),
                   }))}
                 />
               </MarketingReveal>
@@ -274,7 +305,7 @@ export default function ProductsPage() {
       </section>
 
       {/* ============================================================== */}
-      {/* INTEGRATIONS — orbit graphic + tile grid                       */}
+      {/* INTEGRATIONS — hero photo + grid                                */}
       {/* ============================================================== */}
       <section
         className="relative overflow-hidden"
@@ -285,8 +316,9 @@ export default function ProductsPage() {
           <div className="blob b3" />
         </div>
         <div className="container-x py-20 md:py-28 relative">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-5">
+          {/* Top: headline + iOS/Apple Watch product photo */}
+          <div className="grid lg:grid-cols-12 gap-12 items-center mb-14">
+            <div className="lg:col-span-5 order-2 lg:order-1">
               <MarketingReveal>
                 <div className="eyebrow mb-3">Channels</div>
                 <h2 id="integrations-heading" className="display text-[36px] md:text-[48px]">
@@ -309,36 +341,55 @@ export default function ProductsPage() {
                 </div>
               </MarketingReveal>
             </div>
-            <div className="lg:col-span-7">
-              <div className="grid sm:grid-cols-2 gap-3">
-                {integrations.map((i, idx) => (
-                  <MarketingReveal key={i.name} delay={idx * 40}>
-                    <article className="lift-strong card p-5 h-full">
-                      <div
-                        className="h-10 w-10 rounded-md grid place-items-center text-[16px] mb-3"
-                        style={{ background: "var(--color-bg-soft)" }}
-                        aria-hidden="true"
-                      >
-                        {satelliteEmoji[i.name] ?? "·"}
-                      </div>
-                      <h3 className="text-[15px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
-                        {i.name}
-                      </h3>
-                      <p className="text-[12px] mt-1.5 leading-relaxed" style={{ color: "var(--color-body)" }}>
-                        {i.name === "iOS"           && "Caregiver app, fall-risk widget, quick-call widget, share-sheet receipt."}
-                        {i.name === "Apple Watch"   && "Wrist-aware emergency shortcut; falls detected, push ETA, complication icon."}
-                        {i.name === "Android"       && "Caregiver app + Watch Active complications; same data shape as iOS."}
-                        {i.name === "Wear OS"       && "Tiles, complications, voice: 'Hey LifeGuard, send help'."}
-                        {i.name === "SMS fallback"  && "Every alert reaches a phone — even with no app installed."}
-                        {i.name === "Voice"         && "Two-way cellular voice on every pendant and band — no app needed."}
-                        {i.name === "REST API"      && "Public, REST, OAuth + Webhooks. SDK in 6 languages. No rate limit under 1M events."}
-                        {i.name === "MQTT"          && "Live telemetry into your platform, no polling — sub-200 ms path."}
-                      </p>
-                    </article>
-                  </MarketingReveal>
-                ))}
-              </div>
+            <div className="lg:col-span-7 order-1 lg:order-2">
+              <MarketingReveal delay={120}>
+                <figure className="beam-border" style={{ borderRadius: "20px" }}>
+                  <div
+                    className="photo-frame rounded-none"
+                    style={{ border: "none", borderRadius: "20px" }}
+                  >
+                    <img
+                      src="/photos/integration-apple.png"
+                      alt="iOS Caregiver App and Apple Watch SOS complication — same home screen, same incident, real-time."
+                      className="w-full h-auto block"
+                      width="1024"
+                      height="1024"
+                      loading="lazy"
+                    />
+                  </div>
+                </figure>
+              </MarketingReveal>
             </div>
+          </div>
+
+          {/* Bottom: integration tile grid (full width) */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {integrations.map((i, idx) => (
+              <MarketingReveal key={i.name} delay={idx * 40}>
+                <article className="lift-strong card p-5 h-full">
+                  <div
+                    className="h-10 w-10 rounded-md grid place-items-center mb-3"
+                    style={{ background: "var(--color-bg-soft)", color: "var(--color-red)" }}
+                    aria-hidden="true"
+                  >
+                    <ChannelIcon name={i.name} width={20} height={20} />
+                  </div>
+                  <h3 className="text-[15px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+                    {i.name}
+                  </h3>
+                  <p className="text-[12px] mt-1.5 leading-relaxed" style={{ color: "var(--color-body)" }}>
+                    {i.name === "iOS"           && "Caregiver app, fall-risk widget, quick-call widget, share-sheet receipt."}
+                    {i.name === "Apple Watch"   && "Wrist-aware emergency shortcut; falls detected, push ETA, complication icon."}
+                    {i.name === "Android"       && "Caregiver app + Watch Active complications; same data shape as iOS."}
+                    {i.name === "Wear OS"       && "Tiles, complications, voice: 'Hey LifeGuard, send help'."}
+                    {i.name === "SMS fallback"  && "Every alert reaches a phone — even with no app installed."}
+                    {i.name === "Voice"         && "Two-way cellular voice on every pendant and band — no app needed."}
+                    {i.name === "REST API"      && "Public, REST, OAuth + Webhooks. SDK in 6 languages. No rate limit under 1M events."}
+                    {i.name === "MQTT"          && "Live telemetry into your platform, no polling — sub-200 ms path."}
+                  </p>
+                </article>
+              </MarketingReveal>
+            ))}
           </div>
         </div>
       </section>
@@ -494,7 +545,8 @@ curl -X POST https://api.lifeguard.example/v1/webhooks \\
                 ))}
               </ul>
               <Link href="/docs" className="btn btn-red w-full mt-6">
-                Full reference →
+                <span>Full reference</span>
+                <IconArrowRight width={16} height={16} className="ml-1" />
               </Link>
             </MarketingReveal>
           </div>

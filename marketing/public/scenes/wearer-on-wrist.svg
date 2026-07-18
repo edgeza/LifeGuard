@@ -79,7 +79,7 @@
     <!-- screen UI -->
     <g font-family="Inter, system-ui, sans-serif">
       <text x="-32" y="-20" font-size="6" font-weight="600" letter-spacing="2.4" fill="#94a3b8">LIFEBAND · G2</text>
-      <text x="34" y="-20" text-anchor="end" font-size="6" font-weight="600" letter-spacing="2.4" fill="#06b6a4">●&nbsp;LINK</text>
+      <text x="34" y="-20" text-anchor="end" font-size="6" font-weight="600" letter-spacing="2.4" fill="#06b6a4">● LINK</text>
       <text x="-32" y="6" font-size="22" font-weight="300" letter-spacing="-0.4" fill="#e6e9ef">72</text>
       <text x="-12" y="6" font-size="9" fill="#94a3b8">bpm</text>
       <text x="-32" y="22" font-size="6" font-weight="600" fill="#94a3b8">HRV 42 · SpO₂ 97%</text>

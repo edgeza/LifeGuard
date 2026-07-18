@@ -60,7 +60,7 @@
     <path d="M -8 78 L -8 110 a 8 8 0 0 0 16 0 L 8 78" fill="url(#clip)"/>
   </g>
 
-  <text x="240" y="430" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="2.5" fill="#475569">LIFE CLIP&nbsp;·&nbsp;CG2</text>
+  <text x="240" y="430" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="2.5" fill="#475569">LIFE CLIP · CG2</text>
   <text x="240" y="450" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#64748b">12 g · BT 5.3 · 3 d paired · Discreet, reversible</text>
 
   <g transform="translate(40,420)" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" font-weight="500">

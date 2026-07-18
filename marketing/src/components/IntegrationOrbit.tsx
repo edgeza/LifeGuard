@@ -9,7 +9,7 @@ export function IntegrationOrbit({
   centerLabel = "LifeGuard",
 }: {
   size?: number;
-  satellites: { name: string; glyph: string }[];
+  satellites: { name: string; glyph: React.ReactNode }[];
   centerLabel?: string;
 }) {
   const cx = size / 2;

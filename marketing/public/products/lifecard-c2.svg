@@ -56,11 +56,11 @@
     </g>
 
     <!-- footer info -->
-    <text x="-140" y="78" font-family="JetBrains Mono, ui-monospace, monospace" font-size="8" fill="#64748b" font-weight="500">SN&nbsp;LFG2-0023149</text>
+    <text x="-140" y="78" font-family="JetBrains Mono, ui-monospace, monospace" font-size="8" fill="#64748b" font-weight="500">SN LFG2-0023149</text>
     <text x="140" y="78" text-anchor="end" font-family="JetBrains Mono, ui-monospace, monospace" font-size="8" fill="#64748b" font-weight="500">BT 5.3 · 6 mo</text>
   </g>
 
-  <text x="240" y="430" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="2.5" fill="#475569">LIFE CARD&nbsp;·&nbsp;C2</text>
+  <text x="240" y="430" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="2.5" fill="#475569">LIFE CARD · C2</text>
   <text x="240" y="450" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#64748b">8 g · CR2032 · Bluetooth only · Fits a wallet</text>
 
   <g transform="translate(40,420)" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" font-weight="500">

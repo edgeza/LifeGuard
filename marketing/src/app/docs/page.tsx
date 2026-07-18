@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IconArrowRight } from "@/components/Icons";
 
 export const metadata = {
   title: "Documentation — LifeGuard",
@@ -196,7 +197,7 @@ function Spec({ href, children }: { href: string; children: React.ReactNode }) {
       }}
     >
       <span>{children}</span>
-      <span aria-hidden="true">→</span>
+      <IconArrowRight width={14} height={14} aria-hidden="true" />
     </Link>
   );
 }
