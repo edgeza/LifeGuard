@@ -2,6 +2,13 @@ import Link from "next/link";
 import { DeviceTelemetry } from "@/components/DeviceTelemetry";
 import { SignupForm } from "@/components/SignupForm";
 import { MarketingReveal } from "@/components/MarketingReveal";
+import { Aurora } from "@/components/Aurora";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
+import { IntegrationOrbit } from "@/components/IntegrationOrbit";
+import { BackgroundGradientAnimation } from "@/components/BackgroundGradientAnimation";
+import { Spotlight } from "@/components/Spotlight";
+import { CardSpotlight } from "@/components/CardSpotlight";
+import { TiltCard } from "@/components/TiltCard";
 
 /* =========================================================================
    Page copy
@@ -59,20 +66,34 @@ export default function Home() {
       {/* ============================================================== */}
       {/* HERO                                                          */}
       {/* ============================================================== */}
-      <section className="relative overflow-hidden" aria-labelledby="hero-title">
-        {/* gradient backdrop */}
+      <section className="relative overflow-hidden bg-white" aria-labelledby="hero-title">
+        {/* 21st.dev-style animated gradient background (aceternity) */}
+        <BackgroundGradientAnimation
+          interactive
+          blendingValue="hard-light"
+          className="absolute inset-0 z-0"
+        >
+          <></>
+        </BackgroundGradientAnimation>
+
+        {/* Page-level spotlight (left and right) */}
+        <Spotlight className="-top-40 left-0 md:-top-20 md:left-60 z-[1]" fill="#e11d2e" />
+        <Spotlight className="-top-40 right-0 md:-top-20 md:right-60 z-[1]" fill="#8b0c14" />
+
+        {/* Subtle dot grid overlay */}
         <div
           aria-hidden="true"
-          className="absolute inset-0"
+          className="absolute inset-0 dot-grid dot-grid-fade opacity-50 z-[1] pointer-events-none"
+        />
+
+        {/* Bottom fade for clean transition */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-40 z-[1] pointer-events-none"
           style={{
-            background:
-              "radial-gradient(60% 50% at 20% 0%, rgba(225,29,46,0.12) 0%, rgba(255,255,255,0) 60%),\
-               radial-gradient(40% 40% at 95% 25%, rgba(10,10,10,0.05) 0%, rgba(255,255,255,0) 70%),\
-               linear-gradient(to bottom, #ffffff 0%, #fafafa 100%)",
+            background: "linear-gradient(to top, rgba(255,255,255,0.95), rgba(255,255,255,0))",
           }}
         />
-        <div aria-hidden="true" className="absolute inset-0 grid-hairline opacity-60" />
-        <div aria-hidden="true" className="absolute inset-0 noise" />
 
         <div className="container-x relative pt-20 pb-24 md:pt-28 md:pb-32">
           <div className="grid lg:grid-cols-12 gap-12 items-start">
@@ -88,7 +109,7 @@ export default function Home() {
                 When the band presses,
                 <br />
                 <span className="relative inline-block">
-                  <span style={{ color: "var(--color-red)" }}>the line opens.</span>
+                  <span className="shimmer-text">the line opens.</span>
                   <span
                     aria-hidden="true"
                     className="absolute left-0 right-0 -bottom-1 h-[6px] rounded-full"
@@ -115,18 +136,22 @@ export default function Home() {
                 </Link>
               </div>
               <dl className="mt-12 grid grid-cols-3 gap-6 max-w-[520px]">
-                <Stat label="Countries with first-party carriers" value="195" />
-                <Stat label="Operator console SLA"               value="99.95%" />
+                <Stat label="Countries with first-party carriers" value="195"     numericTo={195} delay={0} />
+                <Stat label="Operator console SLA"               value="99.95%"  numericTo={99.95} decimals={2} suffix="%" delay={120} />
                 <Stat label="API rate limit, free tier"          value="1M / mo" />
               </dl>
             </div>
 
-            <div className="lg:col-span-5 lg:pt-6">
+            <div className="lg:col-span-5 lg:pt-6 relative z-[2]">
               <MarketingReveal>
                 <DeviceTelemetry />
                 <div className="mt-6 grid grid-cols-2 gap-3">
-                  <DeviceTile img="/photos/lifeband-g2.png"    name="LifeBand G2"    tagline="HR / HRV / SpO₂ · IP67 · 7 d battery" />
-                  <DeviceTile img="/photos/lifependant-p2.png" name="LifePendant P2" tagline="Two-way voice · single SOS" />
+                  <TiltCard className="rounded-xl overflow-hidden">
+                    <DeviceTile img="/photos/lifeband-g2.png"    name="LifeBand G2"    tagline="HR / HRV / SpO₂ · IP67 · 7 d battery" />
+                  </TiltCard>
+                  <TiltCard className="rounded-xl overflow-hidden">
+                    <DeviceTile img="/photos/lifependant-p2.png" name="LifePendant P2" tagline="Two-way voice · single SOS" />
+                  </TiltCard>
                 </div>
               </MarketingReveal>
             </div>
@@ -385,14 +410,37 @@ export default function Home() {
    Small components
    ========================================================================= */
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({
+  label,
+  value,
+  numericTo,
+  decimals,
+  suffix,
+  delay,
+}: {
+  label: string;
+  value: string;
+  numericTo?: number;
+  decimals?: number;
+  suffix?: string;
+  delay?: number;
+}) {
   return (
     <div>
       <dt className="text-[11px] uppercase tracking-[0.18em]" style={{ color: "var(--color-muted)", fontWeight: 600 }}>
         {label}
       </dt>
       <dd className="tabular mt-1.5 text-[26px]" style={{ color: "var(--color-ink)", fontWeight: 600, letterSpacing: "-0.02em" }}>
-        {value}
+        {numericTo !== undefined ? (
+          <AnimatedNumber
+            to={numericTo}
+            decimals={decimals ?? 0}
+            suffix={suffix}
+            durationMs={1400}
+          />
+        ) : (
+          value
+        )}
       </dd>
     </div>
   );
@@ -417,9 +465,11 @@ function Check() {
 
 function DeviceTile({ img, name, tagline }: { img: string; name: string; tagline: string }) {
   return (
-    <div className="lift relative rounded-xl overflow-hidden border bg-white shadow-stripe-2" style={{ borderColor: "var(--color-line)" }}>
-      <img src={img} alt={name} className="w-full h-auto block aspect-square object-cover" width="240" height="240" loading="lazy" />
-      <div className="px-3 py-2 text-[11px] flex flex-col gap-0.5" style={{ background: "var(--color-bg-soft)" }}>
+    <div className="relative w-full">
+      <div className="photo-frame rounded-none border-0 shadow-none">
+        <img src={img} alt={name} className="w-full h-auto block" width="240" height="240" loading="lazy" />
+      </div>
+      <div className="px-3 py-2 text-[11px] flex flex-col gap-0.5" style={{ background: "var(--color-bg-soft)", borderTop: "1px solid var(--color-line)" }}>
         <span style={{ color: "var(--color-ink)", fontWeight: 600 }}>{name}</span>
         <span style={{ color: "var(--color-muted)" }}>{tagline}</span>
       </div>

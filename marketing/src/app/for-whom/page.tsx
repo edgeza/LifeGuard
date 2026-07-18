@@ -515,7 +515,7 @@ function Persona({
           </div>
         </div>
         <div
-          className="rounded-xl p-6 md:p-10"
+          className="rounded-xl p-6 md:p-10 lift-strong"
           style={
             tone === "dark"
               ? {

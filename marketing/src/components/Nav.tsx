@@ -13,7 +13,6 @@ type ProductChild = {
 const productsMenu: ProductChild[] = [
   { label: "LifeBand G2",     href: "/products#lifeband",    hint: "Wristband · LTE-M · 7 days", icon: IconBand },
   { label: "LifePendant P2",  href: "/products#lifependant", hint: "Pendant · 14 days standby",   icon: IconPendant },
-  { label: "LifeCard C2",     href: "/products#lifecard",    hint: "Wallet card · 6 mo coin cell", icon: IconCard },
   { label: "LifeClip CG2",    href: "/products#lifeclip",    hint: "Discreet clip · 3 days",       icon: IconClip },
   { label: "Operator Console",href: "/products#console",     hint: "Linear-class control room",    icon: IconConsole },
   { label: "Open API & SDK",  href: "/products#api",         hint: "REST · Webhooks · 6 languages", icon: IconApi },

@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { MarketingReveal } from "@/components/MarketingReveal";
+import { IntegrationOrbit } from "@/components/IntegrationOrbit";
 
 export const metadata = {
   title: "Hardware, platform, API — LifeGuard",
   description:
-    "Four wearable SKUs on a shared firmware image, a 7-region cloud platform, and an open REST API with SDKs in six languages.",
+    "Three wearable SKUs on a shared firmware image, a 195-country cloud platform, an open REST API with SDKs in six languages, and integrations with the platforms your customers already use.",
 };
 
 const devices = [
@@ -12,11 +14,13 @@ const devices = [
     sku: "G2",
     name: "LifeBand",
     tagline: "The wristband that knows how your body is doing.",
-    body: "7-day battery. LTE-M, NB-IoT, Wi-Fi 5, Bluetooth 5.3 indoor positioning, GPS. HR, HRV, SpO\u2082, skin temperature, 9-axis IMU, fall detection, single button. 38 grams, IP67.",
+    body: "7-day battery. LTE-M, NB-IoT, Wi-Fi 5, Bluetooth 5.3 indoor positioning, GPS. HR, HRV, SpO<sub>2</sub>, skin temperature, 9-axis IMU, fall detection, single button. 38 grams, IP67.",
+    photo: "/photos/lifeband-g2.png",
+    photoAlt: "LifeBand G2 wristband — real product photograph",
     specs: [
       ["Form", "Wristband"],
       ["Battery", "7 days"],
-      ["Sensors", "HR · HRV · SpO\u2082 · Skin temp · 9-axis IMU · Fall"],
+      ["Sensors", "HR · HRV · SpO₂ · Skin temp · 9-axis IMU · Fall"],
       ["Connectivity", "LTE-M · NB-IoT · Wi-Fi · BT 5.3 · GPS"],
       ["Weight", "38 g"],
     ],
@@ -28,6 +32,8 @@ const devices = [
     name: "LifePendant",
     tagline: "Worn over the heart. Two-way voice. The pendant that talks back.",
     body: "14-day standby, 6 hours active voice on the cellular call. LTE-M plus GPS plus Bluetooth indoor. Single button, 9-axis IMU for fall detection. Designed to be worn and forgotten.",
+    photo: "/photos/lifependant-p2.png",
+    photoAlt: "LifePendant P2 — real product photograph",
     specs: [
       ["Form", "Pendant / lanyard"],
       ["Battery", "14 days standby · 6 hr voice"],
@@ -38,26 +44,13 @@ const devices = [
     price: { wholesale: "$32", retail: "$59" },
   },
   {
-    id: "lifecard",
-    sku: "C2",
-    name: "LifeCard",
-    tagline: "A credit card that calls for help.",
-    body: "6 months on a coin cell. Pairs to the wearer&rsquo;s phone over Bluetooth. No cellular radio, no GPS. For the wallet, the back of an ID lanyard, the inside of a passport holder. Subtle is the feature.",
-    specs: [
-      ["Form", "Credit card"],
-      ["Battery", "6 months (coin cell)"],
-      ["Sensors", "Button"],
-      ["Connectivity", "BT 5.3 (paired to phone)"],
-      ["Replacement", "Self-service, free with active plan"],
-    ],
-    price: { wholesale: "$14", retail: "$29" },
-  },
-  {
     id: "lifeclip",
     sku: "CG2",
     name: "LifeClip",
     tagline: "Discreet. Clipped where no one looks for it.",
-    body: "3-day battery. LTE-M shared from the wearer&rsquo;s phone, or standalone with its own eSIM. Single button, fall detection that subscribes to the paired phone&rsquo;s sensors. Designed for situations where a wrist is not safe.",
+    body: "3-day battery. LTE-M shared from the wearer's phone, or standalone with its own eSIM. Single button, fall detection that subscribes to the paired phone's sensors. Designed for situations where a wrist is not safe.",
+    photo: "/photos/lifeclip-cg2.png",
+    photoAlt: "LifeClip CG2 — real product photograph",
     specs: [
       ["Form", "Clip / watch add-on"],
       ["Battery", "3 days"],
@@ -93,353 +86,495 @@ const platformFeatures = [
   {
     n: "05",
     title: "Three responder modes.",
-    body: "Family mode (SMS to contacts only), Operator mode (subscriber&rsquo;s security company operator dispatches), Network mode (nearest professional responder from our partner network).",
+    body: "Family-only (SMS fanout), Pro (dedicated operator console + SLA), Hybrid (escalates to operator after family no-response in 90 s). Every plan supports all three.",
   },
   {
     n: "06",
-    title: "Vitals history, exportable.",
-    body: "Every device records HR, HRV, SpO\u2082, skin temperature, steps, sleep at 60-second resolution. TimescaleDB-backed. CSV / JSON via API, or weekly email digest.",
-  },
-  {
-    n: "07",
-    title: "Predictive fall risk (beta).",
-    body: "30-day HRV trend. If it&rsquo;s declining while sleep is fragmenting, the caregiver gets a heads-up before the fall, not after.",
-  },
-  {
-    n: "08",
-    title: "Mass-broadcast for estates and campuses.",
-    body: "Define a geofence. Push a notice. Ten thousand devices reached in 30 seconds. Operator-grade speed for sites that need it.",
-  },
-  {
-    n: "09",
-    title: "Immutable audit trail.",
-    body: "Every action by every operator, every partner config change, every firmware event. Seven years, immutable, available to the partner via API.",
-  },
-  {
-    n: "10",
-    title: "Open platform.",
-    body: "REST API. Webhooks. GraphQL on the v2 roadmap. WebSocket live-stream. OAuth 2.0. Postman collection. SDK in TypeScript, Python, Go, Java, C#, Ruby.",
+    title: "Branded firmware skin.",
+    body: "Operator-app launch icon, carrier-APN profile, voice-greeting message, end-of-session SMS — every channel carries your name, not ours.",
   },
 ];
 
-export default function Products() {
+const integrations = [
+  { name: "iOS",          glyph: "" },
+  { name: "Apple Watch",  glyph: "" },
+  { name: "Android",      glyph: "" },
+  { name: "Wear OS",      glyph: "" },
+  { name: "SMS fallback", glyph: "" },
+  { name: "Voice",        glyph: "" },
+  { name: "REST API",     glyph: "" },
+  { name: "MQTT",         glyph: "" },
+];
+
+const satelliteEmoji: Record<string, string> = {
+  "iOS": "📱",
+  "Apple Watch": "⌚",
+  "Android": "🤖",
+  "Wear OS": "◍",
+  "SMS fallback": "✉",
+  "Voice": "🎙",
+  "REST API": "{ }",
+  "MQTT": "📡",
+};
+
+export default function ProductsPage() {
   return (
     <>
-      {/* HEADER */}
-      <section className="relative">
-        <div className="container-x pt-20 pb-16">
-          <div className="eyebrow mb-4">Hardware · Platform · API</div>
-          <h1 className="display-xl text-[44px] md:text-[60px] max-w-[820px]">
-            One stack. Four wearables. One platform. One API.
-          </h1>
-          <p className="lead mt-6 max-w-[640px]">
-            Every LifeGuard device runs the same firmware, shares the same SIM
-            profile, and emits the same JSON shape. The platform is one product,
-            not ten. The API is one surface, not a maze of integrations.
-          </p>
+      {/* ============================================================== */}
+      {/* HEADER — aurora + dot grid + animated hero number             */}
+      {/* ============================================================== */}
+      <section className="relative overflow-hidden" aria-labelledby="products-title">
+        <div className="aurora-bg" aria-hidden="true">
+          <div className="blob b1" />
+          <div className="blob b2" />
+        </div>
+        <div aria-hidden="true" className="absolute inset-0 dot-grid dot-grid-fade opacity-50" />
+
+        <div className="container-x relative pt-20 pb-16">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              <div className="eyebrow mb-4">Hardware · Platform · API</div>
+              <h1 id="products-title" className="display-xl text-[44px] md:text-[60px] max-w-[820px]">
+                Three wearables. One platform.{" "}
+                <span className="shimmer-text">Anything you already use.</span>
+              </h1>
+              <p className="lead mt-6 max-w-[640px]">
+                Every LifeGuard device runs the same firmware, shares the same SIM
+                profile, and emits the same JSON shape. The platform is one product,
+                not ten. The API is one surface, not a maze of integrations. The
+                channels your customers already trust — iOS, Watch, Android,
+                SMS, voice — are first-class citizens.
+              </p>
+            </div>
+            <div className="lg:col-span-5 flex justify-center">
+              <MarketingReveal>
+                <IntegrationOrbit
+                  size={360}
+                  satellites={integrations.map((i) => ({
+                    name: i.name,
+                    glyph: satelliteEmoji[i.name] ?? "·",
+                  }))}
+                />
+              </MarketingReveal>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* HARDWARE — alternating editorial composition, not a tile grid */}
-      <section aria-labelledby="hardware-heading" className="container-x pb-20">
+      {/* ============================================================== */}
+      {/* HARDWARE — alternating editorial composition                   */}
+      {/* ============================================================== */}
+      <section aria-labelledby="hardware-heading" className="container-x py-12 md:py-20">
         <h2 id="hardware-heading" className="h2 text-[32px] md:text-[40px] mb-12">
-          Four SKUs on one SoC family.
+          Three SKUs. One firmware image.
         </h2>
-        <div className="space-y-20 md:space-y-28">
+        <div className="space-y-24 md:space-y-32">
           {devices.map((d, i) => (
-            <article
-              key={d.id}
-              id={d.id}
-              className="grid md:grid-cols-12 gap-8 md:gap-10 items-start"
-            >
-              <div className={`md:col-span-7 ${i % 2 === 1 ? "md:order-2" : ""}`}>
-                <div className="flex items-baseline gap-3 mb-3">
-                  <span
-                    className="tabular text-[12px] tracking-wider"
-                    style={{ color: "var(--color-red)", fontWeight: 510 }}
-                  >
-                    SKU {d.sku}
-                  </span>
-                  <span
-                    className="text-[12px]"
-                    style={{ color: "var(--color-muted)" }}
-                  >
-                    · {d.name}
-                  </span>
-                </div>
-                <h3 className="h2 text-[28px] md:text-[36px]">{d.tagline}</h3>
-                <p
-                  className="mt-4 text-[16px] leading-relaxed max-w-[540px]"
-                  style={{ color: "var(--color-body)" }}
-                  dangerouslySetInnerHTML={{ __html: d.body }}
-                />
-                <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 max-w-[540px]">
-                  {d.specs.map(([k, v]) => (
-                    <div key={k} className="contents">
-                      <dt
-                        className="text-[12px] uppercase tracking-wider"
-                        style={{ color: "var(--color-muted)", fontWeight: 510 }}
-                      >
-                        {k}
-                      </dt>
-                      <dd
-                        className="text-[13px]"
-                        style={{ color: "var(--color-ink)" }}
-                      >
-                        {v}
-                      </dd>
+            <article key={d.id} id={d.id} className="grid md:grid-cols-12 gap-8 md:gap-12 items-center">
+              {/* Photo — alternates left/right */}
+              <div className={`md:col-span-6 ${i % 2 === 1 ? "md:order-2" : ""}`}>
+                <MarketingReveal>
+                  <div className="beam-border lift-strong">
+                    <div className="photo-frame" style={{ border: "none" }}>
+                      <img
+                        src={d.photo}
+                        alt={d.photoAlt}
+                        className="w-full h-auto block"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      />
                     </div>
-                  ))}
-                </dl>
-                <div className="mt-6 flex items-center gap-6">
-                  <PriceTag label="Wholesale" value={d.price.wholesale} />
-                  <PriceTag label="MSRP" value={d.price.retail} />
-                </div>
+                    <div
+                      className="px-4 py-2.5 flex items-center justify-between text-[12px]"
+                      style={{ background: "var(--color-bg-soft)", borderTop: "1px solid var(--color-line)" }}
+                    >
+                      <span
+                        className="uppercase tracking-wider"
+                        style={{ color: "var(--color-muted)", fontWeight: 600 }}
+                      >
+                        {d.name} · SKU {d.sku}
+                      </span>
+                      <span
+                        className="flex items-center gap-1.5"
+                        style={{ color: "var(--color-red)", fontWeight: 600 }}
+                      >
+                        <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: "var(--color-red)" }} />
+                        In stock · ships in 48 hrs
+                      </span>
+                    </div>
+                  </div>
+                </MarketingReveal>
               </div>
-              <div className={`md:col-span-5 ${i % 2 === 1 ? "md:order-1" : ""}`}>
-                <DeviceRender name={d.name} sku={d.sku} />
+
+              {/* Copy */}
+              <div className={`md:col-span-6 ${i % 2 === 1 ? "md:order-1" : ""}`}>
+                <MarketingReveal delay={120}>
+                  <div className="flex items-baseline gap-3 mb-3">
+                    <span
+                      className="tabular text-[12px] tracking-[0.18em] uppercase"
+                      style={{ color: "var(--color-red)", fontWeight: 700 }}
+                    >
+                      SKU {d.sku}
+                    </span>
+                    <span className="text-[12px]" style={{ color: "var(--color-muted)" }}>
+                      · {d.name}
+                    </span>
+                  </div>
+                  <h3 className="h2 text-[28px] md:text-[36px]">{d.tagline}</h3>
+                  <p
+                    className="mt-4 text-[16px] leading-relaxed max-w-[540px]"
+                    style={{ color: "var(--color-body)" }}
+                    dangerouslySetInnerHTML={{ __html: d.body }}
+                  />
+                  <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 max-w-[540px]">
+                    {d.specs.map(([k, v]) => (
+                      <div key={k} className="contents">
+                        <dt
+                          className="text-[12px] uppercase tracking-wider"
+                          style={{ color: "var(--color-muted)", fontWeight: 600 }}
+                        >
+                          {k}
+                        </dt>
+                        <dd className="text-[13px]" style={{ color: "var(--color-ink)" }}>
+                          {v}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <div className="mt-6 flex items-center gap-6">
+                    <div>
+                      <div
+                        className="text-[11px] uppercase tracking-wider"
+                        style={{ color: "var(--color-muted)", fontWeight: 600 }}
+                      >
+                        Wholesale
+                      </div>
+                      <div className="mt-0.5 mono tabular text-[20px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+                        {d.price.wholesale}
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="text-[11px] uppercase tracking-wider"
+                        style={{ color: "var(--color-muted)", fontWeight: 600 }}
+                      >
+                        MSRP
+                      </div>
+                      <div className="mt-0.5 mono tabular text-[20px]" style={{ color: "var(--color-muted)" }}>
+                        {d.price.retail}
+                      </div>
+                    </div>
+                  </div>
+                </MarketingReveal>
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      {/* PLATFORM FEATURES */}
+      {/* ============================================================== */}
+      {/* INTEGRATIONS — orbit graphic + tile grid                       */}
+      {/* ============================================================== */}
       <section
-        id="console"
-        className="section-soft border-y"
-        style={{ borderColor: "var(--color-line)" }}
-        aria-labelledby="platform-heading"
+        className="relative overflow-hidden"
+        id="integrations"
+        aria-labelledby="integrations-heading"
       >
-        <div className="container-x py-24 md:py-32">
-          <div className="max-w-[640px] mb-14">
-            <div className="eyebrow mb-4">Platform</div>
-            <h2 id="platform-heading" className="h2 text-[36px] md:text-[44px]">
-              Ten capabilities that ship on day one.
-            </h2>
-            <p className="lead mt-5">
-              No roadmap asterisks. The capabilities on this page are in
-              production today and used by paying subscribers across 195
-              countries.
-            </p>
-          </div>
-          <ol className="grid md:grid-cols-2 gap-x-12 gap-y-10">
-            {platformFeatures.map((f) => (
-              <li key={f.n} className="grid grid-cols-[40px_1fr] gap-4">
-                <span
-                  className="tabular text-[12px] tracking-wider"
-                  style={{ color: "var(--color-red)", fontWeight: 510 }}
-                >
-                  {f.n}
-                </span>
-                <div>
-                  <h3 className="h3 text-[18px]">{f.title}</h3>
-                  <p
-                    className="mt-2 text-[14px] leading-relaxed"
-                    style={{ color: "var(--color-body)" }}
-                    dangerouslySetInnerHTML={{ __html: f.body }}
-                  />
+        <div className="aurora-bg" aria-hidden="true">
+          <div className="blob b3" />
+        </div>
+        <div className="container-x py-20 md:py-28 relative">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-5">
+              <MarketingReveal>
+                <div className="eyebrow mb-3">Channels</div>
+                <h2 id="integrations-heading" className="display text-[36px] md:text-[48px]">
+                  Works with the apps you already use.
+                </h2>
+                <p className="lead mt-5 max-w-[480px]">
+                  We don&rsquo;t ask your customers to learn another app. The push
+                  alert lands on the iPhone, the complication sits on the Watch
+                  face, the SMS goes to anyone with a phone. If they can read
+                  text and press a button, they can use LifeGuard.
+                </p>
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <Link href="/integration" className="btn btn-red btn-lg">
+                    Read integration details
+                    <ArrowRight />
+                  </Link>
+                  <Link href="/docs" className="btn btn-ghost btn-lg">
+                    Public REST API docs
+                  </Link>
                 </div>
-              </li>
-            ))}
-          </ol>
+              </MarketingReveal>
+            </div>
+            <div className="lg:col-span-7">
+              <div className="grid sm:grid-cols-2 gap-3">
+                {integrations.map((i, idx) => (
+                  <MarketingReveal key={i.name} delay={idx * 40}>
+                    <article className="lift-strong card p-5 h-full">
+                      <div
+                        className="h-10 w-10 rounded-md grid place-items-center text-[16px] mb-3"
+                        style={{ background: "var(--color-bg-soft)" }}
+                        aria-hidden="true"
+                      >
+                        {satelliteEmoji[i.name] ?? "·"}
+                      </div>
+                      <h3 className="text-[15px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
+                        {i.name}
+                      </h3>
+                      <p className="text-[12px] mt-1.5 leading-relaxed" style={{ color: "var(--color-body)" }}>
+                        {i.name === "iOS"           && "Caregiver app, fall-risk widget, quick-call widget, share-sheet receipt."}
+                        {i.name === "Apple Watch"   && "Wrist-aware emergency shortcut; falls detected, push ETA, complication icon."}
+                        {i.name === "Android"       && "Caregiver app + Watch Active complications; same data shape as iOS."}
+                        {i.name === "Wear OS"       && "Tiles, complications, voice: 'Hey LifeGuard, send help'."}
+                        {i.name === "SMS fallback"  && "Every alert reaches a phone — even with no app installed."}
+                        {i.name === "Voice"         && "Two-way cellular voice on every pendant and band — no app needed."}
+                        {i.name === "REST API"      && "Public, REST, OAuth + Webhooks. SDK in 6 languages. No rate limit under 1M events."}
+                        {i.name === "MQTT"          && "Live telemetry into your platform, no polling — sub-200 ms path."}
+                      </p>
+                    </article>
+                  </MarketingReveal>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* API SUMMARY */}
-      <section id="api" aria-labelledby="api-heading" className="container-x py-24 md:py-32">
-        <div className="grid lg:grid-cols-12 gap-12 items-start">
-          <div className="lg:col-span-5">
-            <div className="eyebrow mb-4">Open API</div>
-            <h2 id="api-heading" className="h2 text-[36px] md:text-[44px]">
-              The console is the product. The API is the same product.
+      {/* ============================================================== */}
+      {/* PLATFORM — bento grid of features                              */}
+      {/* ============================================================== */}
+      <section
+        aria-labelledby="platform-heading"
+        className="section-soft border-y"
+        style={{ borderColor: "var(--color-line)" }}
+      >
+        <div className="container-x py-20 md:py-28">
+          <div className="max-w-[640px] mb-12">
+            <div className="eyebrow mb-3">Platform</div>
+            <h2 id="platform-heading" className="display text-[36px] md:text-[48px]">
+              What the firmware actually does.
             </h2>
             <p className="lead mt-5">
-              Every action an operator can take in the console is an API call.
-              Every signal a device emits is a webhook. We don&rsquo;t gate the API
-              behind enterprise contracts and we don&rsquo;t rate-limit it below a
-              million events a month on any tier.
+              The wearable is only half the product. The platform is the other half.
+              Six concrete guarantees, each measured and publishable.
             </p>
-            <ul
-              className="mt-8 space-y-3 text-[15px]"
-              style={{ color: "var(--color-body)" }}
-            >
-              {[
-                "REST + Webhooks + WebSocket live-stream",
-                "OAuth 2.0 with PKCE",
-                "Postman collection, sample code in 6 languages",
-                "Sandbox tenant mirrors production — free forever",
-                "OpenAPI 3.1 spec, machine-readable",
-              ].map((l) => (
-                <li key={l} className="flex items-start gap-3">
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: 9999,
-                      marginTop: 8,
-                      background: "var(--color-red)",
-                    }}
-                  />
-                  <span>{l}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-10 flex gap-3">
-              <Link href="/docs" className="btn btn-red">
-                Read the docs
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {platformFeatures.map((f, i) => (
+              <MarketingReveal key={f.n} delay={i * 40}>
+                <article className="lift-strong card p-6 h-full">
+                  <div className="flex items-baseline gap-3">
+                    <span
+                      className="tabular text-[12px] tracking-[0.18em] uppercase"
+                      style={{ color: "var(--color-red)", fontWeight: 700 }}
+                    >
+                      {f.n}
+                    </span>
+                  </div>
+                  <h3 className="h3 mt-2 text-[18px]">{f.title}</h3>
+                  <p className="mt-2 text-[13.5px] leading-relaxed" style={{ color: "var(--color-body)" }}>
+                    {f.body}
+                  </p>
+                </article>
+              </MarketingReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* CONSOLE — section that hints at the operator console           */}
+      {/* ============================================================== */}
+      <section
+        id="console"
+        className="section-dark py-20 md:py-28"
+        aria-labelledby="console-heading"
+      >
+        <div className="container-x">
+          <MarketingReveal>
+            <div className="max-w-[640px] mb-12">
+              <div className="eyebrow mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
+                Operator console
+              </div>
+              <h2 id="console-heading" className="display text-[36px] md:text-[48px]" style={{ color: "#fff" }}>
+                Three columns. Three seconds. Zero install.
+              </h2>
+              <p className="lead mt-5" style={{ color: "rgba(255,255,255,0.7)" }}>
+                A Linear-class control-room in the browser. Filters + subscribers
+                on the left, the live map in the centre, the AI-scored alert
+                queue on the right. The killer surface for security dispatchers
+                who live in it eight hours a day.
+              </p>
+            </div>
+          </MarketingReveal>
+          <MarketingReveal>
+            <div className="beam-border" style={{ borderRadius: "16px" }}>
+              <div className="photo-frame" style={{ border: "none", borderRadius: 16 }}>
+                <img
+                  src="/dashboards/console-hero.svg"
+                  alt="The LifeGuard operator console — three-column Linear-class dark UI with AI-scored alert queue, live map, shift summary"
+                  className="w-full h-auto block"
+                  width="1024"
+                  height="624"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </MarketingReveal>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* API — code + SDK list                                          */}
+      {/* ============================================================== */}
+      <section id="api" className="container-x py-20 md:py-28" aria-labelledby="api-heading">
+        <MarketingReveal>
+          <div className="max-w-[680px] mb-12">
+            <div className="eyebrow mb-3">API</div>
+            <h2 id="api-heading" className="display text-[36px] md:text-[48px]">
+              Same model every operator understands. Same shape every operator can parse.
+            </h2>
+            <p className="lead mt-5">
+              Public REST. Signed webhooks. SDK in six languages. Free up to
+              1&nbsp;M events a month. No "contact sales" gating.
+            </p>
+          </div>
+        </MarketingReveal>
+        <div className="grid lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-7">
+            <MarketingReveal>
+              <CodeBlock
+                label="curl"
+                body={`# Subscribe to every open incident on tenant t_2zZ4
+curl -X POST https://api.lifeguard.example/v1/webhooks \\
+  -H 'Authorization: Bearer ' $LIFEGUARD_KEY \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "url": "https://ops.crescent.example/v1/incidents",
+    "events": ["incident.opened", "incident.dispatched", "incident.resolved"],
+    "secret": "'"$LIFEGUARD_WEBHOOK_SECRET"'"
+  }'
+
+# Sample inbound payload
+{
+  "id": "inc_2026_0717_0046",
+  "type": "incident.opened",
+  "wearer_id": "sub_044",
+  "wearer_name": "Nomvula Mokoena",
+  "ai_score": 0.91,
+  "trigger": "panic_press",
+  "lat": -33.918, "lng": 18.385,
+  "device_battery": 84
+}`}
+              />
+            </MarketingReveal>
+          </div>
+          <div className="lg:col-span-5">
+            <MarketingReveal delay={120}>
+              <ul className="space-y-3">
+                {[
+                  { name: "TypeScript · @lifeguard/sdk",           hint: "Node 18+ / Deno / Bun" },
+                  { name: "Python · pip install lifeguard",         hint: "3.9 +" },
+                  { name: "Go · go get lifeguard/lifeguard-go",    hint: "1.21 +" },
+                  { name: "Ruby · gem install lifeguard",           hint: "3.0 +" },
+                  { name: "Java · maven com.lifeguard:sdk",         hint: "21 LTS" },
+                  { name: "C# · dotnet add package LifeGuard",      hint: ".NET 8" },
+                ].map((s) => (
+                  <li
+                    key={s.name}
+                    className="rounded-lg px-4 py-3 flex items-center justify-between lift-strong"
+                    style={{ background: "var(--color-bg-soft)", border: "1px solid var(--color-line)" }}
+                  >
+                    <span className="mono text-[13px]" style={{ color: "var(--color-ink)" }}>{s.name}</span>
+                    <span className="text-[11px]" style={{ color: "var(--color-muted)" }}>{s.hint}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/docs" className="btn btn-red w-full mt-6">
+                Full reference →
               </Link>
-              <Link href="/signup" className="btn btn-ghost">
-                Get a sandbox key
+            </MarketingReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* CTA                                                            */}
+      {/* ============================================================== */}
+      <section className="section-dark py-24 md:py-32" aria-labelledby="cta-heading">
+        <div className="container-x text-center">
+          <MarketingReveal>
+            <div className="max-w-[640px] mx-auto">
+              <div className="eyebrow mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
+                Next step
+              </div>
+              <h2 id="cta-heading" className="display text-[36px] md:text-[48px]" style={{ color: "#fff" }}>
+                One tenant. One sandbox key. Ten minutes.
+              </h2>
+              <p className="lead mt-5" style={{ color: "rgba(255,255,255,0.7)" }}>
+                Provision a sandbox in three lines. Start firing real alerts from
+                real devices. No sales call.
+              </p>
+              <Link href="/signup" className="btn btn-red btn-lg mt-8">
+                Create the tenant
+                <ArrowRight />
               </Link>
             </div>
-          </div>
-          <div className="lg:col-span-7">
-            <CodeSample />
-          </div>
+          </MarketingReveal>
         </div>
       </section>
     </>
   );
 }
 
-function PriceTag({ label, value }: { label: string; value: string }) {
+function CodeBlock({ label, body }: { label: string; body: string }) {
   return (
-    <div>
-      <div
-        className="text-[11px] uppercase tracking-wider"
-        style={{ color: "var(--color-muted)", fontWeight: 510 }}
-      >
-        {label}
-      </div>
-      <div
-        className="mt-0.5 mono tabular text-[18px]"
-        style={{ color: "var(--color-ink)", fontWeight: 400 }}
-      >
-        {value}
-      </div>
-    </div>
-  );
-}
-
-/**
- * Per-SKU render — load the canonical, photographed-grade SVG illustration for
- * each device. Each render lives in /public/products/ and was composed to be
- * visually distinctive, professionally rendered, and recognisable across all four
- * surfaces of the LifeGuard stack (marketing / family / console / reseller).
- */
-// Real product photos win where we have them (lifeband, lifependant, lifeclip).
-// LifeCard has no photo so we fall back to the SVG render.
-const DEVICE_PHOTO: Record<string, { src: string; alt: string }> = {
-  LifeBand:    { src: "/photos/lifeband-g2.png",    alt: "LifeBand G2 wristband — real product photography" },
-  LifePendant: { src: "/photos/lifependant-p2.png", alt: "LifePendant P2 pendant with SOS button — real product photography" },
-  LifeClip:    { src: "/photos/lifeclip-cg2.png",    alt: "LifeClip CG2 discreet clip — real product photography" },
-};
-
-const DEVICE_RENDER: Record<string, string> = {
-  LifeCard:    "/products/lifecard-c2.svg",
-};
-
-function DeviceRender({ name, sku }: { name: string; sku: string }) {
-  const photo = DEVICE_PHOTO[name];
-  const svg   = DEVICE_RENDER[name];
-
-  return (
-    <div
-      className="lift rounded-2xl overflow-hidden border bg-[var(--color-bg-soft)] shadow-stripe-2"
-      style={{ borderColor: "var(--color-line)" }}
-    >
-      {photo ? (
-        <img
-          src={photo.src}
-          alt={photo.alt}
-          className="w-full h-auto block aspect-square object-cover"
-          width="900"
-          height="900"
-          loading="lazy"
-        />
-      ) : (
-        <img
-          src={svg!}
-          alt={`${name} ${sku} — LifeGuard wearable hardware product render`}
-          className="w-full h-auto block"
-          width="480"
-          height="480"
-          loading="lazy"
-        />
-      )}
-      <div className="px-4 py-3 flex items-center justify-between text-[12px]" style={{ background: "var(--color-bg-soft)" }}>
-        <span style={{ color: "var(--color-muted)", fontWeight: 600, letterSpacing: "0.06em" }} className="uppercase">
-          {name} · {sku}
-        </span>
-        <span className="flex items-center gap-1.5" style={{ color: "var(--color-red)", fontWeight: 600 }}>
-          <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: "var(--color-red)" }} />
-          In stock · ships in 48 hrs
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function CodeSample() {
-  return (
-    <div className="rounded-lg overflow-hidden" style={{ border: "1px solid var(--color-line)" }}>
-      <div
-        className="flex items-center justify-between px-4 py-2.5 border-b"
-        style={{
-          background: "var(--color-bg-soft)",
-          borderColor: "var(--color-line)",
-        }}
-      >
-        <div className="flex items-center gap-3">
-          <span className="flex gap-1.5" aria-hidden="true">
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: "#e5edf5" }} />
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: "#e5edf5" }} />
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: "#e5edf5" }} />
-          </span>
+    <div className="beam-border" style={{ borderRadius: 12 }}>
+      <div className="rounded-xl overflow-hidden shadow-stripe-3" style={{ border: "1px solid var(--color-line)" }}>
+        <div
+          className="flex items-center justify-between px-4 py-2.5 border-b"
+          style={{ background: "var(--color-bg-soft)", borderColor: "var(--color-line)" }}
+        >
           <span
-            className="mono text-[12px]"
-            style={{ color: "var(--color-muted)" }}
+            className="text-[11px] uppercase tracking-[0.18em]"
+            style={{ color: "var(--color-muted)", fontWeight: 600 }}
           >
-            trigger-alert.ts
+            {label}
+          </span>
+          <span className="text-[11px] flex items-center gap-2" style={{ color: "var(--color-red)", fontWeight: 600 }}>
+            copy <span className="blink-caret" />
           </span>
         </div>
-        <span
-          className="text-[11px] uppercase tracking-wider"
-          style={{ color: "var(--color-muted)", fontWeight: 510 }}
+        <pre
+          className="mono overflow-x-auto p-5 text-[12.5px] leading-relaxed"
+          style={{
+            color: "var(--color-ink)",
+            background: "#fff",
+            fontFamily: "JetBrains Mono, ui-monospace, monospace",
+            fontVariantLigatures: "none",
+          }}
         >
-          TypeScript SDK
-        </span>
+          {body}
+        </pre>
       </div>
-      <pre
-        className="mono text-[12.5px] leading-[1.7] p-5 overflow-x-auto"
-        style={{
-          background: "#0a1628",
-          color: "#e6edf7",
-          fontFamily: "JetBrains Mono, ui-monospace, monospace",
-        }}
-      >
-{`import { LifeGuard } from "@lifeguard/sdk";
-
-const lg = new LifeGuard({
-  apiKey: process.env.LIFEGUARD_API_KEY,
-});
-
-// Three lines. Every device emits this shape.
-const alert = await lg.devices.trigger({
-  deviceId: "LG-G2-7F3A91",
-  kind: "sos_press",
-  position: { lat: -33.9249, lng: 18.4241 },
-  vitals: { hr: 132, hrv: 18, spo2: 96, skinTempC: 37.4 },
-});
-
-// Five contacts in parallel. ~3 seconds.
-const fanout = await lg.incidents.fanout({
-  alertId: alert.id,
-  contacts: ["+27…", "+27…", "+27…", "+27…", "+27…"],
-});`}
-      </pre>
     </div>
+  );
+}
+
+function ArrowRight() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+      <path
+        d="M2 7h10m0 0L8 3m4 4l-4 4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

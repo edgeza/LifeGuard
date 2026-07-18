@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { MarketingReveal } from "@/components/MarketingReveal";
+import { CardSpotlight } from "@/components/CardSpotlight";
+import { TiltCard } from "@/components/TiltCard";
 
 export const metadata = {
   title: "Pricing — LifeGuard",
@@ -134,13 +136,11 @@ export default function Pricing() {
       <section className="container-x pb-20" aria-labelledby="plans-heading">
         <h2 id="plans-heading" className="sr-only">Plans</h2>
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-          {plans.map((p, i) => (
-            <MarketingReveal key={p.id} delay={i * 60}>
+          {plans.map((p, i) => {
+            const inner = (
               <article
-                className={`relative h-full rounded-2xl p-7 overflow-hidden border ${
-                  p.highlighted
-                    ? "lift bg-white shadow-stripe-3"
-                    : "lift bg-white"
+                className={`relative h-full rounded-2xl p-7 overflow-hidden border bg-white ${
+                  p.highlighted ? "shadow-stripe-3" : ""
                 }`}
                 style={{
                   borderColor: p.highlighted
@@ -212,8 +212,24 @@ export default function Pricing() {
                   </Link>
                 </div>
               </article>
-            </MarketingReveal>
-          ))}
+            );
+            return (
+              <MarketingReveal key={p.id} delay={i * 60}>
+                {p.highlighted ? (
+                  <TiltCard
+                    className="rounded-2xl"
+                    spotlightColor="#e11d2e"
+                  >
+                    {inner}
+                  </TiltCard>
+                ) : (
+                  <CardSpotlight radius={300} color="#e11d2e" className="rounded-2xl border-none">
+                    {inner}
+                  </CardSpotlight>
+                )}
+              </MarketingReveal>
+            );
+          })}
         </div>
       </section>
 
