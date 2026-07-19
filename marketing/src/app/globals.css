@@ -922,3 +922,13 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .shimmer-skeleton::after { animation: none; opacity: 0.3; }
 }
+
+/* --- Cookie banner clearance ------------------------------------ */
+/* When the cookie banner is shown, give page content room to breathe.
+   Pages with sticky / fixed-bottom widgets (chat input, mobile dock)
+   add bottom padding via this class so they don't sit underneath the
+   pill which is anchored at left-4 bottom-4. */
+body.has-cookie-banner-pad main,
+body.has-cookie-banner-pad [data-page-root] {
+  padding-bottom: 80px;
+}

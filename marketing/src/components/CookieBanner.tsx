@@ -21,6 +21,18 @@ export function CookieBanner() {
     }
   }, []);
 
+  // Toggle a body class while the banner is shown so pages with fixed /
+  // sticky bottom widgets (chat input, mobile dock) can reserve space.
+  // Pages that need to react to the banner add: .has-cookie-banner-pad .bottom-input { bottom: 88px }
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const visible = mounted && state === "unset";
+    document.body.classList.toggle("has-cookie-banner-pad", visible);
+    return () => {
+      document.body.classList.remove("has-cookie-banner-pad");
+    };
+  }, [mounted, state]);
+
   function decide(s: Exclude<State, "unset">) {
     try {
       window.localStorage.setItem(KEY, s);
