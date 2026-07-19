@@ -2,8 +2,8 @@ import path from 'node:path';
 import bcrypt from 'bcryptjs';
 import { db } from './index';
 
-const DEMO_TENANT_ID = 'demo-family-001';
-const PASSWORD = 'demo1234';
+const DEMO_TENANT_ID = 'demo-tenant-001';
+const ADMIN_PASSWORD = 'admin';
 const HOUR = 60 * 60;
 const DAY = 24 * HOUR;
 
@@ -17,79 +17,89 @@ export function seed(): void {
     return;
   }
 
-  const passwordHash = bcrypt.hashSync(PASSWORD, 10);
-  const users = [
-    ['lerato', 'lerato@demo.lifeguard', 'Lerato van Wyk', 'caregiver'],
-    ['marlene', 'marlene@demo.lifeguard', 'Marlene Botha', 'caregiver'],
-    ['julian', 'julian@demo.lifeguard', 'Julian van Wyk', 'caregiver'],
-    ['sandra', 'sandra@demo.lifeguard', 'Sandra Naidoo', 'caregiver'],
-  ] as const;
-
-  const medications = [
-    ['med-metformin', 'Metformin', '500mg', '08:00 daily'],
-    ['med-aspirin', 'Aspirin', '100mg', '08:00 daily'],
-    ['med-atorvastatin', 'Atorvastatin', '20mg', '21:00 daily'],
-    ['med-vitamin-d3', 'Vitamin D3', '1000IU', '08:00 daily'],
-  ] as const;
+  const passwordHash = bcrypt.hashSync(ADMIN_PASSWORD, 10);
 
   const insert = db.transaction(() => {
-    db.prepare('INSERT INTO tenants (id, name) VALUES (?, ?)').run(DEMO_TENANT_ID, 'van Wyk family');
+    // Tenant
+    db.prepare('INSERT INTO tenants (id, name) VALUES (?, ?)').run(
+      DEMO_TENANT_ID,
+      'Demo Family'
+    );
 
-    const insertUser = db.prepare('INSERT INTO users (id, tenant_id, email, password_hash, name, role) VALUES (?, ?, ?, ?, ?, ?)');
-    for (const [id, email, name, role] of users) {
-      insertUser.run(id, DEMO_TENANT_ID, email, passwordHash, name, role);
-    }
+    // Single default admin user — anyone can log in with admin / admin
+    db.prepare(`
+      INSERT INTO users (id, tenant_id, email, password_hash, name, role)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      'admin',
+      DEMO_TENANT_ID,
+      'admin@life.guard',
+      passwordHash,
+      'Admin',
+      'admin'
+    );
 
+    // Demo care receiver (the elder)
     db.prepare(`
       INSERT INTO care_receivers (id, tenant_id, name, conditions, interests, timezone)
       VALUES (?, ?, ?, ?, ?, ?)
     `).run(
-      'marlene',
+      'demo-patient',
       DEMO_TENANT_ID,
-      'Marlene van Wyk',
+      'Demo Patient',
       JSON.stringify(['hypertension', 'early dementia']),
-      JSON.stringify(['gardening', 'the cats', 'her grandchildren']),
-      'Africa/Johannesburg',
+      JSON.stringify(['gardening', 'reading', 'walking']),
+      'Africa/Johannesburg'
     );
 
+    // Default agent (bot) for the care receiver
     db.prepare(`
       INSERT INTO agents (id, tenant_id, care_receiver_id, name, email, personality, system_prompt)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `).run(
-      'esther',
+      'demo-agent',
       DEMO_TENANT_ID,
-      'marlene',
-      'Esther',
-      'esther@care.life.guard',
+      'demo-patient',
+      'Aria',
+      'aria@care.life.guard',
       'pragmatic',
-      "You are Esther, a caring but pragmatic companion for Marlene van Wyk. You remind her about medications, confirm appointments, and escalate to her daughter Lerato if she doesn't respond. Keep responses short. Use plain language.",
+      "You are Aria, a caring but pragmatic companion for the demo patient. You remind them about medications, confirm appointments, and escalate to the admin if they don't respond. Keep responses short. Use plain language."
     );
 
-    const link = db.prepare('INSERT INTO caregiver_links (user_id, care_receiver_id) VALUES (?, ?)');
-    for (const [userId] of users) link.run(userId, 'marlene');
+    // Link admin to the care receiver
+    db.prepare('INSERT INTO caregiver_links (user_id, care_receiver_id) VALUES (?, ?)').run(
+      'admin',
+      'demo-patient'
+    );
 
+    // 4 medications
+    const medications = [
+      ['med-metformin', 'Metformin', '500mg', '08:00 daily'],
+      ['med-aspirin', 'Aspirin', '100mg', '08:00 daily'],
+      ['med-atorvastatin', 'Atorvastatin', '20mg', '21:00 daily'],
+      ['med-vitamin-d3', 'Vitamin D3', '1000IU', '08:00 daily'],
+    ] as const;
     const insertMedication = db.prepare(`
       INSERT INTO medications (id, care_receiver_id, name, dosage, schedule, refills_remaining, active)
-      VALUES (?, 'marlene', ?, ?, ?, ?, 1)
+      VALUES (?, 'demo-patient', ?, ?, ?, ?, 1)
     `);
     medications.forEach(([id, name, dosage, schedule], index) => {
       insertMedication.run(id, name, dosage, schedule, [3, 2, 1, 5][index]);
     });
 
+    // Appointments — fixed dates (next week) + relative dates (today/tomorrow)
     const insertAppointment = db.prepare(`
       INSERT OR IGNORE INTO appointments (id, care_receiver_id, title, scheduled_for, location, transport, state)
-      VALUES (?, 'marlene', ?, ?, ?, ?, ?)
+      VALUES (?, 'demo-patient', ?, ?, ?, ?, ?)
     `);
-    insertAppointment.run('appt-dr-patel', 'Dr Patel', epoch('2026-07-24T10:15:00+02:00'), 'Dr Patel\'s rooms', 'Lerato driving', 'confirmed');
-    insertAppointment.run('appt-pharmacy', 'Pharmacy', epoch('2026-07-26T09:30:00+02:00'), 'Clicks Pharmacy', 'Family pickup', 'scheduled');
-    insertAppointment.run('appt-optometrist', 'Optometrist', epoch('2026-07-28T11:00:00+02:00'), 'Vision Works', 'Julian driving', 'scheduled');
-    insertAppointment.run('appt-hair', 'Hair', epoch('2026-08-01T14:00:00+02:00'), 'Salon Marais', 'Sandra driving', 'scheduled');
+    insertAppointment.run('appt-doctor', 'Doctor checkup', epoch('2026-07-24T10:15:00+02:00'), 'Main clinic', 'Family driving', 'confirmed');
+    insertAppointment.run('appt-pharmacy', 'Pharmacy refill', epoch('2026-07-26T09:30:00+02:00'), 'Local pharmacy', 'Family pickup', 'scheduled');
 
     const now = Math.floor(Date.now() / 1000);
-    // Add a "tomorrow" appointment using a relative date so the elder view's
-    // Tomorrow section has content even when the seed's fixed dates are far away.
-    insertAppointment.run('appt-pharmacy-tomorrow', 'Pharmacy refill', now + 1 * 24 * 3600, 'Clicks Pharmacy', 'Family pickup', 'scheduled');
-    insertAppointment.run('appt-club-tomorrow', 'Garden club meeting', now + 1 * 24 * 3600 + 4 * 3600, 'Community Hall', 'Sandra driving', 'scheduled');
+    insertAppointment.run('appt-pharmacy-tomorrow', 'Pharmacy refill', now + 1 * 24 * 3600, 'Local pharmacy', 'Family pickup', 'scheduled');
+    insertAppointment.run('appt-club-tomorrow', 'Community group', now + 1 * 24 * 3600 + 4 * 3600, 'Community Hall', 'Family driving', 'scheduled');
+
+    // Adherence events — last 14 days, mixed confirmed/late/missed
     const adherenceStatuses = [
       'confirmed', 'confirmed', 'late', 'confirmed', 'confirmed', 'missed', 'confirmed',
       'confirmed', 'late', 'confirmed', 'confirmed', 'confirmed', 'missed', 'confirmed',
@@ -112,14 +122,16 @@ export function seed(): void {
       );
     });
 
+    // Past escalations (all resolved — operator handled them)
     const insertEscalation = db.prepare(`
       INSERT INTO escalations (id, agent_id, triggered_at, reason, state, acknowledged_by, resolved_at)
-      VALUES (?, 'esther', ?, ?, 'resolved', 'lerato', ?)
+      VALUES (?, 'demo-agent', ?, ?, 'resolved', 'admin', ?)
     `);
-    insertEscalation.run('esc-missed-dose', now - 6 * DAY, 'Marlene did not confirm her evening medication.', now - 6 * DAY + HOUR);
-    insertEscalation.run('esc-after-hours-chat', now - 4 * DAY, 'Marlene reported feeling confused during an after-hours chat.', now - 4 * DAY + 30 * 60);
-    insertEscalation.run('esc-hr-spike', now - 2 * DAY, 'Heart rate spike detected above Marlene\'s normal range.', now - 2 * DAY + 20 * 60);
+    insertEscalation.run('esc-missed-dose', now - 6 * DAY, 'Missed evening medication.', now - 6 * DAY + HOUR);
+    insertEscalation.run('esc-after-hours-chat', now - 4 * DAY, 'Confused after-hours chat.', now - 4 * DAY + 30 * 60);
+    insertEscalation.run('esc-hr-spike', now - 2 * DAY, 'Heart rate spike detected.', now - 2 * DAY + 20 * 60);
 
+    // Vitals — last 7 days
     const insertVital = db.prepare('INSERT INTO vitals (care_receiver_id, metric, value, recorded_at) VALUES (?, ?, ?, ?)');
     const readings = [
       [72, 98, 61], [68, 97, 66], [75, 96, 58], [81, 95, 49],
@@ -127,14 +139,14 @@ export function seed(): void {
     ] as const;
     readings.forEach(([heartRate, spo2, hrv], index) => {
       const recordedAt = now - (6 - index) * DAY;
-      insertVital.run('marlene', 'heart_rate', heartRate, recordedAt);
-      insertVital.run('marlene', 'spo2', spo2, recordedAt);
-      insertVital.run('marlene', 'hrv', hrv, recordedAt);
+      insertVital.run('demo-patient', 'heart_rate', heartRate, recordedAt);
+      insertVital.run('demo-patient', 'spo2', spo2, recordedAt);
+      insertVital.run('demo-patient', 'hrv', hrv, recordedAt);
     });
   });
 
   insert();
-  console.log(`Seeded ${DEMO_TENANT_ID}. Login: lerato@demo.lifeguard / ${PASSWORD}`);
+  console.log(`Seeded ${DEMO_TENANT_ID}. Login: admin@life.guard / ${ADMIN_PASSWORD}`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(__filename)) {

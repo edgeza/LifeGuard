@@ -1,15 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 
 /**
- * ChatPanel — the caregiver's window into the bot conversation with their
- * parent. The bot on the parent's side is a deterministic reminder agent;
- * the AI that helps the caregiver interpret, summarize, and act lives here.
+ * ChatPanel — the caregiver's window into the bot conversation with
+ * their care receiver. The bot on the care-receiver side is a
+ * deterministic reminder agent; the caregiver-side agent (Aria, etc.)
+ * helps the caregiver interpret, summarize, and act.
  *
- * Segmented per caregiver: each sibling's chat history is private to them.
- * The parent never sees this window.
+ * Segmented per caregiver: each sibling's chat history is private to
+ * them. The care receiver never sees this window.
+ *
+ * Dynamic — accepts the actual agent / care_receiver / caregiver
+ * identifiers + display names as props so the panel reflects whatever
+ * user is logged in. No more hardcoded "Marlene / Lerato" copy.
  */
 
 type Message = {
@@ -20,21 +24,15 @@ type Message = {
   meta?: { kind: "med" | "appointment" | "alert" | "note"; label?: string };
 };
 
-const seedMessages: Message[] = [
-  { id: "m1", from: "bot",     ts: "08:00", body: "Good morning Marlene. Time for your metformin and aspirin.", meta: { kind: "med", label: "metformin 500mg · aspirin 81mg" } },
-  { id: "m2", from: "elder",   ts: "08:03", body: "took them" },
-  { id: "m3", from: "bot",     ts: "08:03", body: "Logged. Anything on your mind this morning?" },
-  { id: "m4", from: "elder",   ts: "08:11", body: "when's my dr patel" },
-  { id: "m5", from: "bot",     ts: "08:11", body: "Thursday at 10:15am. Lerato is driving. Want me to text her a reminder?" },
-  { id: "m6", from: "elder",   ts: "08:12", body: "no she's coming" },
-  { id: "m7", from: "bot",     ts: "08:12", body: "Got it. I'll remind you the night before." },
-  { id: "m8", from: "system",  ts: "13:42", body: "Metformin reminder sent · 13:42 · no response · follow-up at 13:57" },
-  { id: "m9", from: "elder",   ts: "14:03", body: "sorry was in the garden. took it just now" },
-  { id: "m10", from: "bot",    ts: "14:03", body: "Logged. Stretching the window is fine — but anything past 2h flags it for the family." },
-];
-
-export function ChatPanel() {
-  const [messages, setMessages] = useState<Message[]>(seedMessages);
+export function ChatPanel(props: {
+  agentId: string;
+  agentName: string;
+  careReceiverId: string;
+  careReceiverName: string;
+  caregiverId: string;
+  caregiverName: string;
+}) {
+  const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState("");
   const [thinking, setThinking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -42,6 +40,22 @@ export function ChatPanel() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, thinking]);
+
+  // Show one starter message so the panel isn't empty for first-time users.
+  // Once the user sends their first message, the panel reflects real history.
+  useEffect(() => {
+    if (messages.length === 0) {
+      setMessages([
+        {
+          id: "s0",
+          from: "bot",
+          ts: now(),
+          body: `Hi ${props.caregiverName.split(" ")[0]} — I'm ${props.agentName}, the assistant for ${props.careReceiverName}. Ask me about today's meds, upcoming appointments, or recent vitals.`,
+        },
+      ]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.agentName, props.careReceiverName, props.caregiverName]);
 
   async function send() {
     const text = draft.trim();
@@ -53,83 +67,120 @@ export function ChatPanel() {
       const res = await fetch("/api/care/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ agent: "esther", care_receiver: "marlene", caregiver: "lerato", message: text }),
+        body: JSON.stringify({
+          agentId: props.agentId,
+          careReceiverId: props.careReceiverId,
+          caregiverId: props.caregiverId,
+          message: text,
+        }),
       });
       const data = await res.json();
       setMessages((m) => [...m, { id: `b${Date.now()}`, from: "bot", ts: now(), body: data.reply }]);
     } catch {
-      setMessages((m) => [...m, { id: `e${Date.now()}`, from: "system", ts: now(), body: "Couldn't reach the bot. Try again." }]);
+      setMessages((m) => [
+        ...m,
+        {
+          id: `e${Date.now()}`,
+          from: "bot",
+          ts: now(),
+          body: "(couldn't reach the bot — try again in a moment)",
+        },
+      ]);
     } finally {
       setThinking(false);
     }
   }
 
+  const firstName = props.careReceiverName.split(" ")[0];
+
   return (
-    <article
-      className="rounded-xl border overflow-hidden"
-      style={{ borderColor: "var(--color-line)", background: "var(--color-bg)" }}
+    <div
+      className="rounded-2xl border flex flex-col"
+      style={{
+        background: "#fff",
+        borderColor: "var(--color-line)",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+        height: 580,
+      }}
     >
-      <header
-        className="flex items-center justify-between px-5 py-3 border-b"
+      {/* Header */}
+      <div
+        className="px-5 py-3 flex items-center justify-between border-b"
         style={{ borderColor: "var(--color-line)" }}
       >
-        <div className="flex items-center gap-3">
-          <span
-            aria-hidden="true"
-            className="inline-block w-2 h-2 rounded-full pulse-dot"
-            style={{ background: "var(--color-red)" }}
-          />
-          <div>
-            <div className="text-[13px]" style={{ color: "var(--color-ink)", fontWeight: 600 }}>
-              Chat with Esther · Marlene
-            </div>
-            <div className="text-[11px] mono" style={{ color: "var(--color-muted)" }}>
-              Lerato's view · private to you
-            </div>
+        <div>
+          <div
+            className="text-[13px]"
+            style={{ color: "var(--color-ink)", fontWeight: 600 }}
+          >
+            Chat with {props.agentName} · {props.careReceiverName}
+          </div>
+          <div className="text-[11px] mt-0.5" style={{ color: "var(--color-muted)" }}>
+            {props.caregiverName}&apos;s view · private to you
           </div>
         </div>
-        <Link
+        <a
           href="/care/architecture"
-          className="text-[11px] mono"
-          style={{ color: "var(--color-red)", fontWeight: 600 }}
+          className="text-[11px]"
+          style={{ color: "var(--color-red)" }}
         >
           how this works →
-        </Link>
-      </header>
+        </a>
+      </div>
 
+      {/* Message stream */}
       <div
         ref={scrollRef}
-        className="px-5 py-4 space-y-3 overflow-y-auto"
-        style={{ maxHeight: 460, background: "var(--color-bg-soft)" }}
+        className="flex-1 overflow-y-auto p-5 space-y-3"
+        style={{ background: "var(--color-bg-soft)" }}
       >
         {messages.map((m) => (
-          <Row key={m.id} m={m} />
+          <Bubble
+            key={m.id}
+            from={m.from}
+            agentName={props.agentName}
+            elderName={firstName}
+            caregiverName={props.caregiverName}
+            ts={m.ts}
+            body={m.body}
+            meta={m.meta}
+          />
         ))}
         {thinking && (
-          <div className="flex justify-start">
+          <div
+            className="flex justify-start"
+            aria-live="polite"
+          >
             <div
-              className="rounded-2xl px-3.5 py-2 text-[12.5px] inline-flex items-center gap-1.5"
-              style={{ background: "var(--color-bg)", border: "1px solid var(--color-line)", color: "var(--color-muted)" }}
+              className="rounded-2xl px-3.5 py-2 text-[13.5px]"
+              style={{
+                background: "#fff",
+                border: "1px solid var(--color-line)",
+                color: "var(--color-muted)",
+              }}
             >
-              <span className="dot" />
-              <span className="dot" />
-              <span className="dot" />
-              <span>Esther is drafting…</span>
+              <span>{props.agentName} is drafting</span>
+              <span className="inline-flex ml-1 gap-0.5" aria-hidden="true">
+                <Dot delay={0} />
+                <Dot delay={120} />
+                <Dot delay={240} />
+              </span>
             </div>
           </div>
         )}
       </div>
 
+      {/* Input */}
       <div
-        className="flex items-center gap-2 px-3 py-3 border-t"
-        style={{ borderColor: "var(--color-line)", background: "var(--color-bg)" }}
+        className="p-3 flex items-center gap-2 border-t"
+        style={{ borderColor: "var(--color-line)" }}
       >
         <input
           type="text"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          placeholder="Ask Esther: how did she sleep? any skipped doses this week?"
+          placeholder={`Ask ${props.agentName}: how is ${firstName} doing this week?`}
           className="flex-1 px-3 py-2 rounded-md text-[13px] mono placeholder:text-[var(--color-muted)]"
           style={{
             background: "var(--color-bg)",
@@ -147,77 +198,107 @@ export function ChatPanel() {
           Send
         </button>
       </div>
-
-      <style jsx>{`
-        .dot {
-          display: inline-block;
-          width: 4px;
-          height: 4px;
-          border-radius: 9999px;
-          background: var(--color-red);
-          animation: blink 1.2s infinite ease-in-out;
-        }
-        .dot:nth-child(2) { animation-delay: 0.2s; }
-        .dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes blink {
-          0%, 80%, 100% { opacity: 0.25; }
-          40% { opacity: 1; }
-        }
-      `}</style>
-    </article>
+    </div>
   );
 }
 
-function Row({ m }: { m: Message }) {
-  if (m.from === "system") {
+function Bubble({
+  from,
+  agentName,
+  elderName,
+  caregiverName,
+  ts,
+  body,
+  meta,
+}: {
+  from: Message["from"];
+  agentName: string;
+  elderName: string;
+  caregiverName: string;
+  ts: string;
+  body: string;
+  meta?: Message["meta"];
+}) {
+  if (from === "system") {
     return (
-      <div className="flex justify-center">
-        <div
-          className="text-[11px] mono px-3 py-1.5 rounded-full"
-          style={{
-            background: "var(--color-bg)",
-            color: "var(--color-muted)",
-            border: "1px solid var(--color-line)",
-          }}
-        >
-          {m.body}
-        </div>
+      <div className="text-center text-[11px] mono" style={{ color: "var(--color-muted)" }}>
+        {body}
       </div>
     );
   }
 
-  const isCaregiver = m.from === "caregiver";
-  const isBot = m.from === "bot";
+  const isBot = from === "bot";
+  const isElder = from === "elder";
+  const isYou = from === "caregiver";
 
   return (
-    <div className={`flex ${isCaregiver ? "justify-end" : "justify-start"}`}>
-      <div className={`max-w-[78%] ${isCaregiver ? "items-end" : "items-start"} flex flex-col gap-1`}>
+    <div
+      className={`flex ${isYou ? "justify-end" : "justify-start"}`}
+    >
+      <div style={{ maxWidth: "85%" }}>
         <div
           className="rounded-2xl px-3.5 py-2 text-[13.5px] leading-relaxed"
-          style={
-            isCaregiver
-              ? { background: "var(--color-red)", color: "#fff", borderTopRightRadius: 4 }
-              : isBot
-              ? { background: "var(--color-bg)", color: "var(--color-ink)", border: "1px solid var(--color-line)", borderTopLeftRadius: 4 }
-              : { background: "var(--color-bg)", color: "var(--color-ink)", border: "1px solid var(--color-line)", borderTopLeftRadius: 4 }
-          }
+          style={{
+            background: isBot
+              ? "#fff"
+              : isElder
+              ? "rgba(225,29,46,0.04)"
+              : "var(--color-red)",
+            color: isBot
+              ? "var(--color-ink)"
+              : isElder
+              ? "var(--color-ink)"
+              : "#fff",
+            border:
+              isBot || isElder
+                ? "1px solid var(--color-line)"
+                : "1px solid transparent",
+            borderTopLeftRadius: isBot || isElder ? 4 : 16,
+            borderTopRightRadius: isBot ? 16 : 4,
+            borderBottomLeftRadius: 16,
+            borderBottomRightRadius: 16,
+          }}
         >
-          {m.body}
+          {body}
+          {meta?.label && (
+            <div
+              className="mt-1 text-[10px] mono uppercase tracking-wide"
+              style={{
+                color: isBot ? "var(--color-muted)" : "rgba(255,255,255,0.7)",
+              }}
+            >
+              {meta.label}
+            </div>
+          )}
         </div>
-        {m.meta && (
-          <span className="text-[10px] mono" style={{ color: "var(--color-red)", fontWeight: 600 }}>
-            ↳ {m.meta.label}
-          </span>
-        )}
-        <span className="text-[10px] mono" style={{ color: "var(--color-muted)" }}>
-          {m.from === "bot" ? "Esther" : m.from === "elder" ? "Marlene" : "You"} · {m.ts}
-        </span>
+        <div
+          className="text-[10px] mono mt-1"
+          style={{
+            color: "var(--color-muted)",
+            textAlign: isYou ? "right" : "left",
+          }}
+        >
+          {isBot ? agentName : isElder ? elderName : caregiverName.split(" ")[0]} · {ts}
+        </div>
       </div>
     </div>
   );
 }
 
-function now() {
+function Dot({ delay }: { delay: number }) {
+  return (
+    <span
+      style={{
+        animation: "lg-bounce 1.2s ease-in-out infinite",
+        animationDelay: `${delay}ms`,
+      }}
+    >
+      ·
+    </span>
+  );
+}
+
+function now(): string {
   const d = new Date();
   return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 }

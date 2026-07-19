@@ -222,9 +222,17 @@ export default async function CareDashboardPage() {
         <div className="grid lg:grid-cols-12 gap-6">
           {/* LEFT — CHAT */}
           <div className="lg:col-span-7">
-            {/* ChatPanel owns its own state and chat URL. Phase 2B will
-                swap the seed messages for real DB-backed history. */}
-            <ChatPanel />
+            {/* ChatPanel owns its own state and chat URL. Receives dynamic
+                identifiers so the panel reflects whichever user/agent/patient
+                is logged in (no more hardcoded "Marlene / Lerato"). */}
+            <ChatPanel
+              agentId={detail.agent?.id ?? ""}
+              agentName={detail.agent?.name ?? "Aria"}
+              careReceiverId={detail.careReceiver.id}
+              careReceiverName={detail.careReceiver.name}
+              caregiverId={user.id}
+              caregiverName={user.name}
+            />
           </div>
 
           {/* RIGHT */}
