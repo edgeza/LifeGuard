@@ -1,63 +1,126 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import { randomUUID } from 'node:crypto';
+import { requireUser, jsonError, HttpError } from '@/lib/auth';
+import {
+  db_agents,
+  db_careReceivers,
+  db_chatMessages,
+} from '@/lib/db';
+import { runAgent, buildAgentContext } from '@/lib/agent';
+
+export const runtime = 'nodejs';
 
 /**
- * /api/care/chat — mock caregiver-to-bot chat endpoint.
+ * /api/care/chat (POST) — caregiver ↔ agent conversation.
  *
- * In production: tool-using agent loop, conversation memory, skill dispatch.
- * Here: deterministic templated responses so the UI works end-to-end
- * without an LLM dependency.
+ * Body: { message: string, agentId?: string, senderType?: 'caregiver'|'care_receiver' }
  *
- * The bot on the elder's side is a different endpoint (/api/care/reminder),
- * because it's a scripted reminder agent. This endpoint powers the
- * caregiver's chat window, which has access to the full LLM.
+ * Loads the agent + care_receiver for the current user, persists the
+ * incoming message, runs the agent loop, persists the reply, and
+ * dispatches any outbound SMS/voice/email the agent produced.
  */
-
-const replies = [
-  "Marlene confirmed her metformin at 08:03 and her aspirin at 08:11. She also asked about Dr Patel — confirmed for Thursday at 10:15, Lerato driving.",
-  "Adherence this week: 12 of 14 doses logged. Two missed confirmations on Sunday evening — both followed up within 20 minutes, she took them late.",
-  "She asked me about Dr Patel this morning. I told her Thursday at 10:15. No medication concerns since the 13:42 follow-up cleared at 14:03.",
-  "I logged the conversation. She mentioned the garden, the cats, and her grandchildren today. No signs of cognitive shift in the rolling signals.",
-  "Yesterday she asked twice about the same appointment. Pattern delta is +1.2 from the 7-day baseline — within noise but worth a glance on the trend chart.",
-];
-
-let counter = 0;
-
 export async function POST(req: Request) {
   try {
-    const body = await req.json().catch(() => ({}));
-    const message = String(body?.message || "").trim();
+    const user = await requireUser();
 
-    // Echo guard for empty
-    if (!message) {
-      return NextResponse.json({ reply: "Send something to Esther and she’ll respond." });
+    const body = (await req.json().catch(() => ({}))) as {
+      message?: unknown;
+      agentId?: unknown;
+      senderType?: unknown;
+    };
+    const message = String(body.message || '').trim();
+    if (!message) throw new HttpError(400, 'message is required');
+
+    const senderType =
+      body.senderType === 'care_receiver' ? 'care_receiver' : 'caregiver';
+
+    // Resolve the agent: explicit agentId wins; otherwise the user's
+    // primary care_receiver's agent.
+    let agent;
+    if (body.agentId) {
+      agent = db_agents.findById(String(body.agentId));
+    } else {
+      const careReceivers = db_careReceivers.listForUser(user.id);
+      if (careReceivers.length === 0) {
+        throw new HttpError(404, 'No care receiver linked to this user');
+      }
+      agent = db_agents.findByCareReceiver(careReceivers[0].id);
     }
+    if (!agent) throw new HttpError(404, 'Agent not found');
 
-    // Tiny artificial latency so the "drafting…" state is visible
-    await new Promise((r) => setTimeout(r, 350 + Math.floor(Math.random() * 350)));
+    const careReceiver = db_careReceivers.findById(agent.care_receiver_id);
+    if (!careReceiver) throw new HttpError(404, 'Care receiver not found');
 
-    // Deterministic-ish reply rotation
-    const reply = replies[counter % replies.length];
-    counter += 1;
+    // Persist the incoming message
+    const incomingId = randomUUID();
+    db_chatMessages.create({
+      id: incomingId,
+      agentId: agent.id,
+      senderType,
+      senderId: user.id,
+      content: message,
+    });
+
+    // Run the agent
+    const ctx = buildAgentContext(user, agent, careReceiver);
+    const result = await runAgent(message, ctx);
+
+    // Persist the agent reply
+    const replyId = randomUUID();
+    db_chatMessages.create({
+      id: replyId,
+      agentId: agent.id,
+      senderType: 'bot',
+      senderId: null,
+      content: result.reply,
+      skillCalls: JSON.stringify(result.skillCalls),
+    });
 
     return NextResponse.json({
-      reply,
+      reply: result.reply,
+      skillCalls: result.skillCalls,
       meta: {
-        agent: String(body?.agent || "esther"),
-        care_receiver: String(body?.care_receiver || "marlene"),
-        caregiver: String(body?.caregiver || "lerato"),
-        skills_used: ["chat", "memory", "summary"],
-        tokens_in: message.split(/\s+/).length,
+        agent: agent.id,
+        care_receiver: careReceiver.id,
+        caregiver: user.id,
+        skills_used: result.skillCalls.map((s) => s.name),
+        tokens_in: Math.ceil(message.length / 4),
+        messageId: incomingId,
+        replyId,
       },
     });
-  } catch {
-    return NextResponse.json({ reply: "Couldn't reach the bot. Try again." }, { status: 500 });
+  } catch (err) {
+    return jsonError(err);
   }
 }
 
-export async function GET() {
-  return NextResponse.json({
-    endpoint: "/api/care/chat",
-    methods: ["POST"],
-    expects: { agent: "string", care_receiver: "string", caregiver: "string", message: "string" },
-  });
+/**
+ * /api/care/chat (GET) — recent chat history for the user's primary agent.
+ */
+export async function GET(req: Request) {
+  try {
+    const user = await requireUser();
+    const url = new URL(req.url);
+    const agentId = url.searchParams.get('agentId');
+
+    let agent;
+    if (agentId) {
+      agent = db_agents.findById(agentId);
+    } else {
+      const careReceivers = db_careReceivers.listForUser(user.id);
+      if (careReceivers.length === 0) {
+        return NextResponse.json({ messages: [] });
+      }
+      agent = db_agents.findByCareReceiver(careReceivers[0].id);
+    }
+    if (!agent) {
+      return NextResponse.json({ messages: [] });
+    }
+
+    const limit = Math.min(Math.max(Number(url.searchParams.get('limit') ?? 50), 1), 200);
+    const messages = db_chatMessages.listForAgent(agent.id, { limit });
+    return NextResponse.json({ messages });
+  } catch (err) {
+    return jsonError(err);
+  }
 }

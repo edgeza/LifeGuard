@@ -1,158 +1,207 @@
-import Link from "next/link";
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { getCurrentUser } from '@/lib/auth';
+import { ElderButton } from './ElderButton';
+import type { Medication, AdherenceEvent } from '@/lib/db';
 
 export const metadata = {
   title: "Marlene's view — LifeGuard",
   description:
-    "Minimalist elder-side view. Just the next reminder and one big button. No AI chat, no app, no settings.",
+    'Minimalist elder-side view. Just the next reminder and one big button. No AI chat, no app, no settings.',
 };
 
-// Minimalist elder view — what Marlene sees on the small hardware screen
-// or the family-shared phone. Per Juan's privacy refactor: NO AI chat on
-// the elder's side. NO login. NO settings. Just: what's next, and a button.
+// Minimalist elder view — what the care receiver sees on the small hardware
+// screen or the family-shared phone. Per the privacy refactor: NO AI chat on
+// the elder's side.
+//
+// PRODUCTION NOTE: real prod strips auth entirely — this page is rendered
+// onto a small e-ink screen on the dedicated device. The device has no
+// keyboard, no account UI, just a "I took it" button. For MVP (and
+// because every tenant is gated by middleware) we keep auth here; the
+// route still works without it because the middleware only forces a
+// redirect — when the elder's hardware device is given a token cookie
+// via the family setup flow, this page loads directly.
+//
+// Server component: fetch the care receiver detail with the caller's
+// cookie, pick the next pending medication, hand to client island.
 
-const nextActions = [
-  { time: "08:00", label: "Metformin 500 mg + Aspirin 81 mg",     status: "done",   ts: "took at 08:03" },
-  { time: "13:00", label: "Lunch",                                status: "todo",   ts: "" },
-  { time: "21:00", label: "Atorvastatin 20 mg",                   status: "todo",   ts: "" },
-];
+const HOUR = 3_600;
+const DAY = 86_400;
 
-const tomorrow = [
-  { time: "10:15", label: "Dr Patel — follow-up",                  who: "Lerato driving" },
-];
+type DetailMedication = Pick<Medication, 'id' | 'name' | 'dosage' | 'schedule' | 'active'>;
+type DetailAdherence = Pick<AdherenceEvent, 'medication_id' | 'status' | 'scheduled_for'>;
+type DetailResp = {
+  careReceiver: { id: string; name: string; timezone: string };
+  medications: DetailMedication[];
+  adherence: DetailAdherence[];
+  appointments?: { title: string; scheduled_for: number; transport: string | null }[];
+};
 
-function fmtDate(d: Date) {
-  const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+async function getJSON<T>(path: string): Promise<T | null> {
+  const base = process.env.NEXT_PUBLIC_BASE_URL || 'http://127.0.0.1:3010';
+  const { cookies } = await import('next/headers');
+  const c = await cookies();
+  const token = c.get('lg_session')?.value;
+  try {
+    const res = await fetch(new URL(path, base), {
+      cache: 'no-store',
+      headers: token ? { Cookie: `lg_session=${token}` } : {},
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
+}
+
+function todayStartSec(): number {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return Math.floor(d.getTime() / 1000);
+}
+
+function todayEndSec(): number {
+  const d = new Date();
+  d.setHours(23, 59, 59, 999);
+  return Math.floor(d.getTime() / 1000);
+}
+
+function doseTimeSec(schedule: string): { hour: number; minute: number } {
+  const m = schedule.match(/(\d{1,2}):(\d{2})/);
+  return m ? { hour: Number(m[1]), minute: Number(m[2]) } : { hour: 9, minute: 0 };
+}
+
+function fmtDate(d: Date): string {
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
 }
 
-export default function ElderView() {
-  const now = new Date();
-  const date = fmtDate(now);
-  const hour = now.getHours();
-  const hh = String(now.getHours()).padStart(2, "0");
-  const mm = String(now.getMinutes()).padStart(2, "0");
-  const greeting =
-    hour < 12 ? "Good morning" :
-    hour < 18 ? "Good afternoon" :
-                "Good evening";
+export default async function ElderViewPage() {
+  const user = await getCurrentUser();
+  if (!user) redirect('/login?from=/care/dashboard/elder');
+
+  // Pick care receiver — first listed.
+  const list = await getJSON<{ id: string; name: string }[]>('/api/care/care-receivers');
+  if (!list || list.length === 0) {
+    return (
+      <main className="min-h-screen grid place-items-center p-4" style={{ background: '#0a0a0a' }}>
+        <div className="text-center" style={{ color: 'rgba(255,255,255,0.85)' }}>
+          <p className="text-[20px]">No care receiver set up yet.</p>
+          <Link
+            href="/care/onboarding"
+            className="mt-4 inline-block underline"
+            style={{ color: 'rgba(255,255,255,0.6)' }}
+          >
+            Set up the agent first →
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  const receiverId = list[0].id;
+  const detail = await getJSON<DetailResp>(`/api/care/care-receivers/${receiverId}`);
+  if (!detail) {
+    return (
+      <main className="min-h-screen grid place-items-center p-4" style={{ background: '#0a0a0a' }}>
+        <div className="text-center" style={{ color: 'rgba(255,255,255,0.85)' }}>
+          <p>Couldn’t load this care receiver.</p>
+          <Link href="/care/dashboard" className="underline" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            Back to dashboard
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  const receiverName = detail.careReceiver.name.split(' ')[0]; // first name only
+
+  // Decide which medication to feature on the giant button.
+  // 1. Among today's scheduled doses, find an un-confirmed one whose dose
+  //    time is at or before the next 60-minute window.
+  // 2. Otherwise the active medication with the next upcoming dose time.
+  // 3. Otherwise no medication.
+  const startSec = todayStartSec();
+  const endSec = todayEndSec();
+  const nowSec = Math.floor(Date.now() / 1000);
+
+  type ScheduledDose = { medication: DetailMedication; scheduledFor: number; confirmed: boolean };
+  const allDoses: ScheduledDose[] = [];
+  for (const med of detail.medications.filter((m) => m.active)) {
+    const { hour, minute } = doseTimeSec(med.schedule);
+    const scheduled = new Date();
+    scheduled.setHours(hour, minute, 0, 0);
+    const scheduledFor = Math.floor(scheduled.getTime() / 1000);
+    if (scheduledFor >= startSec && scheduledFor <= endSec) {
+      const confirmedToday = detail.adherence.some(
+        (ae) =>
+          ae.medication_id === med.id &&
+          ae.status === 'confirmed' &&
+          ae.scheduled_for >= startSec &&
+          ae.scheduled_for <= endSec,
+      );
+      allDoses.push({ medication: med, scheduledFor, confirmed: confirmedToday });
+    }
+  }
+  allDoses.sort((a, b) => a.scheduledFor - b.scheduledFor);
+
+  // Build a list for the "Today" log: every today's scheduled dose + its confirmation state.
+  const todayList: { id: string; label: string; time: string; status: 'done' | 'todo'; ts: string }[] =
+    allDoses.map((d) => ({
+      id: d.medication.id,
+      label: `${d.medication.name} ${d.medication.dosage}`,
+      time: new Date(d.scheduledFor * 1000).toTimeString().slice(0, 5),
+      status: d.confirmed ? 'done' : 'todo',
+      ts: '', // filled in on confirm via client update
+    }));
+
+  // The featured medication is the earliest undosed-or-past-due dose, OR
+  // (if everything today is confirmed) the next future dose today.
+  const featured: ScheduledDose | undefined =
+    allDoses.find((d) => !d.confirmed && d.scheduledFor <= nowSec) ??
+    allDoses.find((d) => !d.confirmed) ??
+    allDoses[0];
+
+  const tomorrow = (detail.appointments ?? [])
+    .filter((a) => a.scheduled_for >= nowSec && a.scheduled_for <= nowSec + 2 * DAY)
+    .slice(0, 3);
 
   return (
-    <main
-      className="min-h-screen grid place-items-center p-4"
-      style={{ background: "#0a0a0a" }}
-    >
-      <div className="w-full max-w-[480px] text-center">
-        {/* tiny header */}
-        <div className="flex items-center justify-between mb-8 opacity-70">
-          <span className="text-[12px] mono" style={{ color: "rgba(255,255,255,0.5)" }}>
-            LifeGuard
-          </span>
-          <span className="text-[12px] mono" style={{ color: "rgba(255,255,255,0.5)" }}>
-            {date}
-          </span>
-        </div>
-
-        <p className="text-[20px]" style={{ color: "rgba(255,255,255,0.85)" }}>
-          {greeting}, Marlene.
-        </p>
-
-        {/* next reminder */}
-        <h1 className="mt-6 text-[40px] md:text-[56px] leading-[1.05]" style={{ color: "#fff", fontWeight: 600, letterSpacing: "-0.02em" }}>
-          It's {hh}:{mm}.
-        </h1>
-        <p className="mt-4 text-[18px] md:text-[20px]" style={{ color: "rgba(255,255,255,0.7)" }}>
-          Time for your afternoon metformin.
-        </p>
-
-        {/* one big button */}
-        <div className="mt-10 flex justify-center">
-          <button
-            className="grid place-items-center rounded-full font-semibold transition-transform active:scale-95"
-            style={{
-              width: 220,
-              height: 220,
-              background: "var(--color-red)",
-              color: "#fff",
-              fontSize: 26,
-              boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 30px 60px -20px rgba(225,29,46,0.5)",
-            }}
-          >
-            I took it
-          </button>
-        </div>
-
-        <p className="mt-6 text-[14px]" style={{ color: "rgba(255,255,255,0.5)" }}>
-          or say "no" out loud
-        </p>
-
-        {/* quiet log of today */}
-        <div className="mt-12 text-left">
-          <div className="text-[11px] uppercase tracking-[0.18em] mb-3" style={{ color: "rgba(255,255,255,0.4)", fontWeight: 600 }}>
-            Today
-          </div>
-          <ul className="space-y-2">
-            {nextActions.map((a) => (
-              <li
-                key={a.time}
-                className="flex items-baseline gap-3 text-[15px]"
-                style={{ color: a.status === "done" ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.85)" }}
-              >
-                <span
-                  className="mono tabular shrink-0 w-12"
-                  style={{ color: "rgba(255,255,255,0.45)", fontWeight: 600 }}
-                >
-                  {a.time}
-                </span>
-                <span className="flex-1" style={{ textDecoration: a.status === "done" ? "line-through" : "none" }}>
-                  {a.label}
-                </span>
-                {a.status === "done" && (
-                  <span className="text-[12px]" style={{ color: "var(--color-red)", fontWeight: 600 }}>
-                    ✓
-                  </span>
-                )}
-                {a.ts && (
-                  <span className="text-[12px] mono" style={{ color: "rgba(255,255,255,0.4)" }}>
-                    {a.ts}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* tomorrow */}
-        <div className="mt-8 text-left">
-          <div className="text-[11px] uppercase tracking-[0.18em] mb-3" style={{ color: "rgba(255,255,255,0.4)", fontWeight: 600 }}>
-            Tomorrow
-          </div>
-          <ul className="space-y-2">
-            {tomorrow.map((a, i) => (
-              <li key={i} className="flex items-baseline gap-3 text-[15px]" style={{ color: "rgba(255,255,255,0.85)" }}>
-                <span className="mono tabular shrink-0 w-12" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>
-                  {a.time}
-                </span>
-                <span className="flex-1">{a.label}</span>
-                <span className="text-[12px]" style={{ color: "rgba(255,255,255,0.5)" }}>
-                  {a.who}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* footer */}
-        <div className="mt-12 pt-6 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-          <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.4)" }}>
-            This is what Marlene sees on her hardware button. No AI chat.
-            No login. No settings.{" "}
-            <Link href="/care" className="underline" style={{ color: "rgba(255,255,255,0.6)" }}>
-              how it's built
-            </Link>
-          </p>
-        </div>
-      </div>
+    <main className="min-h-screen grid place-items-center p-4" style={{ background: '#0a0a0a' }}>
+      <ElderViewBody
+        receiverFirstName={receiverName}
+        fullDate={fmtDate(new Date())}
+        featured={
+          featured
+            ? {
+                medicationId: featured.medication.id,
+                name: featured.medication.name,
+                dosage: featured.medication.dosage,
+                scheduledForEpoch: featured.scheduledFor,
+              }
+            : null
+        }
+        today={todayList}
+        tomorrow={tomorrow.map((a) => ({
+          time: new Date(a.scheduled_for * 1000).toTimeString().slice(0, 5),
+          label: a.title,
+          who: a.transport ?? '',
+        }))}
+      />
     </main>
+  );
+}
+
+function ElderViewBody(props: {
+  receiverFirstName: string;
+  fullDate: string;
+  featured: { medicationId: string; name: string; dosage: string; scheduledForEpoch: number } | null;
+  today: { id: string; label: string; time: string; status: 'done' | 'todo'; ts: string }[];
+  tomorrow: { time: string; label: string; who: string }[];
+}) {
+  // This is a client island — server pre-renders initial state.
+  return (
+    <ElderButton {...props} />
   );
 }
