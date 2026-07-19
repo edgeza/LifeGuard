@@ -533,52 +533,52 @@ export default function Home() {
             </div>
           </MarketingReveal>
 
-          {/* Bento — alternating cell sizes, red accent on entries 02 / 05 / 10 */}
-          <div className="grid md:grid-cols-6 auto-rows-[180px] gap-4">
-            {wins.map((w, i) => {
-              const isWide = i === 0 || i === 4 || i === 7; // 03 wide hero cards
-              const isTall = i === 1 || i === 5;           // 02 tall cards
-              const span = isWide ? "md:col-span-3 md:row-span-2" : isTall ? "md:col-span-3 md:row-span-2" : "md:col-span-2";
-              const accent = i === 1 || i === 4 || i === 8;
-              return (
-                <MarketingReveal key={w.n} delay={i * 40}>
-                  <article
-                    className={`${span} relative h-full rounded-2xl p-6 overflow-hidden border hover:translate-y-[-2px] transition-transform`}
-                    style={{
-                      background: accent ? "rgba(225,29,46,0.10)" : "rgba(255,255,255,0.04)",
-                      borderColor: accent ? "rgba(225,29,46,0.35)" : "rgba(255,255,255,0.08)",
-                    }}
-                  >
-                    <div
-                      aria-hidden="true"
-                      className="absolute -top-12 -right-12 h-32 w-32 rounded-full pulse-sos"
-                      style={{ background: accent ? "var(--color-red)" : "rgba(255,255,255,0.06)", filter: "blur(40px)", opacity: accent ? 0.18 : 0.6 }}
-                    />
-                    <div className="relative flex h-full flex-col">
-                      <div className="flex items-center justify-between">
-                        <span className="tabular text-[12px] tracking-wider" style={{ color: accent ? "#fca5a5" : "rgba(255,255,255,0.6)", fontWeight: 600 }}>
-                          {w.n}
-                        </span>
-                        <Link
-                          href="/trust"
-                          className="text-[11px] inline-flex items-center gap-1"
-                          style={{ color: "rgba(255,255,255,0.5)" }}
-                        >
-                          Compare <ArrowRight />
-                        </Link>
-                      </div>
-                      <h3 className={`mt-3 font-medium tracking-[-0.01em] ${isWide || isTall ? "text-[22px] md:text-[26px]" : "text-[18px]"}`} style={{ color: "#fff" }}>
-                        {w.title}
-                      </h3>
-                      <p className={`mt-2 text-[14px] leading-relaxed ${isWide || isTall ? "" : "line-clamp-3"}`} style={{ color: "rgba(255,255,255,0.7)" }}>
-                        {w.body}
-                      </p>
+          {/* Bento — equal-size cards, no fixed row height (avoids text clipping).
+                         The previous `auto-rows-[180px]` + `h-full` was clipping
+                         headlines like "4G LTE-M, NB-IoT, GPS, Wi-Fi positioning"
+                         and "4 first-party carriers. Roaming partner for the rest"
+                         — the bento-grid mixed sizes were a designer's dream and
+                         a reader's nightmare. Equal tiles that grow to fit content. */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {wins.map((w, i) => {
+                        const accent = i === 1 || i === 4 || i === 8;
+                        return (
+                          <MarketingReveal key={w.n} delay={i * 40}>
+                            <article
+                              className="relative h-full rounded-2xl p-6 overflow-hidden border hover:translate-y-[-2px] transition-transform flex flex-col gap-3"
+                              style={{
+                                background: accent ? "rgba(225,29,46,0.10)" : "rgba(255,255,255,0.04)",
+                                borderColor: accent ? "rgba(225,29,46,0.35)" : "rgba(255,255,255,0.08)",
+                              }}
+                            >
+                              <div
+                                aria-hidden="true"
+                                className="absolute -top-12 -right-12 h-32 w-32 rounded-full pulse-sos"
+                                style={{ background: accent ? "var(--color-red)" : "rgba(255,255,255,0.06)", filter: "blur(40px)", opacity: accent ? 0.18 : 0.6 }}
+                              />
+                              <div className="relative flex items-center justify-between">
+                                <span className="tabular text-[12px] tracking-wider" style={{ color: accent ? "#fca5a5" : "rgba(255,255,255,0.6)", fontWeight: 600 }}>
+                                  {w.n}
+                                </span>
+                                <Link
+                                  href="/trust"
+                                  className="text-[11px] inline-flex items-center gap-1"
+                                  style={{ color: "rgba(255,255,255,0.5)" }}
+                                >
+                                  Compare <ArrowRight />
+                                </Link>
+                              </div>
+                              <h3 className="relative text-[18px] font-medium tracking-[-0.01em]" style={{ color: "#fff" }}>
+                                {w.title}
+                              </h3>
+                              <p className="relative text-[14px] leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
+                                {w.body}
+                              </p>
+                            </article>
+                          </MarketingReveal>
+                        );
+                      })}
                     </div>
-                  </article>
-                </MarketingReveal>
-              );
-            })}
-          </div>
         </div>
       </section>
 
