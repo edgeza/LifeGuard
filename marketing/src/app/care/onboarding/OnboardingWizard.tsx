@@ -45,7 +45,9 @@ const DEFAULT_FORM: FormState = {
   careReceiverName: '',
   conditions: [],
   customCondition: '',
-  interests: [],
+  // Pre-select a few universal defaults so step 4 doesn't show "none".
+  // Caregivers can deselect or add more in step 2.
+  interests: ['gardening', 'music', 'walking'],
   customInterest: '',
   timezone: 'Africa/Johannesburg',
   personality: 'pragmatic',

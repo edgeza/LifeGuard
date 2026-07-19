@@ -110,9 +110,14 @@ export function ElderButton(props: {
                 confirmState === 'done' ? '#16a34a' : confirmState === 'error' ? '#dc2626' : 'var(--color-red)',
               color: '#fff',
               fontSize: 26,
-              boxShadow: '0 0 0 1px rgba(255,255,255,0.08), 0 30px 60px -20px rgba(225,29,46,0.5)',
+              boxShadow:
+                confirmState === 'done'
+                  ? '0 0 0 4px rgba(22,163,74,0.35), 0 30px 60px -20px rgba(22,163,74,0.55)'
+                  : '0 0 0 1px rgba(255,255,255,0.08), 0 30px 60px -20px rgba(225,29,46,0.5)',
               opacity: submitting ? 0.7 : 1,
               cursor: confirmState === 'done' ? 'default' : 'pointer',
+              transform: confirmState === 'done' ? 'scale(1.05)' : 'scale(1)',
+              transition: 'background 200ms, transform 200ms, box-shadow 200ms',
             }}
           >
             {confirmState === 'done'

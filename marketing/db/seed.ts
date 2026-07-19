@@ -77,7 +77,7 @@ export function seed(): void {
     });
 
     const insertAppointment = db.prepare(`
-      INSERT INTO appointments (id, care_receiver_id, title, scheduled_for, location, transport, state)
+      INSERT OR IGNORE INTO appointments (id, care_receiver_id, title, scheduled_for, location, transport, state)
       VALUES (?, 'marlene', ?, ?, ?, ?, ?)
     `);
     insertAppointment.run('appt-dr-patel', 'Dr Patel', epoch('2026-07-24T10:15:00+02:00'), 'Dr Patel\'s rooms', 'Lerato driving', 'confirmed');
@@ -86,6 +86,10 @@ export function seed(): void {
     insertAppointment.run('appt-hair', 'Hair', epoch('2026-08-01T14:00:00+02:00'), 'Salon Marais', 'Sandra driving', 'scheduled');
 
     const now = Math.floor(Date.now() / 1000);
+    // Add a "tomorrow" appointment using a relative date so the elder view's
+    // Tomorrow section has content even when the seed's fixed dates are far away.
+    insertAppointment.run('appt-pharmacy-tomorrow', 'Pharmacy refill', now + 1 * 24 * 3600, 'Clicks Pharmacy', 'Family pickup', 'scheduled');
+    insertAppointment.run('appt-club-tomorrow', 'Garden club meeting', now + 1 * 24 * 3600 + 4 * 3600, 'Community Hall', 'Sandra driving', 'scheduled');
     const adherenceStatuses = [
       'confirmed', 'confirmed', 'late', 'confirmed', 'confirmed', 'missed', 'confirmed',
       'confirmed', 'late', 'confirmed', 'confirmed', 'confirmed', 'missed', 'confirmed',

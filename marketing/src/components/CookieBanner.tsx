@@ -34,10 +34,10 @@ export function CookieBanner() {
     <div
       role="dialog"
       aria-label="Cookie preferences"
-      className="fixed right-4 bottom-4 z-50 max-w-[340px]"
+      className="fixed left-4 bottom-4 z-50 max-w-[280px]"
     >
       <div
-        className="rounded-lg px-3.5 py-2.5 shadow-stripe-3 flex items-center gap-3"
+        className="rounded-lg px-3 py-2 shadow-stripe-3 flex items-center gap-2.5"
         style={{
           background: "rgba(10,10,10,0.94)",
           color: "rgba(255,255,255,0.92)",
@@ -47,7 +47,7 @@ export function CookieBanner() {
       >
         <div className="flex-1 min-w-0">
           <div className="text-[12px]" style={{ fontWeight: 600, color: "#fff" }}>
-            Cookies: essential only.
+            Essential cookies only.
           </div>
           <div className="text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.55)" }}>
             No tracking. No ads.{" "}
@@ -68,8 +68,9 @@ export function CookieBanner() {
               border: "1px solid rgba(255,255,255,0.14)",
               color: "rgba(255,255,255,0.85)",
             }}
+            aria-label="Essential cookies only"
           >
-            Essential only
+            Essential
           </button>
           <button
             onClick={() => decide("all")}

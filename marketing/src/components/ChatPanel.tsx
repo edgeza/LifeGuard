@@ -130,9 +130,9 @@ export function ChatPanel() {
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
           placeholder="Ask Esther: how did she sleep? any skipped doses this week?"
-          className="flex-1 px-3 py-2 rounded-md text-[13px] mono"
+          className="flex-1 px-3 py-2 rounded-md text-[13px] mono placeholder:text-[var(--color-muted)]"
           style={{
-            background: "var(--color-bg-soft)",
+            background: "var(--color-bg)",
             border: "1px solid var(--color-line)",
             color: "var(--color-ink)",
             outline: "none",
@@ -141,8 +141,8 @@ export function ChatPanel() {
         <button
           onClick={send}
           disabled={thinking || !draft.trim()}
-          className="btn btn-red btn-sm"
-          style={{ opacity: thinking || !draft.trim() ? 0.5 : 1 }}
+          className="btn btn-red btn-sm disabled:opacity-40"
+          style={{ opacity: thinking ? 0.5 : 1 }}
         >
           Send
         </button>
