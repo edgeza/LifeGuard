@@ -1,77 +1,108 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
+/**
+ * SignupForm — actual account creation that POSTs to
+ * /api/care/auth/signup. Replaces the old decorative form
+ * that just set a `submitted` flag and showed "You're on
+ * the list." without doing anything.
+ *
+ * Required: name, email, password (min 8 chars), tenant name.
+ * Creates a new tenant + admin user, sets session cookie,
+ * redirects to /care/dashboard.
+ */
 export function SignupForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    tenantName: "",
+    use: "reseller",
+  });
 
-  if (submitted) {
-    return (
-      <div
-        className="card-elevated p-8 md:p-10"
-        role="status"
-        aria-live="polite"
-      >
-        <div className="flex items-center gap-3">
-          <span
-            className="inline-flex items-center justify-center rounded-full"
-            style={{ width: 36, height: 36, background: "var(--color-red-tint)" }}
-            aria-hidden="true"
-          >
-            <svg width="18" height="18" viewBox="0 0 18 18">
-              <path
-                d="M5 9.3l2.6 2.6L13 6.5"
-                stroke="var(--color-red-hover)"
-                strokeWidth="1.8"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <div>
-            <div className="text-[15px]" style={{ color: "var(--color-ink)", fontWeight: 510 }}>
-              You&rsquo;re on the list.
-            </div>
-            <div className="text-[13px]" style={{ color: "var(--color-body)" }}>
-              We&rsquo;ll provision your tenant and email a sandbox API key within the
-              next business day.
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  const setField = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/care/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.email.trim(),
+          password: form.password,
+          name: form.name.trim(),
+          tenantName: form.tenantName.trim() || `${form.name.split(" ")[0]}'s tenant`,
+        }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setError(body.error ?? `Sign-up failed (${res.status})`);
+        return;
+      }
+      router.push("/care/dashboard");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Network error");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
     <form
       className="card-elevated p-6 md:p-8"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSubmitted(true);
-      }}
+      onSubmit={onSubmit}
       aria-label="Create your LifeGuard account"
     >
       <div className="grid grid-cols-2 gap-4">
-        <Field label="First name" id="first" type="text" placeholder="Thandi" autoComplete="given-name" />
-        <Field label="Last name" id="last" type="text" placeholder="Mokoena" autoComplete="family-name" />
+        <Field
+          label="Your name"
+          id="name"
+          type="text"
+          value={form.name}
+          onChange={setField("name")}
+          placeholder="Thandi Mokoena"
+          autoComplete="name"
+        />
+        <Field
+          label="Tenant name"
+          id="tenantName"
+          type="text"
+          value={form.tenantName}
+          onChange={setField("tenantName")}
+          placeholder="City Watch Cape Town"
+          autoComplete="organization"
+        />
       </div>
       <div className="mt-4">
         <Field
           label="Work email"
           id="email"
           type="email"
+          value={form.email}
+          onChange={setField("email")}
           placeholder="thandi@yourcompany.com"
           autoComplete="email"
         />
       </div>
       <div className="mt-4">
         <Field
-          label="Company"
-          id="company"
-          type="text"
-          placeholder="City Watch Cape Town"
-          autoComplete="organization"
+          label="Password (min 8 chars)"
+          id="password"
+          type="password"
+          value={form.password}
+          onChange={setField("password")}
+          placeholder="••••••••"
+          autoComplete="new-password"
         />
       </div>
       <div className="mt-4">
@@ -85,7 +116,8 @@ export function SignupForm() {
         <select
           id="use"
           name="use"
-          defaultValue="reseller"
+          value={form.use}
+          onChange={setField("use")}
           className="w-full h-10 rounded-md border bg-white px-3 text-[14px]"
           style={{ borderColor: "var(--color-line)", color: "var(--color-ink)" }}
         >
@@ -95,8 +127,28 @@ export function SignupForm() {
           <option value="developer">Developer evaluating the API</option>
         </select>
       </div>
-      <button type="submit" className="btn btn-red btn-lg w-full mt-6">
-        Create my account
+
+      {error && (
+        <div
+          className="mt-4 text-[13px] px-3 py-2 rounded-md"
+          style={{
+            background: "rgba(225,29,46,0.08)",
+            border: "1px solid rgba(225,29,46,0.30)",
+            color: "var(--color-red)",
+          }}
+          role="alert"
+        >
+          {error}
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={busy || !form.email || !form.password || form.password.length < 8 || !form.name}
+        className="btn btn-red btn-lg w-full mt-6 disabled:opacity-40"
+        style={{ opacity: busy ? 0.5 : 1 }}
+      >
+        {busy ? "Creating account…" : "Create my account"}
       </button>
       <p className="mt-4 text-[12px] leading-relaxed" style={{ color: "var(--color-muted)" }}>
         By creating an account you agree to our terms of service and data
@@ -111,12 +163,16 @@ function Field({
   label,
   id,
   type,
+  value,
+  onChange,
   placeholder,
   autoComplete,
 }: {
   label: string;
   id: string;
   type: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   autoComplete?: string;
 }) {
@@ -135,7 +191,10 @@ function Field({
         type={type}
         placeholder={placeholder}
         autoComplete={autoComplete}
+        value={value}
+        onChange={onChange}
         required
+        minLength={type === "password" ? 8 : undefined}
         className="w-full h-10 rounded-md border bg-white px-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-[var(--color-red)] focus:border-transparent"
         style={{ borderColor: "var(--color-line)", color: "var(--color-ink)" }}
       />

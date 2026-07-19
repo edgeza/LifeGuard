@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { LoginForm } from "@/components/LoginForm";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Log in — LifeGuard",
@@ -13,35 +14,13 @@ export default function Login() {
           <div className="eyebrow mb-3">Operator console</div>
           <h1 className="h2 text-[32px] md:text-[40px]">Log in</h1>
           <p className="mt-3 text-[15px]" style={{ color: "var(--color-body)" }}>
-            Single sign-on across the operator console, family app, and
-            reseller dashboard.
+            Sign in to the caregiver dashboard.
           </p>
         </div>
         <div className="card-elevated p-8">
-          <div className="space-y-3">
-            <Link
-              href="https://console.lifeguard.example.com"
-              className="btn btn-red btn-lg w-full"
-            >
-              Continue with SSO
-            </Link>
-            <Link
-              href="https://console.lifeguard.example.com?email="
-              className="btn btn-ghost btn-lg w-full"
-            >
-              Email me a magic link
-            </Link>
-          </div>
-          <div
-            className="mt-6 pt-6 border-t text-center text-[13px]"
-            style={{ borderColor: "var(--color-line)", color: "var(--color-muted)" }}
-          >
-            Don&rsquo;t have an account?{" "}
-            <Link href="/signup" style={{ color: "var(--color-red)", fontWeight: 510 }}>
-              Create one
-            </Link>
-            .
-          </div>
+          <Suspense fallback={<div className="text-[13px]" style={{ color: "var(--color-muted)" }}>Loading…</div>}>
+            <LoginForm />
+          </Suspense>
         </div>
         <p
           className="mt-6 text-center text-[12px]"
