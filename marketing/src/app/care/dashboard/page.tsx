@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getCurrentUser } from '@/lib/auth';
 import { MarketingReveal } from '@/components/MarketingReveal';
 import { ChatPanel } from '@/components/ChatPanel';
+import { MedicationRow } from '@/components/MedicationRow';
 import type {
   CareReceiver,
   Agent,
@@ -114,6 +115,22 @@ function medicationAdherence30d(
   return Math.round((confirmed / own.length) * 100);
 }
 
+function medicationConfirmedToday(
+  medicationId: string,
+  events: DetailResponse['adherence'],
+): boolean {
+  const startOfDay = Math.floor(new Date().setHours(0, 0, 0, 0) / 1000);
+  const endOfDay = startOfDay + 24 * 60 * 60;
+  return events.some(
+    (e) =>
+      e.medication_id === medicationId &&
+      e.status === 'confirmed' &&
+      e.confirmed_at !== null &&
+      e.confirmed_at >= startOfDay &&
+      e.confirmed_at < endOfDay,
+  );
+}
+
 export default async function CareDashboardPage() {
   const user = await getCurrentUser();
   if (!user) redirect('/login?from=/care/dashboard');
@@ -177,6 +194,9 @@ export default async function CareDashboardPage() {
             </span>
           </div>
           <div className="flex items-center gap-3">
+            <span className="text-[12px] mono" style={{ color: "var(--color-muted)" }}>
+              {user.name}
+            </span>
             <Link href="/care/onboarding" className="text-[12px] mono" style={{ color: 'var(--color-muted)' }}>
               onboarding
             </Link>
@@ -189,6 +209,16 @@ export default async function CareDashboardPage() {
             >
               Elder view →
             </Link>
+            <form action="/api/care/auth/logout" method="post">
+              <button
+                type="submit"
+                className="text-[12px] mono"
+                style={{ color: "var(--color-muted)" }}
+                aria-label="Sign out"
+              >
+                sign out
+              </button>
+            </form>
           </div>
         </div>
       </header>
@@ -418,62 +448,18 @@ export default async function CareDashboardPage() {
                 )}
                 {detail.medications.map((m) => {
                   const adh = medicationAdherence30d(m.id, detail.adherence);
+                  const confirmedToday = medicationConfirmedToday(m.id, detail.adherence);
                   return (
-                    <div
+                    <MedicationRow
                       key={m.id}
-                      className="grid grid-cols-12 gap-3 px-5 py-4 items-center"
-                    >
-                      <div className="col-span-12 md:col-span-5">
-                        <div className="text-[13.5px]" style={{ color: 'var(--color-ink)', fontWeight: 600 }}>
-                          {m.name} {m.dosage}
-                        </div>
-                        <div
-                          className="text-[11px] mono mt-0.5"
-                          style={{ color: 'var(--color-muted)' }}
-                        >
-                          {m.schedule}
-                        </div>
-                      </div>
-                      <div className="col-span-6 md:col-span-3">
-                        <div
-                          className="text-[10px] uppercase tracking-[0.16em]"
-                          style={{ color: 'var(--color-muted)', fontWeight: 600 }}
-                        >
-                          Refills left
-                        </div>
-                        <div className="text-[13px] mt-0.5" style={{ color: 'var(--color-ink)' }}>
-                          {m.refills_remaining}
-                        </div>
-                      </div>
-                      <div className="col-span-6 md:col-span-4">
-                        <div
-                          className="text-[10px] uppercase tracking-[0.16em]"
-                          style={{ color: 'var(--color-muted)', fontWeight: 600 }}
-                        >
-                          Adherence
-                        </div>
-                        <div className="flex items-center gap-3 mt-1.5">
-                          <div
-                            className="flex-1 h-2 rounded-full overflow-hidden"
-                            style={{ background: 'var(--color-bg-soft)' }}
-                          >
-                            <div
-                              className="h-full rounded-full"
-                              style={{
-                                width: `${adh}%`,
-                                background: adh < 85 ? '#fb923c' : 'var(--color-red)',
-                              }}
-                            />
-                          </div>
-                          <span
-                            className="mono tabular text-[12px]"
-                            style={{ color: 'var(--color-ink)', fontWeight: 700 }}
-                          >
-                            {adh}%
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      id={m.id}
+                      name={m.name}
+                      dosage={m.dosage}
+                      schedule={m.schedule}
+                      refillsRemaining={m.refills_remaining}
+                      adherencePercent={adh}
+                      confirmedToday={confirmedToday}
+                    />
                   );
                 })}
               </div>

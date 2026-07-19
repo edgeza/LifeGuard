@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 /**
  * ChatPanel — the caregiver's window into the bot conversation with
@@ -11,9 +12,8 @@ import { useEffect, useRef, useState } from "react";
  * Segmented per caregiver: each sibling's chat history is private to
  * them. The care receiver never sees this window.
  *
- * Dynamic — accepts the actual agent / care_receiver / caregiver
- * identifiers + display names as props so the panel reflects whatever
- * user is logged in. No more hardcoded "Marlene / Lerato" copy.
+ * Loads chat history from /api/care/chat/history on mount; persists
+ * each user message + bot reply through /api/care/chat.
  */
 
 type Message = {
@@ -37,30 +37,74 @@ export function ChatPanel(props: {
   const [thinking, setThinking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Load persisted history on mount. Falls back to a greeting if no history.
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, thinking]);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(
+          `/api/care/chat/history?agentId=${encodeURIComponent(props.agentId)}&limit=50`,
+        );
+        if (!res.ok) throw new Error("history fetch failed");
+        const data = await res.json();
+        const history: Message[] = (data.messages ?? []).map(
+          (m: {
+            id: string;
+            sender_type: "bot" | "elder" | "caregiver" | "system";
+            created_at: number;
+            content: string;
+          }) => ({
+            id: m.id,
+            from: m.sender_type,
+            ts: epochToHHMM(m.created_at),
+            body: m.content,
+          }),
+        );
+        if (cancelled) return;
+        if (history.length > 0) {
+          setMessages(history);
+        } else {
+          setMessages([
+            {
+              id: "greeting",
+              from: "bot",
+              ts: now(),
+              body: `Hi ${props.caregiverName.split(" ")[0]} — I'm ${props.agentName}, the assistant for ${props.careReceiverName}. Ask me about today's meds, upcoming appointments, or recent vitals.`,
+            },
+          ]);
+        }
+      } catch {
+        if (!cancelled) {
+          setMessages([
+            {
+              id: "greeting",
+              from: "bot",
+              ts: now(),
+              body: `Hi ${props.caregiverName.split(" ")[0]} — I'm ${props.agentName}. (history offline)`,
+            },
+          ]);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [props.agentId]);
 
-  // Show one starter message so the panel isn't empty for first-time users.
-  // Once the user sends their first message, the panel reflects real history.
   useEffect(() => {
-    if (messages.length === 0) {
-      setMessages([
-        {
-          id: "s0",
-          from: "bot",
-          ts: now(),
-          body: `Hi ${props.caregiverName.split(" ")[0]} — I'm ${props.agentName}, the assistant for ${props.careReceiverName}. Ask me about today's meds, upcoming appointments, or recent vitals.`,
-        },
-      ]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.agentName, props.careReceiverName, props.caregiverName]);
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages, thinking]);
 
   async function send() {
     const text = draft.trim();
     if (!text) return;
-    setMessages((m) => [...m, { id: `u${Date.now()}`, from: "caregiver", ts: now(), body: text }]);
+    setMessages((m) => [
+      ...m,
+      { id: `u${Date.now()}`, from: "caregiver", ts: now(), body: text },
+    ]);
     setDraft("");
     setThinking(true);
     try {
@@ -75,7 +119,10 @@ export function ChatPanel(props: {
         }),
       });
       const data = await res.json();
-      setMessages((m) => [...m, { id: `b${Date.now()}`, from: "bot", ts: now(), body: data.reply }]);
+      setMessages((m) => [
+        ...m,
+        { id: `b${Date.now()}`, from: "bot", ts: now(), body: data.reply },
+      ]);
     } catch {
       setMessages((m) => [
         ...m,
@@ -103,7 +150,6 @@ export function ChatPanel(props: {
         height: 580,
       }}
     >
-      {/* Header */}
       <div
         className="px-5 py-3 flex items-center justify-between border-b"
         style={{ borderColor: "var(--color-line)" }}
@@ -119,21 +165,28 @@ export function ChatPanel(props: {
             {props.caregiverName}&apos;s view · private to you
           </div>
         </div>
-        <a
+        <Link
           href="/care/architecture"
           className="text-[11px]"
           style={{ color: "var(--color-red)" }}
         >
           how this works →
-        </a>
+        </Link>
       </div>
 
-      {/* Message stream */}
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto p-5 space-y-3"
         style={{ background: "var(--color-bg-soft)" }}
       >
+        {messages.length === 0 && (
+          <div
+            className="text-center text-[12px] mono"
+            style={{ color: "var(--color-muted)" }}
+          >
+            loading conversation…
+          </div>
+        )}
         {messages.map((m) => (
           <Bubble
             key={m.id}
@@ -147,10 +200,7 @@ export function ChatPanel(props: {
           />
         ))}
         {thinking && (
-          <div
-            className="flex justify-start"
-            aria-live="polite"
-          >
+          <div className="flex justify-start" aria-live="polite">
             <div
               className="rounded-2xl px-3.5 py-2 text-[13.5px]"
               style={{
@@ -170,7 +220,6 @@ export function ChatPanel(props: {
         )}
       </div>
 
-      {/* Input */}
       <div
         className="p-3 flex items-center gap-2 border-t"
         style={{ borderColor: "var(--color-line)" }}
@@ -221,7 +270,10 @@ function Bubble({
 }) {
   if (from === "system") {
     return (
-      <div className="text-center text-[11px] mono" style={{ color: "var(--color-muted)" }}>
+      <div
+        className="text-center text-[11px] mono"
+        style={{ color: "var(--color-muted)" }}
+      >
         {body}
       </div>
     );
@@ -232,9 +284,7 @@ function Bubble({
   const isYou = from === "caregiver";
 
   return (
-    <div
-      className={`flex ${isYou ? "justify-end" : "justify-start"}`}
-    >
+    <div className={`flex ${isYou ? "justify-end" : "justify-start"}`}>
       <div style={{ maxWidth: "85%" }}>
         <div
           className="rounded-2xl px-3.5 py-2 text-[13.5px] leading-relaxed"
@@ -242,13 +292,13 @@ function Bubble({
             background: isBot
               ? "#fff"
               : isElder
-              ? "rgba(225,29,46,0.04)"
-              : "var(--color-red)",
+                ? "rgba(225,29,46,0.04)"
+                : "var(--color-red)",
             color: isBot
               ? "var(--color-ink)"
               : isElder
-              ? "var(--color-ink)"
-              : "#fff",
+                ? "var(--color-ink)"
+                : "#fff",
             border:
               isBot || isElder
                 ? "1px solid var(--color-line)"
@@ -278,7 +328,12 @@ function Bubble({
             textAlign: isYou ? "right" : "left",
           }}
         >
-          {isBot ? agentName : isElder ? elderName : caregiverName.split(" ")[0]} · {ts}
+          {isBot
+            ? agentName
+            : isElder
+              ? elderName
+              : caregiverName.split(" ")[0]}{" "}
+          · {ts}
         </div>
       </div>
     </div>
@@ -299,6 +354,10 @@ function Dot({ delay }: { delay: number }) {
 }
 
 function now(): string {
-  const d = new Date();
+  return epochToHHMM(Math.floor(Date.now() / 1000));
+}
+
+function epochToHHMM(epoch: number): string {
+  const d = new Date(epoch * 1000);
   return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
