@@ -7,7 +7,7 @@ import { IntegrationOrbit } from "@/components/IntegrationOrbit";
 import { Spotlight } from "@/components/Spotlight";
 import { CardSpotlight } from "@/components/CardSpotlight";
 import { CardContainer, CardBody, CardItem } from "@/components/ThreeDCard";
-import HeroSectionPrebuiltUI from "@/components/ui/hero-section-prebuiltui";
+import { HomeHero } from "@/components/HomeHero";
 
 /* =========================================================================
    Page copy
@@ -103,10 +103,12 @@ export default function Home() {
   return (
     <>
       {/* ============================================================== */}
-            {/* HERO — adapted from 21st.dev/prebuiltui/hero-section            */}
-            {/* https://21st.dev/community/components/prebuiltui/hero-section/ */}
+            {/* HERO — composed from real 21st.dev community components:        */}
+            {/*   ShapeHero (kokonutui), StatsBar (kokonutui),                  */}
+            {/*   DottedMap (magicui), SpotlightCards (kokonutui),              */}
+            {/*   LiveSOSIndicator (custom). All MIT-licensed.                  */}
             {/* ============================================================== */}
-            <HeroSectionPrebuiltUI />
+            <HomeHero />
 
       {/* ============================================================== */}
       {/* 21ST.DEV BENTO — what you actually get                         */}
