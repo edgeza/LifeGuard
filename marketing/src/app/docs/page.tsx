@@ -137,30 +137,34 @@ export default function Docs() {
             >
               <h3 className="h3 text-[16px] mb-3">{s.title}</h3>
               <ul className="space-y-2">
-                {s.items.map((it) => (
-                  <li key={it}>
-                    <Link
-                      href="#"
-                      className="text-[14px] inline-flex items-center gap-1.5 hover:text-[var(--color-red)] transition-colors"
-                      style={{ color: "var(--color-ink)" }}
-                    >
-                      {it}
-                      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-                        <path
-                          d="M3 7l4-4M4 3h3v3"
-                          stroke="currentColor"
-                          strokeWidth="1.3"
-                          fill="none"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+                              {s.items.map((it) => {
+                                const slug = it.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+                                return (
+                                  <li key={it}>
+                                    <Link
+                                      href={`#${slug}`}
+                                      className="text-[14px] inline-flex items-center gap-1.5 hover:text-[var(--color-red)] transition-colors"
+                                      style={{ color: "var(--color-ink)" }}
+                                    >
+                                      {it}
+                                      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                                        <path
+                                          d="M3 7l4-4M4 3h3v3"
+                                          stroke="currentColor"
+                                          strokeWidth="1.3"
+                                          fill="none"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                      </svg>
+                                    </Link>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+        ))}
+      </div>
       </section>
 
       <section className="container-x pb-24">

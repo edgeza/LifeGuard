@@ -380,7 +380,7 @@ function CoverageMap({ regions }: { regions: typeof coverageRegions }) {
             ["IT", 500, 115],
             ["SE", 520, 65],
           ].map(([code, x, y], i) => {
-            const isLead = coverageRegions.some((r) => r.name.toUpperCase().includes(String(code)));
+            const isLead = ["ZA", "GB", "NL", "AU"].includes(String(code));
             return (
               <g key={i}>
                 <circle

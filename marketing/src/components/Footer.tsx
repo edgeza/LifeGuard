@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CountrySelect } from "./CountrySelect";
 
 type Column = {
   title: string;
@@ -55,13 +56,9 @@ const columns: Column[] = [
 
 const countries = [
   { code: "ZA", name: "South Africa" },
-  { code: "US", name: "United States" },
   { code: "GB", name: "United Kingdom" },
-  { code: "DE", name: "Germany" },
+  { code: "NL", name: "Netherlands" },
   { code: "AU", name: "Australia" },
-  { code: "JP", name: "Japan" },
-  { code: "BR", name: "Brazil" },
-  { code: "IN", name: "India" },
 ];
 
 export function Footer() {
@@ -174,7 +171,7 @@ export function Footer() {
           >
             <span className="tabular">© {new Date().getFullYear()} LifeGuard Technologies Pty Ltd</span>
             <span aria-hidden="true">·</span>
-            <span>Cape Town · San Francisco · Berlin</span>
+            <span>Cape Town, South Africa</span>
             <span aria-hidden="true">·</span>
             <span>Made for the line that no one ever wants to call.</span>
           </div>
@@ -231,27 +228,3 @@ const socials = [
     ),
   },
 ];
-
-function CountrySelect() {
-  return (
-    <label className="inline-flex items-center gap-2 text-[13px]" style={{ color: "rgba(255,255,255,0.8)" }}>
-      <span className="sr-only">Country</span>
-      <select
-        aria-label="Country selector"
-        defaultValue="ZA"
-        className="rounded-md px-3 py-1.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-[var(--color-red)]"
-        style={{
-          background: "rgba(255,255,255,0.06)",
-          color: "#fff",
-          border: "1px solid rgba(255,255,255,0.15)",
-        }}
-      >
-        {countries.map((c) => (
-          <option key={c.code} value={c.code} style={{ color: "#0a0a0a" }}>
-            {c.name}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-}

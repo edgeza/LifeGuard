@@ -104,7 +104,7 @@ const roles: Role[] = [
     about:
       "You'll spend most of your time watching operators work. Eight-hour shifts, alert triage, dispatch. You'll write the console's TypeScript and own the AI-triage UI. The console is the killer surface for our customers &mdash; it's what they evaluate us on.",
     responsibilities: [
-      "Own the operator console UX end-to-end (React 15, Next.js 14, Tailwind)",
+      "Own the operator console UX end-to-end (React 19, Next.js 15, Tailwind v4)",
       "Pair with armed-response operators during shifts to learn their workflow",
       "Build the AI-triage column, dispatch view, audit-trail viewer",
       "Define and measure operator SLOs (MTTC, alert-to-dispatch)",

@@ -345,7 +345,7 @@ export default function CareDashboardPage() {
                       <span
                         className="text-[10px] uppercase tracking-[0.18em]"
                         style={{
-                          color: c.state === "confirmed" ? "var(--color-red)" : "var(--color-muted)",
+                          color: c.state === "confirmed" ? "var(--color-success)" : "var(--color-muted)",
                           fontWeight: 700,
                         }}
                       >

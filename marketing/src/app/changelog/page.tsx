@@ -183,7 +183,7 @@ export default function ChangelogPage() {
             >
               curl -X POST https://api.lifeguard.example/v1/webhooks \
               <br />
-              &nbsp;&nbsp;-H &apos;Authorization: Bearer $LIFEGUARD_KEY&apos; \
+              &nbsp;&nbsp;-H &apos;Authorization: Bearer $LIFEGUARD_API_KEY&apos; \
               <br />
               &nbsp;&nbsp;-d &apos;{`{ "url": "https://you.example/changelog", "events": ["changelog.published"] }`}&apos;
             </code>

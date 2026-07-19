@@ -30,6 +30,8 @@ export default function ElderView() {
   const now = new Date();
   const date = fmtDate(now);
   const hour = now.getHours();
+  const hh = String(now.getHours()).padStart(2, "0");
+  const mm = String(now.getMinutes()).padStart(2, "0");
   const greeting =
     hour < 12 ? "Good morning" :
     hour < 18 ? "Good afternoon" :
@@ -57,7 +59,7 @@ export default function ElderView() {
 
         {/* next reminder */}
         <h1 className="mt-6 text-[40px] md:text-[56px] leading-[1.05]" style={{ color: "#fff", fontWeight: 600, letterSpacing: "-0.02em" }}>
-          It's 13:42.
+          It's {hh}:{mm}.
         </h1>
         <p className="mt-4 text-[18px] md:text-[20px]" style={{ color: "rgba(255,255,255,0.7)" }}>
           Time for your afternoon metformin.

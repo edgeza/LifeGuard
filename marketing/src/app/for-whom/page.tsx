@@ -517,8 +517,9 @@ export default function ForWhom() {
             Don’t see yourself in one of these five?
           </h2>
           <p className="mt-4 max-w-[520px] mx-auto" style={{ color: "rgba(230,237,247,0.7)" }}>
-            We also support patients with chronic cardiac conditions, kids
-            (Junior Guardian SKU), and pets (Pet Tracker SKU). Email us. We’ll
+            Custom rollouts for chronic-care, estate-security, and lone-worker
+            fleets. Email us &mdash; we&rsquo;ll be specific about what we
+            ship and what we can&rsquo;t.
             be specific about what we ship.
           </p>
           <div className="mt-6 flex justify-center gap-3">

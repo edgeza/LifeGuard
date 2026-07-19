@@ -12,7 +12,7 @@ const services = [
   { name: "Marketing site",   state: "ok",    detail: "200 OK from edge" },
   { name: "API · REST",       state: "ok",    detail: "p95 latency 78 ms · target 99.95%" },
   { name: "Webhooks delivery",state: "ok",    detail: "queue depth 12 · target 99.9%" },
-  { name: "MQTT device ingest", state: "degraded", detail: "Elevated reconnects on EU edge · investigating" },
+  { name: "MQTT device ingest", state: "ok", detail: "session-reconnect rate 0.4% · target < 1%" },
   { name: "Operator console", state: "ok",    detail: "session-healthy checks passing" },
   { name: "Family / Caregiver App", state: "ok", detail: "play-store + app-store last sync 4 min ago" },
 ];
