@@ -500,39 +500,17 @@ export default function Home() {
       </section>
 
       {/* ============================================================== */}
-      {/* ECOSYSTEM                                                   */}
-      {/* ============================================================== */}
-      <section className="container-x py-16 md:py-24" aria-label="LifeGuard ecosystem diagram">
-        <MarketingReveal>
-          <div className="flex items-baseline justify-between flex-wrap gap-3 mb-6">
-            <div>
-              <div className="eyebrow mb-2">Ecosystem</div>
-              <h2 className="display text-[36px] md:text-[48px] max-w-[680px]">
-                A push from the band opens the call line, drops a pin on the
-                operator’s map, and routes the nearest armed-response vehicle.
-              </h2>
-            </div>
-            <p className="lead max-w-[280px] hidden md:block" style={{ fontSize: "15px" }}>
-              Everything below happens in three seconds. The wearer barely
-              finishes the thought.
-            </p>
-          </div>
-        </MarketingReveal>
-        <div className="rounded-2xl overflow-hidden border shadow-stripe-3" style={{ borderColor: "var(--color-line)" }}>
-          <img
-            src="/hero/ecosystem.svg"
-            alt="The LifeGuard ecosystem: a wearer with the LifeBand on her wrist, a 3-second alert flowing to the operator console, an armed-response vehicle rolling"
-            className="w-full h-auto block"
-            width="1440"
-            height="900"
-            loading="lazy"
-          />
-        </div>
-      </section>
+            {/* ECOSYSTEM (removed)                                          */}
+            {/* ============================================================== */}
+            {/* The 1440x900 flat-color ecosystem SVG that lived here has been */}
+            {/* removed — it read as a 2010s stock illustration and pushed    */}
+            {/* everything below the fold. The new ShapeHero at the top of    */}
+            {/* the page already shows the ecosystem (LifeBand + world map + */}
+            {/* telemetry + live alert strip) more honestly, with real data. */}
 
-      {/* ============================================================== */}
-      {/* 10 WINS — bento grid, dark section                              */}
-      {/* ============================================================== */}
+            {/* ============================================================== */}
+            {/* 10 WINS — bento grid, dark section                              */}
+            {/* ============================================================== */}
       <section
         id="ten"
         className="section-dark py-24 md:py-32"

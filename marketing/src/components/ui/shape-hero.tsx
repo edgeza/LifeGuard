@@ -124,82 +124,11 @@ export default function ShapeHero({
       {/* Top-of-stage wash — warm, red-tinted, not the original indigo */}
       <div className="absolute inset-0 bg-linear-to-br from-red-500/[0.04] via-transparent to-rose-500/[0.04] blur-3xl dark:from-red-500/[0.10] dark:via-transparent dark:to-rose-500/[0.10]" />
 
-      {/* Floating shapes — same motion contract as the original kokonutui piece,
-          recoloured to the brand palette. */}
-      <div className="absolute inset-0 overflow-hidden">
-        <ElegantShape
-          borderRadius={24}
-          className="top-[-10%] left-[-15%]"
-          delay={0.3}
-          gradient="from-red-500/[0.30] dark:from-red-500/[0.40]"
-          height={500}
-          rotate={-8}
-          width={300}
-        />
-        <ElegantShape
-          borderRadius={20}
-          className="right-[-20%] bottom-[-5%]"
-          delay={0.5}
-          gradient="from-rose-500/[0.28] dark:from-rose-500/[0.38]"
-          height={200}
-          rotate={15}
-          width={600}
-        />
-        <ElegantShape
-          borderRadius={32}
-          className="top-[40%] left-[-5%]"
-          delay={0.4}
-          gradient="from-violet-500/[0.22] dark:from-violet-500/[0.30]"
-          height={300}
-          rotate={24}
-          width={300}
-        />
-        <ElegantShape
-          borderRadius={12}
-          className="top-[5%] right-[10%]"
-          delay={0.6}
-          gradient="from-amber-500/[0.20] dark:from-amber-500/[0.28]"
-          height={100}
-          rotate={-20}
-          width={250}
-        />
-        <ElegantShape
-          borderRadius={16}
-          className="top-[45%] right-[-10%]"
-          delay={0.7}
-          gradient="from-emerald-500/[0.18] dark:from-emerald-500/[0.26]"
-          height={150}
-          rotate={35}
-          width={400}
-        />
-        <ElegantShape
-          borderRadius={28}
-          className="bottom-[10%] left-[20%]"
-          delay={0.2}
-          gradient="from-blue-500/[0.18] dark:from-blue-500/[0.26]"
-          height={200}
-          rotate={-25}
-          width={200}
-        />
-        <ElegantShape
-          borderRadius={10}
-          className="top-[15%] left-[40%]"
-          delay={0.8}
-          gradient="from-purple-500/[0.18] dark:from-purple-500/[0.26]"
-          height={80}
-          rotate={45}
-          width={150}
-        />
-        <ElegantShape
-          borderRadius={18}
-          className="top-[60%] left-[25%]"
-          delay={0.9}
-          gradient="from-teal-500/[0.16] dark:from-teal-500/[0.22]"
-          height={120}
-          rotate={-12}
-          width={450}
-        />
-      </div>
+      {/* Floating shapes — removed. The original 8 multicolor shapes (violet,
+          amber, emerald, blue, purple, teal) read as a 2010s Webflow hero.
+          Linear/Stripe/Vercel use either a clean dark bg with one subtle
+          gradient, or a single brand-coloured blurred shape — not 8 random
+          colours. The brand-red gradient above is enough. */}
 
       <div className="container relative z-10 mx-auto px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
