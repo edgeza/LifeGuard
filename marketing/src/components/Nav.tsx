@@ -93,13 +93,7 @@ export function Nav() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1" aria-label="Primary">
-            <DesktopProductMenu
-              open={productOpen}
-              onOpenChange={setProductOpen}
-              buttonRef={productButtonRef}
-              popRef={productPopRef}
-            />
-            <NavLink href="/for-whom">For whom</NavLink>
+            <NavLink href="/products">Products</NavLink>
             <NavLink href="/care">Care</NavLink>
             <NavLink href="/pricing">Pricing</NavLink>
             <NavLink href="/trust">Trust</NavLink>
