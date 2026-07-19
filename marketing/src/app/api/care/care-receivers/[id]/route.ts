@@ -72,9 +72,14 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
       const agent = db_agents.findByCareReceiver(id);
       const escalations = agent ? db_escalations.listForAgent(agent.id, { limit: 10 }) : [];
 
-      // Vitals: last 24h, latest per metric
+      // Vitals: latest per metric (last 24h for the stat cards),
+      // plus a 7-day series per metric for the dashboard sparklines.
       const vitalsLast24h = db_vitals.listForCareReceiver(id, {
         from: nowSec - 24 * 60 * 60,
+        to: nowSec,
+      });
+      const vitalsLast7d = db_vitals.listForCareReceiver(id, {
+        from: nowSec - 7 * 24 * 60 * 60,
         to: nowSec,
       });
       const latestByMetric: Record<string, { value: number; recorded_at: number }> = {};
@@ -155,7 +160,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
         })),
         vitals: {
           latest: latestByMetric,
-          raw: vitalsLast24h.map((v) => ({
+          raw: vitalsLast7d.map((v) => ({
             id: v.id,
             metric: v.metric,
             value: v.value,

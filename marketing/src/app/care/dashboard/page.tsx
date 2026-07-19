@@ -4,6 +4,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { MarketingReveal } from '@/components/MarketingReveal';
 import { ChatPanel } from '@/components/ChatPanel';
 import { MedicationRow } from '@/components/MedicationRow';
+import { Sparkline } from '@/components/Sparkline';
 import type {
   CareReceiver,
   Agent,
@@ -235,9 +236,9 @@ export default async function CareDashboardPage() {
               value={`${combinedAdherence}%`}
               sub="from logged events"
             />
-            <VitalStat label="Resting HR" vital={detail.vitals.latest.heart_rate} unit="bpm" />
-            <VitalStat label="SpO₂" vital={detail.vitals.latest.spo2} unit="%" />
-            <VitalStat label="HRV" vital={detail.vitals.latest.hrv} unit="ms" />
+            <VitalStat label="Resting HR" vital={detail.vitals.latest.heart_rate} series={vitalsSeries(detail.vitals.raw, 'heart_rate')} unit="bpm" />
+            <VitalStat label="SpO₂" vital={detail.vitals.latest.spo2} series={vitalsSeries(detail.vitals.raw, 'spo2')} unit="%" />
+            <VitalStat label="HRV" vital={detail.vitals.latest.hrv} series={vitalsSeries(detail.vitals.raw, 'hrv')} unit="ms" />
             <Stat
               label="Family online"
               value={`${detail.family.length}`}
@@ -570,13 +571,25 @@ function Stat({ label, value, sub }: { label: string; value: string; sub: string
   );
 }
 
+function vitalsSeries(
+  raw: DetailResponse['vitals']['raw'],
+  metric: string,
+): number[] {
+  return raw
+    .filter((v) => v.metric === metric)
+    .sort((a, b) => a.recorded_at - b.recorded_at)
+    .map((v) => v.value);
+}
+
 function VitalStat({
   label,
   vital,
+  series,
   unit,
 }: {
   label: string;
   vital?: { value: number; recorded_at: number };
+  series?: number[];
   unit: string;
 }) {
   if (!vital) {
@@ -584,11 +597,40 @@ function VitalStat({
   }
   const d = new Date(vital.recorded_at * 1000);
   const hrs = Math.max(0, Math.round((Date.now() / 1000 - vital.recorded_at) / HOUR));
+  const trendUp = series && series.length >= 2 && series[series.length - 1] > series[0];
+  const trendDown = series && series.length >= 2 && series[series.length - 1] < series[0];
+  // For HR: down is good. For SpO₂: up is good. For HRV: up is good.
+  const goodDirection = label === 'Resting HR' ? trendDown : trendUp;
   return (
-    <Stat
-      label={label}
-      value={`${vital.value.toString()} ${unit}`}
-      sub={`${hrs}h ago`}
-    />
+    <div className="px-5 py-4 flex-1 flex items-center justify-between gap-4" style={{ minWidth: 180 }}>
+      <div>
+        <div
+          className="text-[10px] uppercase tracking-[0.16em]"
+          style={{ color: 'var(--color-muted)', fontWeight: 600 }}
+        >
+          {label}
+        </div>
+        <div
+          className="text-[26px] mt-1 mono tabular"
+          style={{ color: 'var(--color-ink)', fontWeight: 600, lineHeight: 1 }}
+        >
+          {vital.value.toString()}
+          <span
+            className="text-[14px] ml-1"
+            style={{ color: 'var(--color-muted)', fontWeight: 500 }}
+          >
+            {unit}
+          </span>
+        </div>
+        <div className="text-[11px] mono mt-1.5" style={{ color: 'var(--color-muted)' }}>
+          {hrs === 0 ? 'just now' : `${hrs}h ago`}
+          {trendUp && <span style={{ color: goodDirection ? 'var(--color-success, #15803d)' : 'var(--color-red)', marginLeft: 6 }}>↑</span>}
+          {trendDown && <span style={{ color: goodDirection ? 'var(--color-success, #15803d)' : 'var(--color-red)', marginLeft: 6 }}>↓</span>}
+        </div>
+      </div>
+      {series && series.length >= 2 && (
+        <Sparkline values={series} />
+      )}
+    </div>
   );
 }
