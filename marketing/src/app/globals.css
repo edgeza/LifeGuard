@@ -242,10 +242,10 @@ body {
 .btn-ghost {
   background: transparent;
   color: var(--color-ink);
-  border-color: var(--color-line-strong);
+  border-color: transparent;
 }
 .btn-ghost:hover {
-  border-color: var(--color-ink);
+  border-color: var(--color-line);
   background: var(--color-bg-soft);
 }
 

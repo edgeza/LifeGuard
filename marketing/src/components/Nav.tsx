@@ -120,7 +120,7 @@ export function Nav() {
           aria-expanded={mobileOpen}
           aria-controls={mobileMenuId}
           onClick={() => setMobileOpen((v) => !v)}
-          className="md:hidden btn btn-ghost btn-sm"
+          className="md:!hidden btn btn-ghost btn-sm"
         >
           <span className="sr-only">{mobileOpen ? "Close menu" : "Open menu"}</span>
           {mobileOpen ? (
