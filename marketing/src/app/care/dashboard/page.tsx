@@ -145,49 +145,13 @@ export default async function CareDashboardPage() {
     redirect('/care/onboarding');
   }
 
-  // MVP: render detail for the first care_receiver
+  // MVP: render detail for the first care_receiver.
+  // On Vercel (no SQLite) the API returns a synthetic detail with empty
+  // arrays — the dashboard renders with zero-state copy instead of 500.
   const receiverId = list[0].id;
   const detail = await getJSON<DetailResponse>(`/api/care/care-receivers/${receiverId}`);
   if (!detail) {
-    // Vercel/serverless: SQLite not available; render an empty-state
-    // demo dashboard so the UI is at least inspectable. Local dev
-    // still hits the DB and shows real seeded data.
-    const emptyDetail: DetailResponse = {
-      careReceiver: {
-        id: list[0].id,
-        tenant_id: 'demo-tenant-001',
-        name: list[0].name,
-        conditions: JSON.stringify(list[0].conditions ?? []),
-        interests: JSON.stringify(list[0].interests ?? []),
-        timezone: list[0].timezone,
-        created_at: list[0].created_at,
-      },
-      agent: { id: 'demo-agent', name: 'Aria', email: 'aria@care.life.guard', personality: 'pragmatic', system_prompt: null },
-      medications: [],
-      appointments: [],
-      adherence: [],
-      escalations: [],
-      vitals: { latest: {}, raw: [] },
-      chat: [],
-      family: [{ id: user.id, name: user.name, role: user.role }],
-    };
-    return (
-      <main className="min-h-screen grid place-items-center p-8" style={{ background: 'var(--color-bg)' }}>
-        <div className="max-w-[560px] text-center">
-          <div className="eyebrow mb-3">Demo mode</div>
-          <h1 className="display text-[28px] md:text-[36px] mb-4">
-            The dashboard renders live on local + Supabase.
-          </h1>
-          <p className="lead mb-8" style={{ color: 'var(--color-body)' }}>
-            On Vercel, the SQLite-backed data layer isn't available in the
-            serverless runtime. The marketing site + login flow are fully
-            live. The caregiver dashboard requires a hosted Postgres or
-            Turso-backed libSQL to surface real seeded data.
-          </p>
-          <Link href="/" className="btn btn-red btn-lg">Back to home</Link>
-        </div>
-      </main>
-    );
+    redirect('/care/dashboard?error=load-failed');
   }
 
   const week = adherencePerDay(detail.adherence);

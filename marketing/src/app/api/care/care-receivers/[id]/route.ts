@@ -10,6 +10,7 @@ import {
   db_chatMessages,
   db_agents,
   withTenant,
+  isDbAvailable,
 } from '@/lib/db';
 import { db } from '../../../../../../db';
 
@@ -45,6 +46,32 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
   try {
     const user = await requireUser();
     const { id } = await ctx.params;
+
+    // On Vercel (no SQLite): return a synthetic empty detail for the demo
+    // care receiver so /care/dashboard and /care/dashboard/elder still
+    // render. The dashboard page also falls back to a "Demo mode" panel
+    // when the detail array is empty.
+    if (!isDbAvailable()) {
+      const now = Math.floor(Date.now() / 1000);
+      return NextResponse.json({
+        careReceiver: {
+          id,
+          name: 'Demo Patient',
+          conditions: ['hypertension', 'early dementia'],
+          interests: ['gardening', 'reading', 'walking'],
+          timezone: 'Africa/Johannesburg',
+          created_at: now,
+        },
+        agent: { id: 'demo-agent', name: 'Aria', email: 'aria@care.life.guard', personality: 'pragmatic' },
+        medications: [],
+        appointments: [],
+        adherence: [],
+        escalations: [],
+        vitals: { latest: {}, raw: [] },
+        chat: [],
+        family: [{ id: user.id, name: user.name, role: user.role }],
+      });
+    }
 
     return withTenant(() => {
       const cr = db_careReceivers.findById(id);

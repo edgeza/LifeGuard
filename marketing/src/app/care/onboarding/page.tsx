@@ -17,7 +17,14 @@ export default async function OnboardingPage() {
   }
 
   // MVP: 1 care_receiver per user. If they already have one, jump to dashboard.
-  const existing = db_careReceivers.listForUser(user.id);
+  // On Vercel (no SQLite), listForUser throws — treat as "no existing care_receivers"
+  // so the wizard renders instead of a 500.
+  let existing: { id: string }[] = [];
+  try {
+    existing = db_careReceivers.listForUser(user.id);
+  } catch {
+    existing = [];
+  }
   if (existing.length > 0) {
     redirect('/care/dashboard');
   }
