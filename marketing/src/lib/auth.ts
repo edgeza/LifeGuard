@@ -59,9 +59,26 @@ export async function getCurrentUser(): Promise<User | null> {
   const session = await verifySession(token);
   if (!session) return null;
 
-  const user = db_users.findById(session.userId);
-  if (!user || user.tenant_id !== session.tenantId) return null;
-  return user;
+  try {
+    const user = db_users.findById(session.userId);
+    if (!user || user.tenant_id !== session.tenantId) return null;
+    return user;
+  } catch {
+    // SQLite unavailable on Vercel — fall back to the in-session claims.
+    // Demo admin (built-in) gets a synthesised user object.
+    if (session.userId === 'admin' && session.tenantId === 'demo-tenant-001') {
+      return {
+        id: 'admin',
+        tenant_id: 'demo-tenant-001',
+        email: 'admin@life.guard',
+        name: 'Admin',
+        role: 'admin',
+        created_at: 0,
+        password_hash: '',
+      } as unknown as User;
+    }
+    return null;
+  }
 }
 
 export async function requireUser(): Promise<User> {

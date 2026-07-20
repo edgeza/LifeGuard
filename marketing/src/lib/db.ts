@@ -419,3 +419,19 @@ export const db_weeklyDigests = {
     return digest;
   },
 };
+
+/**
+ * Returns true if the SQLite database is available. On Vercel serverless
+ * runtimes, better-sqlite3's native binding can't load, so the db stub
+ * throws NO_DB_ON_VERCEL from every method. The auth + dashboard routes
+ * check this flag and serve built-in demo data instead.
+ */
+export function isDbAvailable(): boolean {
+  try {
+    // The stub's prepare() throws. The real DB's prepare() returns an object.
+    (db as unknown as { prepare: (s: string) => unknown }).prepare('SELECT 1');
+    return true;
+  } catch {
+    return false;
+  }
+}

@@ -125,3 +125,5 @@ reseller/.next/
 # photos in /assets/photos/ are the *only* binary image assets tracked.
 /assets/photos/*.png
 !/assets/photos/README.md
+
+.vercel
