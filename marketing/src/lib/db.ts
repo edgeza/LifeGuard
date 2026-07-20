@@ -425,11 +425,15 @@ export const db_weeklyDigests = {
  * runtimes, better-sqlite3's native binding can't load, so the db stub
  * throws NO_DB_ON_VERCEL from every method. The auth + dashboard routes
  * check this flag and serve built-in demo data instead.
+ *
+ * The check actually runs a SELECT 1 — the stub's prepare returns an
+ * object with throwing methods, but the throw happens on .get/.all,
+ * so we have to actually invoke .get to know.
  */
 export function isDbAvailable(): boolean {
   try {
-    // The stub's prepare() throws. The real DB's prepare() returns an object.
-    (db as unknown as { prepare: (s: string) => unknown }).prepare('SELECT 1');
+    const stmt = (db as unknown as { prepare: (s: string) => { get: (...a: unknown[]) => unknown } }).prepare('SELECT 1');
+    stmt.get();
     return true;
   } catch {
     return false;
