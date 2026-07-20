@@ -1,5 +1,4 @@
 import { LoginForm } from "@/components/LoginForm";
-import { Suspense } from "react";
 
 export const metadata = {
   title: "Log in — LifeGuard",
@@ -18,9 +17,7 @@ export default function Login() {
           </p>
         </div>
         <div className="card-elevated p-8">
-          <Suspense fallback={<div className="text-[13px]" style={{ color: "var(--color-muted)" }}>Loading…</div>}>
-            <LoginForm />
-          </Suspense>
+          <LoginForm />
         </div>
         <p
           className="mt-6 text-center text-[12px]"

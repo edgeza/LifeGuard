@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 /**
@@ -9,16 +9,26 @@ import Link from "next/link";
  * /api/care/auth/login. Replaces the old decorative "Continue
  * with SSO / Email me a magic link" buttons, which had no
  * real auth behind them.
+ *
+ * SSR-safe: doesn't read useSearchParams (which causes
+ * BAILOUT_TO_CLIENT_SIDE_RENDERING on Vercel prerender).
+ * Reads window.location.search directly in a useEffect.
  */
 export function LoginForm() {
   const router = useRouter();
-  const search = useSearchParams();
-  const next = search?.get("next") || "/care/dashboard";
+  const [next, setNext] = useState("/care/dashboard");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const sp = new URLSearchParams(window.location.search);
+    const n = sp.get("next");
+    if (n && n.startsWith("/")) setNext(n);
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
